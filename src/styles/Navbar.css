@@ -1,0 +1,240 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
+
+:root {
+  /* ALTURA IMPOSTA (MAIOR PARA BAIXO) */
+  --nav-height: 95px; 
+  --nav-height-scrolled: 70px;
+  
+  --porsche-black: #000000;
+  --porsche-white: #ffffff;
+  --porsche-gold: #ff6600;
+  --font-main: 'Inter', sans-serif;
+  --transition-porsche: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* RESET TOTAL PARA EVITAR GAPS */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--porsche-black); /* Fundo base preto */
+}
+
+/* NAVBAR - SEM LINHAS OU DIVISORES */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--nav-height);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  
+  /* Gradiente ultra suave */
+  background: linear-gradient(to bottom, 
+    rgba(0,0,0,0.6) 0%, 
+    rgba(0,0,0,0.3) 40%, 
+    rgba(0,0,0,0) 100%
+  );
+  
+  border: none !important;
+  box-shadow: none !important;
+  transition: var(--transition-porsche);
+}
+
+.navbar--scrolled {
+  height: var(--nav-height-scrolled);
+  background: rgba(0, 0, 0, 0.92);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border-bottom: none;
+}
+
+.nav-container {
+  width: 100%;
+  padding: 0 50px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+}
+
+/* LOGO CENTRAL - BRANCA COM 'D' GOLD */
+.nav-center {
+  display: flex;
+  justify-content: center;
+}
+
+.logo-link {
+  text-decoration: none;
+}
+
+.logo {
+  color: var(--porsche-white) !important; /* Força a cor branca */
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 8px;
+  text-transform: uppercase;
+  font-family: var(--font-main);
+  margin: 0;
+}
+
+.logo-accent {
+  color: var(--porsche-gold) !important; /* Mantém o 'D' na cor original */
+}
+
+/* BOTÕES LATERAIS */
+.nav-btn {
+  background: none;
+  border: none;
+  color: var(--porsche-white);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  font-family: var(--font-main);
+  text-transform: uppercase;
+  font-size: 11px;
+  letter-spacing: 2px;
+  padding: 10px;
+  transition: opacity 0.3s ease;
+}
+
+.nav-btn:hover {
+  opacity: 0.5;
+}
+
+.nav-right {
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+}
+
+/* MENU LATERAL (FLYOUT) */
+.menu-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0);
+  visibility: hidden;
+  z-index: 2000;
+  transition: background 0.5s ease, visibility 0.5s;
+}
+
+.menu-overlay.is-open {
+  background: rgba(0, 0, 0, 0.75);
+  visibility: visible;
+}
+
+/* BOTÃO X FORA DO PAINEL */
+.menu-close-outside {
+  position: absolute;
+  top: 30px;
+  left: 420px; /* Posicionado 20px após a borda do menu de 400px */
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  z-index: 2100;
+  opacity: 0;
+  transform: translateX(-20px);
+  transition: all 0.5s ease 0.1s; /* Pequeno delay para suavizar */
+}
+
+/* APARECER QUANDO O MENU ESTIVER ABERTO */
+.menu-overlay.is-open .menu-close-outside {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.menu-panel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  max-width: 400px;
+  height: 100vh;
+  background: #000000;
+  padding: 100px 50px;
+  transform: translateX(-100%);
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.menu-overlay.is-open .menu-panel {
+  transform: translateX(0);
+}
+
+.menu-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.menu-nav a {
+  color: white;
+  text-decoration: none;
+  font-size: 20px;
+  font-weight: 300;
+  padding: 18px 0;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  border-bottom: 1px solid #111;
+  transition: all 0.3s ease;
+}
+
+.menu-nav a:hover {
+  color: var(--porsche-gold);
+  padding-left: 10px;
+}
+
+/* MODAL PERFIL */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.9);
+  backdrop-filter: blur(10px);
+  z-index: 3000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: #080808;
+  padding: 50px;
+  width: 100%;
+  max-width: 420px;
+  border: 1px solid #1a1a1a;
+  color: white;
+  position: relative;
+  text-align: center;
+}
+
+.logout-btn {
+  margin-top: 35px;
+  width: 100%;
+  padding: 18px;
+  background: var(--porsche-gold);
+  color: black;
+  border: none;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  cursor: pointer;
+}
+
+/* AJUSTES RESPONSIVOS */
+@media (max-width: 768px) {
+  :root { --nav-height: 80px; }
+  .nav-container { padding: 0 20px; }
+  .nav-btn-label { display: none; }
+  .logo { font-size: 13px; letter-spacing: 5px; }
+
+  /* Ajuste do X para telas menores para não sumir da tela */
+  .menu-close-outside {
+    left: auto;
+    right: 20px;
+  }
+}

@@ -1,0 +1,162 @@
+/* =========================
+   FOOTER LEGACY DRIVE
+========================= */
+
+.footer {
+  width: 100%;
+  background: #0a0a0a;
+  color: white;
+  padding: 25px 40px 25px;
+  border-top: 1px solid rgba(212, 175, 55, 0.15);
+  position: relative;
+  overflow: hidden;
+  margin-top: 0;
+}
+
+/* efeito de luz */
+.footer-light {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  transition: background 0.15s ease;
+}
+
+.footer-container {
+  max-width: 1300px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* TOPO */
+.footer-main {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1.4fr;
+  gap: 45px;
+  margin-bottom: 40px;
+}
+
+/* MARCA */
+.footer-brand h2 {
+  font-size: 2rem;
+  font-weight: 300;
+  letter-spacing: 4px;
+  margin-bottom: 18px;
+}
+
+.footer-brand span {
+  color: #d4af37;
+}
+
+.footer-brand p {
+  color: rgba(255,255,255,0.7);
+  line-height: 1.7;
+  max-width: 380px;
+}
+
+/* COLUNAS */
+.footer-column h3 {
+  font-size: 1rem;
+  color: #d4af37;
+  margin-bottom: 15px;
+  font-weight: 500;
+}
+
+.footer-column a {
+  display: block;
+  margin-bottom: 10px;
+  color: rgba(255,255,255,0.75);
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.footer-column a:hover {
+  color: #d4af37;
+}
+
+.footer-column p {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  color: rgba(255,255,255,0.75);
+}
+
+/* REDES */
+.footer-social {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.footer-social a {
+  width: 38px;
+  height: 38px;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  transition: 0.3s;
+}
+
+.footer-social a:hover {
+  color: #d4af37;
+  border-color: #d4af37;
+  transform: translateY(-2px);
+}
+
+/* BASE */
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.08);
+  padding-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-bottom p {
+  color: rgba(255,255,255,0.55);
+  font-size: 0.85rem;
+}
+
+/* BOTÃO */
+.back-top {
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 50%;
+  background: #151515;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.back-top:hover {
+  background: #ff6600;
+  color: black;
+}
+
+/* RESPONSIVO */
+@media (max-width: 1000px) {
+  .footer-main {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 700px) {
+  .footer-main {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-social {
+    justify-content: center;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    gap: 15px;
+  }
+}

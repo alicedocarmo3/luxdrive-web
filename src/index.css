@@ -1,0 +1,365 @@
+/* =========================
+   RESET LIMPO
+========================= */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #000;
+  color: #fff;
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+/* =========================
+   NAVBAR
+========================= */
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  padding: 30px 8%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1000;
+  background: #000;
+}
+
+.navbar ul {
+  display: flex;
+  gap: 50px;
+  list-style: none;
+}
+
+.navbar a {
+  text-decoration: none;
+  color: #fff;
+  font-size: 0.9rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  transition: opacity 0.3s ease;
+}
+
+.navbar a:hover {
+  opacity: 0.6;
+}
+
+/* =========================
+   LAYOUT
+========================= */
+
+.layout-content {
+  padding-top: 160px;
+  min-height: 100vh;
+}
+
+/* =========================
+   HERO
+========================= */
+
+.hero {
+  height: 85vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 12%;
+}
+
+.hero h1 {
+  font-size: 4.5rem;
+  font-weight: 600;
+  letter-spacing: -2px;
+  max-width: 900px;
+}
+
+.hero p {
+  margin-top: 25px;
+  max-width: 500px;
+  font-size: 1rem;
+  color: #aaa;
+}
+
+/* =========================
+   FADE SUAVE
+========================= */
+
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 0.8s ease forwards;
+}
+
+.delay {
+  animation-delay: 0.3s;
+}
+
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================
+   CARS GRID
+========================= */
+
+.cars {
+  padding: 0 12%;
+}
+
+.cars-grid {
+  margin-top: 80px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 60px;
+}
+
+.car-card {
+  border-top: 1px solid #fff;
+  padding-top: 20px;
+  transition: opacity 0.3s ease;
+}
+
+.car-card h3 {
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+
+.car-card:hover {
+  opacity: 0.6;
+}
+
+/* =========================
+   ABOUT / LEGACY
+========================= */
+
+.about,
+.legacy {
+  padding: 0 20%;
+}
+
+.legacy-content {
+  margin-top: 40px;
+  font-size: 1rem;
+  color: #aaa;
+}
+
+.legacy-pillars {
+  margin-top: 80px;
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+.legacy-pillars div {
+  border-bottom: 1px solid #fff;
+  padding-bottom: 10px;
+  letter-spacing: 2px;
+  font-size: 0.9rem;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+.footer {
+  margin-top: 120px;
+  padding: 40px 8%;
+  border-top: 1px solid #222;
+  font-size: 0.8rem;
+  color: #777;
+}
+
+/* =========================
+   RESPONSIVO
+========================= */
+
+@media (max-width: 768px) {
+
+  .hero h1 {
+    font-size: 2.8rem;
+  }
+
+  .about,
+  .legacy {
+    padding: 0 10%;
+  }
+
+  .legacy-pillars {
+    flex-direction: column;
+    gap: 30px;
+  }
+}
+.hero {
+  height: 85vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 12%;
+}
+
+.car-section {
+  margin-top: 80px;
+}
+.auth-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #000;
+}
+
+.auth-box {
+  width: 400px;
+  padding: 40px;
+  border: 1px solid #222;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.auth-box h1 {
+  font-size: 28px;
+  letter-spacing: 3px;
+}
+
+.auth-box input {
+  background: transparent;
+  border: 1px solid #333;
+  padding: 12px;
+  color: white;
+  outline: none;
+}
+
+.auth-box input:focus {
+  border: 1px solid white;
+}
+
+.auth-box button {
+  background: white;
+  color: black;
+  padding: 12px;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
+  letter-spacing: 2px;
+}
+
+.auth-box button:hover {
+  background: #ccc;
+}
+
+.auth-box p {
+  font-size: 14px;
+  color: #888;
+}
+
+.auth-box a {
+  color: white;
+  text-decoration: none;
+}
+.cars-page {
+  padding: 120px 10%;
+  background: #000;
+}
+
+.cars-title {
+  font-size: 40px;
+  letter-spacing: 6px;
+  margin-bottom: 80px;
+}
+
+.cars-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 60px;
+}
+
+.car-card {
+  cursor: pointer;
+  transition: 0.5s;
+}
+
+.car-card img {
+  width: 100%;
+  transition: 0.6s;
+}
+
+.car-card:hover img {
+  transform: scale(1.05);
+}
+
+.car-info {
+  margin-top: 20px;
+}
+
+.car-info h2 {
+  font-size: 20px;
+  letter-spacing: 2px;
+}
+
+.car-info p {
+  color: #aaa;
+}
+
+/* MODAL */
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.95);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal-content {
+  display: flex;
+  width: 85%;
+  height: 80%;
+}
+
+.modal-3d {
+  flex: 2;
+}
+
+.modal-info {
+  flex: 1;
+  padding: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.modal-info h1 {
+  font-size: 32px;
+  margin-bottom: 30px;
+}
+
+.modal-info p {
+  color: #aaa;
+  margin-bottom: 10px;
+}
+
+.close-btn {
+  position: absolute;
+  top: 40px;
+  right: 60px;
+  font-size: 40px;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
