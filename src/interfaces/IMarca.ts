@@ -1,8 +1,8 @@
-export interface IMarca{
-    id:string
-    nome:string
-    linkLogo:string
-
-    carrosId: string[]
+export interface IMarca {
+  id: number
+  nome: string
+  linkLogo: string
+  linkBanner: string
+  descricao: string
+  carrosId?: number[]
 }
-

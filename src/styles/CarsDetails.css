@@ -1,0 +1,331 @@
+/* CarDetails.css */
+
+.details-page{
+  width:100%;
+  background:#050505;
+  color:#fff;
+}
+
+/* HERO */
+
+.details-hero{
+  width:100%;
+  height:100vh;
+  position:relative;
+  overflow:hidden;
+}
+
+.hero-image{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.hero-overlay{
+  position:absolute;
+  inset:0;
+
+  background:
+    linear-gradient(
+      to top,
+      rgba(0,0,0,.92),
+      rgba(0,0,0,.25)
+    );
+}
+
+.hero-content{
+  position:absolute;
+  left:8%;
+  bottom:12%;
+  z-index:10;
+
+  max-width:700px;
+}
+
+.details-year{
+  font-size:.95rem;
+  letter-spacing:4px;
+  color:#c7c7c7;
+}
+
+.hero-content h1{
+  font-size:5rem;
+  font-weight:700;
+  margin-top:10px;
+}
+
+.hero-content p{
+  margin-top:18px;
+  color:#d4d4d4;
+  font-size:1.1rem;
+  line-height:1.7;
+}
+
+.btn-contact{
+  margin-top:30px;
+
+  padding:18px 34px;
+
+  border:none;
+  border-radius:12px;
+
+  background:#fff;
+  color:#000;
+
+  font-weight:700;
+  letter-spacing:1px;
+
+  cursor:pointer;
+
+  transition:.3s;
+}
+
+.btn-contact:hover{
+  transform:translateY(-4px);
+}
+
+/* THUMBS */
+
+.thumbs-wrapper{
+  width:100%;
+
+  display:flex;
+  justify-content:center;
+  gap:18px;
+
+  padding:35px;
+  flex-wrap:wrap;
+}
+
+.thumb{
+  width:160px;
+  height:95px;
+
+  object-fit:cover;
+
+  border-radius:14px;
+
+  opacity:.55;
+  cursor:pointer;
+
+  border:2px solid transparent;
+
+  transition:.3s;
+}
+
+.thumb:hover{
+  opacity:1;
+}
+
+.thumb.active{
+  opacity:1;
+  border-color:#fff;
+}
+
+/* INFO */
+
+.details-info{
+  width:100%;
+  max-width:1600px;
+
+  margin:80px auto;
+
+  padding:0 60px;
+
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:60px;
+}
+
+.subtitle{
+  color:#999;
+  letter-spacing:4px;
+  font-size:.9rem;
+}
+
+.info-left h2{
+  font-size:4rem;
+  margin-top:15px;
+}
+
+.description{
+  margin-top:30px;
+
+  font-size:1.05rem;
+  line-height:2;
+
+  color:#d0d0d0;
+}
+
+.info-right{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:24px;
+}
+
+.spec-card{
+  background:#111;
+
+  border:1px solid rgba(255,255,255,.06);
+
+  border-radius:18px;
+
+  padding:35px;
+}
+
+.spec-card span{
+  color:#8d8d8d;
+  font-size:.95rem;
+}
+
+.spec-card strong{
+  display:block;
+
+  margin-top:14px;
+
+  font-size:1.5rem;
+}
+
+/* PREÇO */
+
+.price-section{
+  width:100%;
+  text-align:center;
+
+  padding:100px 20px;
+
+  background:#0c0c0c;
+}
+
+.price-section span{
+  letter-spacing:4px;
+  color:#888;
+}
+
+.price-section h2{
+  margin-top:15px;
+  font-size:4rem;
+}
+
+/* FORM */
+
+.contact-section{
+  width:100%;
+  padding:120px 20px;
+}
+
+.contact-box{
+  width:100%;
+  max-width:900px;
+
+  margin:0 auto;
+
+  background:#101010;
+
+  border:1px solid rgba(255,255,255,.06);
+
+  border-radius:24px;
+
+  padding:60px;
+}
+
+.contact-box h2{
+  margin-top:15px;
+  font-size:3rem;
+}
+
+.contact-form{
+  margin-top:40px;
+
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+}
+
+.contact-form input,
+.contact-form textarea{
+  width:100%;
+
+  background:#181818;
+
+  border:none;
+  border-radius:14px;
+
+  padding:20px;
+
+  color:#fff;
+  font-size:1rem;
+}
+
+.contact-form textarea{
+  min-height:180px;
+  resize:none;
+}
+
+.contact-form button{
+  height:62px;
+
+  border:none;
+  border-radius:14px;
+
+  background:#fff;
+  color:#000;
+
+  font-weight:700;
+  font-size:1rem;
+
+  cursor:pointer;
+
+  transition:.3s;
+}
+
+.contact-form button:hover{
+  transform:translateY(-4px);
+}
+
+/* RESPONSIVO */
+
+@media(max-width:1100px){
+
+  .details-info{
+    grid-template-columns:1fr;
+  }
+
+  .hero-content h1{
+    font-size:3.5rem;
+  }
+
+  .info-left h2{
+    font-size:3rem;
+  }
+
+  .price-section h2{
+    font-size:3rem;
+  }
+
+}
+
+@media(max-width:700px){
+
+  .hero-content{
+    left:6%;
+    right:6%;
+  }
+
+  .hero-content h1{
+    font-size:2.5rem;
+  }
+
+  .details-info{
+    padding:0 24px;
+  }
+
+  .info-right{
+    grid-template-columns:1fr;
+  }
+
+  .contact-box{
+    padding:30px;
+  }
+
+}

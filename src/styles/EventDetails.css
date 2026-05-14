@@ -1,0 +1,319 @@
+/* ================= BASE ================= */
+
+.details-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 60px 20px;
+}
+
+/* ================= IMAGEM ================= */
+
+.details-image {
+  width: 100%;
+  height: 420px;
+  object-fit: cover;
+  border-radius: 20px;
+  margin-bottom: 40px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+}
+
+/* ================= CONTEÚDO ================= */
+
+.details-content {
+  max-width: 700px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.details-content h1 {
+  font-size: 40px;
+  color: #ff6a00;
+  margin-bottom: 15px;
+}
+
+/* Linha info */
+.details-date {
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.details-location {
+  color: #777;
+  margin-bottom: 20px;
+}
+
+/* Texto */
+.details-desc {
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+
+.details-more {
+  margin-bottom: 30px;
+  line-height: 1.6;
+  color: #444;
+}
+
+/* ================= BOTÃO ================= */
+
+.buy-button {
+  padding: 15px 30px;
+  background: linear-gradient(90deg, #ff6a00, #ff8a2d);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.buy-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 25px rgba(255,106,0,0.4);
+}
+/* ================= MODAL AJUSTADO ================= */
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  padding: 20px;
+}
+
+/* Caixa centralizada e limitada */
+.modal {
+  background: white;
+  padding: 30px;
+  border-radius: 18px;
+  width: 100%;
+  max-width: 420px;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: fadeIn 0.3s ease;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* 🔥 centraliza tudo */
+  text-align: center;
+}
+
+/* título central */
+.modal h2 {
+  margin-bottom: 20px;
+}
+
+/* ================= TABS ================= */
+
+.payment-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.payment-tabs button {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  background: #eee;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+/* ================= CONTEÚDO ================= */
+
+.payment-box {
+  width: 100%; /* 🔥 impede de quebrar layout */
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+  align-items: center; /* 🔥 centraliza */
+}
+
+/* inputs alinhados */
+.payment-box input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+/* ================= PIX / BOLETO ================= */
+
+/* 🔥 ESSA PARTE CORRIGE O SEU PROBLEMA */
+.pix-box, 
+.boleto-box {
+  width: 100%;
+  background: #f5f5f5;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 12px;
+
+  word-break: break-all;     /* quebra código grande */
+  overflow-wrap: break-word; /* evita sair da tela */
+  text-align: center;
+}
+
+/* ================= BOTÕES ================= */
+
+.confirm-button {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(90deg, #ff6a00, #ff8a2d);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.close-button {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  background: #eee;
+  border-radius: 10px;
+  cursor: pointer;
+}
+/* ================= TABS ================= */
+
+.payment-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.payment-tabs button {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  background: #eee;
+  cursor: pointer;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.payment-tabs button:hover {
+  background: #ff6a00;
+  color: white;
+}
+
+/* ================= FORM ================= */
+
+.payment-box {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.payment-box input {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  outline: none;
+  transition: 0.2s;
+}
+
+.payment-box input:focus {
+  border-color: #ff6a00;
+}
+
+/* ================= PIX / BOLETO FIX ================= */
+
+.pix-box, 
+.boleto-box {
+  width: 100%;
+  background: #f5f5f5;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 12px;
+
+  color: #111; /* 🔥 ISSO RESOLVE (texto visível) */
+
+  word-break: break-all;
+  overflow-wrap: break-word;
+  text-align: center;
+}
+/* ================= BOTÕES ================= */
+
+.confirm-button {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(90deg, #ff6a00, #ff8a2d);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.confirm-button:hover {
+  transform: scale(1.03);
+  box-shadow: 0 10px 25px rgba(255,106,0,0.4);
+}
+
+.close-button {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  background: #eee;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+/* ================= ANIMAÇÃO ================= */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ================= RESPONSIVO ================= */
+
+@media (max-width: 768px) {
+  .details-content h1 {
+    font-size: 30px;
+  }
+
+  .details-image {
+    height: 260px;
+  }
+}
+.copy-button {
+  width: 100%;
+  padding: 12px;
+  background: #111;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.copy-button:hover {
+  background: #ff6a00;
+}
+.payment-box svg {
+  display: block;
+  margin: 15px auto 0;
+}

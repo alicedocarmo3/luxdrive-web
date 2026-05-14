@@ -1,6 +1,10 @@
 export interface ISede {
-  id: string
-  endereco: string
-  telefone: string
-  horario: string
+  id: number;
+  nome: string;
+  endereco: string;
+  cidade: string;
+  estado: string;
+  telefone: string;
+  horario: string;
+  carrosId: number[]
 }

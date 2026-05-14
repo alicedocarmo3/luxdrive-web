@@ -1,4 +1,4 @@
 export interface ITickets {
-  id: string
+  id: number
   nome: string
 }

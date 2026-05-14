@@ -1,6 +1,8 @@
+/* 1. MOVEMOS TODOS OS IMPORTS PARA O INICIO DO ARQUIVO */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;800&display=swap');
 
-/* RESET GLOBAL (SÓ AQUI OU NO index.css) */
+/* 2. O RESTANTE DO SEU CÓDIGO SEGUE IGUAL ABAIXO */
 * {
   margin: 0;
   padding: 0;
@@ -13,78 +15,402 @@
   background: #000;
 }
 
+/* ============================================
+   HERO SECTION — PORSCHE STYLE
+   ============================================ */
 /* HERO */
-.hero-video-section {
+
+.hero-video-section{
   position: relative;
   width: 100%;
   height: 100vh;
   overflow: hidden;
 }
 
-.hero-video {
+/* VIDEO */
+
+.hero-video{
+  position: absolute;
+  top: 0;
+  left: 0;
+
   width: 100%;
   height: 100%;
+
   object-fit: cover;
+
+  z-index: 0;
 }
 
-.hero-overlay {
+/* OVERLAY */
+
+.hero-overlay{
   position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(0,0,0,0.6),
-    transparent,
-    rgba(0,0,0,0.5)
-  );
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100%;
+
+  background: rgba(0,0,0,0.35);
+
+  z-index: 1;
 }
 
-.hero-content {
+/* CONTENT */
+
+.hero-content{
   position: absolute;
-  bottom: 80px;
-  left: 60px;
-  z-index: 2;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+
+  padding-left: 80px;
+
+  z-index: 5;
 }
 
-.porsche-title {
-  color: white;
-  font-size: clamp(2.5rem, 4vw, 4.5rem);
-  margin-bottom: 20px;
+/* TEXT */
+
+.hero-text-box{
+  position: relative;
+  z-index: 10;
 }
 
-.porsche-btn-main {
-  padding: 12px 30px;
-  border: 1px solid white;
+/* TITLE */
+
+.porsche-title{
   color: white;
+
+  font-size: 6rem;
+
+  font-weight: 700;
+
+  line-height: 1.1;
+
+  margin-bottom: 30px;
+}
+
+/* BUTTON */
+
+.porsche-btn-main{
+  display: inline-block;
+
+  padding: 14px 35px;
+
+  border: 2px solid white;
+
+  color: white;
+
   text-decoration: none;
+
+  transition: 0.3s;
 }
 
-.porsche-btn-main:hover {
+.porsche-btn-main:hover{
   background: white;
   color: black;
 }
 
-/* BRANDS */
+/* BOTÃO PAUSE */
+.video-control-btn {
+  position: absolute;
+  bottom: 40px;
+  right: 40px;
+  width: 44px;
+  height: 44px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: 0.3s;
+}
+
+.video-control-btn:hover {
+  border-color: white;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.pause-icon {
+  display: flex;
+  gap: 4px;
+}
+
+.pause-icon span {
+  width: 2px;
+  height: 14px;
+  background: white;
+}
+
+.play-shape {
+  width: 0;
+  height: 0;
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+  border-left: 10px solid white;
+  margin-left: 3px;
+}
+
+@keyframes porscheFadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================
+   RESTO DAS SEÇÕES
+   ============================================ */
 .brands-title {
   text-align: center;
+  background: #000;
   padding: 80px 20px 40px;
 }
 
 .brands-title h2 {
   color: white;
+  font-size: 1.8rem;
   font-weight: 300;
+  letter-spacing: 1px;
 }
 
+.log, .carr { color: #c8a97e; }
+
 .brands-section {
+  width: 100%;
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
   gap: 15px;
-  padding-bottom: 80px;
+  padding: 0 40px 80px;
+  background: #000;
 }
 
 .brand-card {
   width: 160px;
   height: 160px;
+  background: #0a0a0a;
+  border-radius: 8px;
   overflow: hidden;
+  transition: 0.3s ease;
+  border: 1px solid #111;
+}
+
+.brand-card img { width: 100%; height: 100%; object-fit: cover; opacity: 0.7; transition: 0.3s; }
+.brand-card:hover img { opacity: 1; transform: scale(1.05); }
+
+/* CARROSSEL NOVIDADES */
+.novidades-section {
+  padding: 80px 0;
+  background-color: #050505;
+  text-align: center;
+}
+
+.novidades-section h2 { color: white; font-weight: 300; margin-bottom: 40px; text-transform: uppercase; letter-spacing: 2px; }
+
+.carousel-container-3d {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 350px;
+  position: relative;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.carousel-item-3d {
+  position: absolute;
+  width: 450px;
+  height: 260px;
+  transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+}
+
+.carousel-item-3d img { width: 100%; height: 100%; object-fit: cover; }
+
+.card-center { z-index: 10; transform: scale(1.1); opacity: 1; }
+.card-left { z-index: 5; transform: translateX(-300px) scale(0.8); opacity: 0.3; filter: grayscale(1); }
+.card-right { z-index: 5; transform: translateX(300px) scale(0.8); opacity: 0.3; filter: grayscale(1); }
+.card-hidden { opacity: 0; transform: scale(0.5); }
+
+.carousel-caption {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 20px;
+  background: linear-gradient(transparent, black);
+  color: white;
+  text-align: left;
+}
+
+.carousel-btn {
+  background: none; border: none; color: white; font-size: 2rem; cursor: pointer; z-index: 20; padding: 40px;
+}
+
+/* PREMIUM SECTION */
+.premium-transition-section {
+  width: 100%;
+  min-height: 600px;
+  display: flex;
+  background: linear-gradient(to bottom, #000 0%, #1a1a1a 100%);
+  padding: 100px 60px;
+  align-items: center;
+}
+
+.premium-left { width: 50%; color: white; position: relative; }
+.vertical-brand {
+  position: absolute; left: -80px; top: 50%; transform: rotate(-90deg);
+  font-size: 12px; letter-spacing: 8px; opacity: 0.3;
+}
+
+.premium-text h2 { font-size: 60px; font-weight: 800; letter-spacing: -2px; line-height: 1; margin: 10px 0 20px; }
+.premium-text p { max-width: 450px; line-height: 1.6; opacity: 0.8; margin-bottom: 30px; }
+.premium-text button { 
+  background: white; color: black; border: none; padding: 15px 40px; 
+  font-weight: 600; text-transform: uppercase; letter-spacing: 1px; cursor: pointer;
+}
+
+.premium-image-container { width: 50%; height: 450px; border: 1px solid #333; }
+.premium-image-container img { width: 100%; height: 100%; object-fit: cover; }
+
+@media (max-width: 768px) {
+  .hero-content { padding: 0 30px 60px; }
+  .porsche-title { font-size: 2.5rem; }
+  .premium-transition-section { flex-direction: column; padding: 60px 20px; }
+  .premium-left, .premium-image-container { width: 100%; }
+  .carousel-item-3d { width: 280px; height: 180px; }
+  .card-left { transform: translateX(-100px) scale(0.7); }
+  .card-right { transform: translateX(100px) scale(0.7); }
+}
+
+/* --- REPETIÇÕES ABAIXO MANTIDAS CONFORME ORIGINAL --- */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.home {
+  width: 100%;
+  min-height: 100vh;
+  background: #0d0d0d;
+}
+
+/* HERO VIDEO */
+.hero-video-section {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+.hero-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  filter: contrast(1.05) brightness(1.02);
+}
+
+/* DEGRADÊ FOSCO */
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.15) 0%,
+    rgba(0, 0, 0, 0.25) 55%,
+    rgba(0, 0, 0, 0.75) 85%,
+    #0d0d0d 100%
+  );
+}
+
+/* SLOGAN */
+.hero-slogan {
+  position: absolute;
+  bottom: 40px;
+  left: 40px;
+  color: white;
+  z-index: 2;
+  animation: fadeUp 1.5s ease forwards;
+  opacity: 0;
+}
+
+.hero-slogan h1 {
+  font-size: 2rem;
+  font-weight: 400;
+  margin-bottom: 8px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+.hero-slogan p {
+  font-size: 0.95rem;
+  font-weight: 300;
+  max-width: 360px;
+  line-height: 1.5;
+  opacity: 0.9;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(35px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* TÍTULO */
+.brands-title {
+  text-align: center;
+  background: #0d0d0d;
+  padding: 70px 20px 30px;
+}
+
+.brands-title h2 {
+  color: white;
+  font-size: 2rem;
+  font-weight: 300;
+  letter-spacing: 1px;
+}
+
+/* CARDS DAS MARCAS */
+
+.brands-section{
+  width:100%;
+  display:grid;
+  grid-template-columns:repeat(6,1fr);
+  gap:22px;
+  /* AQUI DESCE OS CARDS */
+  padding:80px 40px 80px;
+  max-width:1700px;
+  margin:0 auto;
+  background:#0d0d0d;
+}
+
+.brand-card {
+  width: 190px;
+  height: 190px;
+  background: #161616;
+  border-radius: 14px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  cursor: pointer;
 }
 
 .brand-card img {
@@ -93,46 +419,571 @@
   object-fit: cover;
 }
 
-/* CARROSSEL */
-.novidades-section {
-  padding: 60px 0;
+.brand-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 25px rgba(255, 255, 255, 0.08);
+}
+
+/* LINHA DO TEMPO PREMIUM */
+.timeline-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  padding: 100px 40px;
+  background: #0d0d0d;
+}
+
+.timeline-step {
   text-align: center;
+  color: white;
+  min-width: 220px;
+}
+
+.timeline-step span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255,255,255,0.15);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.25);
+  font-size: 1.4rem;
+  font-weight: 400;
+  margin-bottom: 18px;
+  transition: 0.3s ease;
+}
+
+.timeline-step span:hover {
+  transform: scale(1.08);
+  border-color: rgba(255,255,255,0.35);
+}
+
+.timeline-step h3 {
+  font-size: 1.05rem;
+  font-weight: 300;
+  letter-spacing: 0.8px;
+  color: rgba(255,255,255,0.92);
+}
+
+.timeline-line {
+  width: 120px;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    rgba(255,255,255,0.08),
+    rgba(255,255,255,0.22),
+    rgba(255,255,255,0.08)
+  );
+}
+/* Layout Geral do Carrossel - Tamanho Reduzido */
+.novidades-section {
+  padding: 40px 0; /* Diminuído de 80px */
+  background-color: #0a0a0a;
+  text-align: center;
+  overflow: hidden;
 }
 
 .carousel-container-3d {
-  height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 320px; /* Reduzido de 450px */
   position: relative;
+  width: 100%;
+  max-width: 900px; /* Reduzido de 1200px */
+  margin: 0 auto;
 }
 
+.carousel-view {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Base dos Itens - Tamanho Reduzido */
+.carousel-item-3d {
+  position: absolute;
+  width: 380px; /* Reduzido de 500px */
+  height: 220px; /* Reduzido de 300px */
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 15px 30px rgba(0,0,0,0.7);
+}
+
+.carousel-item-3d img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Estados de Posição - Espaçamento Ajustado */
+.card-center {
+  z-index: 10;
+  transform: scale(1.1);
+  opacity: 1;
+}
+
+.card-left {
+  z-index: 5;
+  transform: translateX(-220px) scale(0.8); /* Reduzido o deslocamento lateral */
+  opacity: 0.4;
+  filter: blur(3px) grayscale(50%);
+}
+
+.card-right {
+  z-index: 5;
+  transform: translateX(220px) scale(0.8); /* Reduzido o deslocamento lateral */
+  opacity: 0.4;
+  filter: blur(3px) grayscale(50%);
+}
+
+.card-hidden {
+  opacity: 0;
+  transform: scale(0.5);
+  z-index: 0;
+}
+
+/* Legendas mais discretas */
+.carousel-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(0,0,0,0.95));
+  padding: 10px;
+  color: white;
+  opacity: 0;
+  transition: 0.3s;
+}
+
+.carousel-caption h3 {
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.carousel-caption p {
+  font-size: 0.8rem;
+  margin: 2px 0 0;
+}
+
+.card-center .carousel-caption {
+  opacity: 1;
+}
+
+/* Botões */
+.carousel-btn {
+  background: none;
+  border: none;
+  color: #ff6600;
+  font-size: 2rem;
+  cursor: pointer;
+  z-index: 20;
+  padding: 0 20px;
+  transition: 0.3s;
+}
+
+.carousel-btn:hover {
+  color: white;
+  transform: scale(1.1);
+}
+.nov{
+    color:#ff6600;
+}
+.log{
+    color:#ff6600;
+}
+ /* ===========================
+    CARROSSEL NOVIDADES 3D
+=========================== */
+
+.novidades-section {
+  padding: 60px 0;
+  background-color: #0d0d0d;
+  text-align: center;
+  overflow: hidden;
+}
+
+.novidades-section h2 {
+  color: white;
+  font-size: 2rem;
+  font-weight: 300;
+  margin-bottom: 40px;
+}
+
+.carousel-container-3d {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 320px;
+  position: relative;
+  width: 100%;
+  max-width: 950px;
+  margin: 0 auto;
+}
+
+.carousel-view {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* CARDS */
 .carousel-item-3d {
   position: absolute;
   width: 380px;
   height: 220px;
-  transition: 0.6s;
+  transition: all 0.6s ease;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 15px 30px rgba(0,0,0,0.6);
 }
 
-/* PREMIUM */
-.premium-transition-section {
-  display: flex;
-  padding: 80px;
-  background: linear-gradient(#000, #1a1a1a);
+.carousel-item-3d img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-.premium-left {
-  width: 50%;
+/* POSIÇÕES */
+.card-center {
+  z-index: 10;
+  transform: scale(1.08);
+  opacity: 1;
+}
+
+.card-left {
+  z-index: 5;
+  transform: translateX(-240px) scale(0.82);
+  opacity: 0.45;
+  filter: blur(2px) grayscale(40%);
+}
+
+.card-right {
+  z-index: 5;
+  transform: translateX(240px) scale(0.82);
+  opacity: 0.45;
+  filter: blur(2px) grayscale(40%);
+}
+
+.card-hidden {
+  opacity: 0;
+  transform: scale(0.6);
+  z-index: 0;
+}
+
+/* LEGENDA */
+.carousel-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 15px;
   color: white;
+  background: linear-gradient(transparent, rgba(0,0,0,0.9));
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
-.premium-image-container {
-  width: 50%;
+.carousel-caption h3 {
+  font-size: 1.1rem;
+  margin-bottom: 4px;
 }
 
-@media (max-width: 768px) {
-  .hero-content {
-    left: 20px;
+.carousel-caption p {
+  font-size: 0.8rem;
+  opacity: 0.85;
+}
+
+.card-center .carousel-caption {
+  opacity: 1;
+}
+
+/* BOTÕES */
+.carousel-btn {
+  background: none;
+  border: none;
+  color: #ff6600;
+  font-size: 2rem;
+  cursor: pointer;
+  z-index: 20;
+  padding: 0 20px;
+  transition: 0.3s;
+}
+
+.carousel-btn:hover {
+  color: white;
+  transform: scale(1.1);
+}
+  .carr{
+    color: #ff6600;
   }
+/* =========================
+   PREMIUM SECTION
+========================= */
 
+.premium-transition-section {
+  width: 100%;
+  min-height: 650px;
+  padding: 80px 60px 0 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  /* DEGRADÊ PRETO > LARANJA */
+  background: linear-gradient(
+  to bottom,
+  #0d0d0d 0%,
+  #0d0d0d 12%,
+  #3a2317 22%,
+  #7a4326 35%,
+  #c75e25 60%,
+  #b84101 100%
+);
+
+  overflow: hidden;
+  position: relative;
+  margin: 0;
+}
+
+/* LADO ESQUERDO */
+.premium-left {
+  width: 45%;
+  position: relative;
+  color: white;
+  z-index: 5;
+}
+
+/* TEXTO VERTICAL */
+.vertical-brand {
+  position: absolute;
+  left: -40px;
+  top: 50%;
+  transform: translateY(-50%) rotate(180deg);
+  writing-mode: vertical-rl;
+  font-size: 14px;
+  letter-spacing: 4px;
+  color: rgba(255,255,255,0.8);
+}
+
+/* BLOCO DE TEXTO */
+.premium-text {
+  margin-left: 30px;
+  position: relative;
+  z-index: 6;
+}
+
+.premium-text h3 {
+  font-size: 28px;
+  font-weight: 300;
+  margin-bottom: 10px;
+}
+
+.premium-text h2 {
+  font-size: 72px;
+  font-weight: 800;
+  line-height: 1;
+  margin-bottom: 20px;
+  position: relative;
+  left: 140px;
+  z-index: 10;
+  white-space: nowrap;
+}
+
+.premium-text p {
+  font-size: 15px;
+  line-height: 1.8;
+  margin-bottom: 25px;
+  max-width: 420px;
+}
+
+.premium-text button {
+  background: #3a2317;
+  color: white;
+  border: none;
+  padding: 14px 30px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s ease;
+}
+
+.premium-text button:hover {
+  background: #2a180f;
+}
+
+/* IMAGEM */
+.premium-image-container {
+  width: 49%;
+  height: 410px;
+  position: relative;
+  z-index: 2;
+  margin-top: 30px;
+}
+
+.premium-image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  clip-path: polygon(18% 0, 100% 0, 100% 100%, 0 100%, 0 20%);
+  border: 5px solid white;
+  box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+}
+
+/* ABA BRANCA */
+.premium-bottom-tab {
+  position: absolute;
+  bottom: 0;
+  right: 80px;
+  background: white;
+  padding: 12px 22px;
+  display: flex;
+  gap: 18px;
+  z-index: 6;
+}
+
+.premium-bottom-tab span {
+  font-size: 18px;
+  color: #333;
+}
+
+/* RESPONSIVO */
+@media (max-width: 900px) {
   .premium-transition-section {
     flex-direction: column;
+    padding: 60px 30px;
   }
+
+  .premium-left,
+  .premium-image-container {
+    width: 100%;
+  }
+
+  .premium-text h2 {
+    left: 0;
+    font-size: 48px;
+  }
+
+  .premium-image-container {
+    margin-top: 30px;
+    height: 300px;
+  }
+
+  .premium-bottom-tab {
+    right: 30px;
+  }
+}
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 38px;
+  height: 38px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  z-index: 5;
+  transition: 0.3s;
+}
+
+.arrow:hover {
+  background: rgba(0,0,0,0.9);
+}
+
+.arrow.left {
+  left: 10px;
+}
+
+.arrow.right {
+  right: 10px;
+}
+
+.image-box {
+  position: relative;
+}
+/* =========================
+   SETAS PREMIUM (MINIMAL + LARANJA)
+========================= */
+
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+
+  width: 34px;
+  height: 34px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+  border-radius: 50%;
+
+  background: rgba(10, 10, 10, 0.35);
+  backdrop-filter: blur(6px);
+
+  color: #ff6a00; /* LARANJA PREMIUM */
+  font-size: 16px;
+  font-weight: 300;
+
+  cursor: pointer;
+
+  opacity: 0; /* 🔥 invisível por padrão */
+  transition: all 0.35s ease;
+
+  z-index: 10;
+}
+
+/* APARECE QUANDO HOVER NO CARD */
+.card:hover .arrow {
+  opacity: 1;
+  transform: translateY(-50%) scale(1);
+}
+
+/* HOVER NA SETA (efeito premium) */
+.arrow:hover {
+  background: rgba(255, 106, 0, 0.15);
+  color: #ff7b1a;
+  transform: translateY(-50%) scale(1.15);
+  box-shadow: 0 0 18px rgba(255, 106, 0, 0.25);
+}
+
+/* POSICIONAMENTO */
+.arrow.left {
+  left: 12px;
+}
+
+.arrow.right {
+  right: 12px;
+}
+
+/* efeito de “entrada suave” quando aparece */
+.card:hover .arrow.left {
+  animation: fadeLeft 0.35s ease forwards;
+}
+
+.card:hover .arrow.right {
+  animation: fadeRight 0.35s ease forwards;
+}
+
+@keyframes fadeLeft {
+  from { transform: translate(-8px, -50%) scale(0.9); opacity: 0; }
+  to { transform: translate(0, -50%) scale(1); opacity: 1; }
+}
+
+@keyframes fadeRight {
+  from { transform: translate(8px, -50%) scale(0.9); opacity: 0; }
+  to { transform: translate(0, -50%) scale(1); opacity: 1; }
 }

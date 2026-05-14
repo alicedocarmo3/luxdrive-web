@@ -1,12 +1,14 @@
-export interface ICarros {
-  id: string
+export interface ICarro {
+  id: number
   modelo: string
   ano: number
   preco: number
   km: number
-  imagem: string
+  imagens:string[]
   blindado: boolean
   motor: string
   cor: string
-  potencia: number
+  potencia: string
+  cambio:string
+  sedeId: number
 }

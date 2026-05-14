@@ -1,7 +1,8 @@
-import { IEventos } from "../interfaces/IEvento";
-export const eventos: IEventos[] = [
+import { IEvento } from "../interfaces/IEvento";
+
+export const eventos: IEvento[] = [
   {
-    id: "1",
+    id: 1,
     nome: "Track Day Interlagos",
     limite: 500,
     local: "Autódromo de Interlagos",

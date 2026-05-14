@@ -1,0 +1,227 @@
+/* ========================= 
+   RESET BASE
+========================= */
+.models-page {
+  background: #fff;
+  color: #000;
+  font-family: 'Inter', sans-serif;
+}
+
+/* =========================
+   HERO (100% TELA)
+========================= */
+.hero {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, #1a3a5a 0%, #000 80%);
+  z-index: 1;
+}
+
+.hero-image-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+}
+
+.hero-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+/* HERO TEXT */
+.hero-text {
+  position: absolute;
+  bottom: 60px;
+  left: 50px;
+  z-index: 5;
+  color: #fff;
+}
+
+.hero-text p {
+  font-size: 14px;
+  letter-spacing: 4px;
+  color: #ccc;
+  margin-bottom: 5px;
+}
+
+.hero-text h1 {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(3rem, 8vw, 9rem);
+  letter-spacing: -3px;
+  line-height: 0.9;
+  text-transform: uppercase;
+}
+
+/* =========================
+   SHOWROOM
+========================= */
+.showroom {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 60px 20px;
+}
+
+.showroom h2 {
+  font-size: 40px;
+  font-weight: 300;
+  color: #555;
+  margin-bottom: 40px;
+}
+
+/* =========================
+   GRID
+========================= */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+
+/* =========================
+   CARD QUADRADO REAL (SEM BORDA ARREDONDADA)
+========================= */
+.card {
+  background: #fafafa;
+  border: 1px solid #f0f0f0;
+
+  border-radius: 0px; /* 🔥 REMOVIDO ARREDONDAMENTO */
+
+  display: flex;
+  flex-direction: column;
+
+  aspect-ratio: 1 / 1; /* 🔥 CARD QUADRADO PERFEITO */
+
+  overflow: hidden;
+  transition: 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 25px 60px rgba(0,0,0,0.12);
+}
+
+/* =========================
+   HEADER
+========================= */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #999;
+  padding: 14px 16px;
+}
+
+/* =========================
+   IMAGEM BOX
+========================= */
+.image-box {
+  flex: 1;
+  background: #e6e6e6;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+  position: relative;
+}
+
+/* =========================
+   IMAGEM CENTRALIZADA
+========================= */
+
+/* OPÇÃO 1 (RECOMENDADA - NÃO CORTA O CARRO) */
+.image-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+
+/* OPÇÃO 2 (DESCOMENTE SE QUISER PREENCHER TUDO)
+/*
+.image-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+*/
+
+/* =========================
+   BADGE
+========================= */
+.badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 10px;
+  font-weight: 700;
+  background: #000;
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 0px; /* 🔥 QUADRADO */
+}
+
+/* =========================
+   INFO
+========================= */
+.card-info {
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.card-info .marca {
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.card-info .ano {
+  color: #999;
+  font-size: 13px;
+}
+
+.price {
+  font-weight: 900;
+  font-size: 18px;
+  margin-top: auto;
+}
+
+/* =========================
+   EMPTY
+========================= */
+.empty {
+  text-align: center;
+  color: #aaa;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+/* =========================
+   RESPONSIVO
+========================= */
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

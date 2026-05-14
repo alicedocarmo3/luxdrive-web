@@ -1,5 +1,5 @@
 export interface IUsuarios {
-  id: string
+  id: number
   nome: string
   email: string
   senha: string
@@ -12,9 +12,9 @@ export interface ICreateUsuario{
 }
 
 export interface IRespostaCreateUsuario{
+  id:number
   nome:string
   email:string
   senha:string
-  id:string
   createdAt:string
 }

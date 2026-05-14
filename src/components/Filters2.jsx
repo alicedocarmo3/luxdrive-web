@@ -1,333 +1,339 @@
-// Filters2.jsx - Filtro lateral estilo showroom premium
-// Versão: 2.1.0 - Corrigido e melhorado
+import React, { useCallback, useState } from "react";
 
-import React, { useState, useMemo, useCallback } from 'react';
-import { 
-  Filter, 
-  ChevronRight, 
-  Shield, 
-  Zap, 
-  Gauge, 
-  Calendar, 
-  Tag,
-  X,
-  Search,
-  Check,
-  ChevronDown
-} from 'lucide-react';
-import { marcas, faixasPreco, anos } from "../../../../Backend/src/data/cars";
-import '../styles/Filters2.css';
-const Filters2 = ({ filtros, onFiltroChange, onLimparFiltros, totalCarros }) => {
-  const [secoesAbertas, setSecoesAbertas] = useState({
-    marca: true,
-    preco: true,
-    ano: true,
-    especiais: true
-  });
-  const [buscaMarca, setBuscaMarca] = useState('');
+import "../styles/Filters2.css";
+import { anosData } from "../data/cars";
+import { marcasData } from "../data/marcasData";
 
-  const toggleSecao = useCallback((secao) => {
-    setSecoesAbertas(prev => ({
-      ...prev,
-      [secao]: !prev[secao]
-    }));
-  }, []);
+// ---------------- ICONES ----------------
+const Icons = {
+  ChevronDown: () => (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <polyline points="6 9 12 15 18 9" />
+    </svg>
+  ),
 
-  // Filtrar marcas baseado na busca
-  const marcasFiltradas = useMemo(() => {
-    if (!buscaMarca.trim()) return marcas;
-    return marcas.filter(marca => 
-      marca.toLowerCase().includes(buscaMarca.toLowerCase())
-    );
-  }, [buscaMarca]);
+  Sliders: () => (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <line x1="4" y1="21" x2="4" y2="14" />
+      <line x1="4" y1="10" x2="4" y2="3" />
+      <line x1="12" y1="21" x2="12" y2="12" />
+      <line x1="12" y1="8" x2="12" y2="3" />
+      <line x1="20" y1="21" x2="20" y2="16" />
+      <line x1="20" y1="12" x2="20" y2="3" />
+      <line x1="1" y1="14" x2="7" y2="14" />
+      <line x1="9" y1="8" x2="15" y2="8" />
+      <line x1="17" y1="16" x2="23" y2="16" />
+    </svg>
+  ),
 
-  // Contagem de filtros ativos
-  const activeFiltersCount = useMemo(() => {
-    return [
-      filtros.marca !== "Todas",
-      filtros.preco !== "Todos",
-      filtros.ano !== "Todos",
-      filtros.blindado === true
-    ].filter(Boolean).length;
-  }, [filtros]);
+  X: () => (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <line x1="18" y1="6" x2="6" y2="18" />
+      <line x1="6" y1="6" x2="18" y2="18" />
+    </svg>
+  ),
 
-  // Lista de filtros ativos para exibição
-  const activeFiltersList = useMemo(() => {
-    const list = [];
-    if (filtros.marca !== "Todas") list.push({ type: 'marca', value: filtros.marca, label: 'Marca' });
-    if (filtros.preco !== "Todos") list.push({ type: 'preco', value: filtros.preco, label: 'Preço' });
-    if (filtros.ano !== "Todos") list.push({ type: 'ano', value: filtros.ano, label: 'Ano' });
-    if (filtros.blindado) list.push({ type: 'blindado', value: 'Blindado', label: 'Blindado' });
-    return list;
-  }, [filtros]);
+  Shield: () => (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+    </svg>
+  ),
+};
 
-  const handleRemoveFilter = useCallback((type) => {
-    switch(type) {
-      case 'marca':
-        onFiltroChange('marca', 'Todas');
-        break;
-      case 'preco':
-        onFiltroChange('preco', 'Todos');
-        break;
-      case 'ano':
-        onFiltroChange('ano', 'Todos');
-        break;
-      case 'blindado':
-        onFiltroChange('blindado', false);
-        break;
-      default:
-        break;
+// ---------------- COMPONENTE ----------------
+const Filters2 = ({
+  filtros,
+  onFiltroChange,
+  onLimparFiltros,
+}) => {
+  const [isExpanded, setIsExpanded] = useState(true);
+
+  const activeCount = useCallback(() => {
+    let count = 0;
+
+    if (filtros.marca && filtros.marca !== "Todas")
+      count++;
+
+    if (filtros.ano && filtros.ano !== "Todos")
+      count++;
+
+    if (filtros.preco && filtros.preco !== "Todos")
+      count++;
+
+    if (filtros.order) count++;
+
+    if (
+      filtros.blindado !== undefined &&
+      filtros.blindado !== null &&
+      filtros.blindado !== ""
+    ) {
+      count++;
     }
-  }, [onFiltroChange]);
 
-  // Resetar busca ao fechar seção
-  const handleToggleSecao = useCallback((secao) => {
-    if (secao === 'marca' && secoesAbertas.marca) {
-      setBuscaMarca('');
-    }
-    toggleSecao(secao);
-  }, [secoesAbertas.marca, toggleSecao]);
+    return count;
+  }, [filtros])();
 
-  // Obter a faixa de preço selecionada para exibição
-  const getPrecoLabel = useCallback((label) => {
-    const faixa = faixasPreco.find(f => f.label === label);
-    return faixa?.label || label;
-  }, []);
+  const hasActiveFilters = activeCount > 0;
 
   return (
-    <div className="filter-sidebar">
-      <div className="filter-sidebar__header">
-        <div className="filter-sidebar__title">
-          <Filter className="filter-sidebar__title-icon" />
-          <span>Filtros Avançados</span>
-        </div>
-        {activeFiltersCount > 0 && (
-          <button 
-            className="filter-sidebar__clear"
-            onClick={onLimparFiltros}
-            aria-label={`Limpar ${activeFiltersCount} filtro${activeFiltersCount !== 1 ? 's' : ''} ativo${activeFiltersCount !== 1 ? 's' : ''}`}
-          >
-            <X size={16} />
-            <span>Limpar tudo</span>
-          </button>
-        )}
-      </div>
+    <section className="filters-premium">
+      {/* HEADER */}
+      <div
+        className="filters-header"
+        onClick={() =>
+          setIsExpanded(!isExpanded)
+        }
+      >
+        <div className="filters-header__left">
+          <span className="filters-header__icon">
+            <Icons.Sliders />
+          </span>
 
-      <div className="filter-sidebar__count">
-        <span className="filter-sidebar__count-number">{totalCarros}</span>
-        <span className="filter-sidebar__count-text">
-          veículo{totalCarros !== 1 ? 's' : ''} encontrado{totalCarros !== 1 ? 's' : ''}
+          <h3 className="filters-header__title">
+            Refinar Busca
+          </h3>
+
+          {hasActiveFilters && (
+            <span className="filters-badge">
+              {activeCount}
+            </span>
+          )}
+        </div>
+
+        <span
+          className={`filters-header__chevron ${
+            isExpanded ? "rotated" : ""
+          }`}
+        >
+          <Icons.ChevronDown />
         </span>
       </div>
 
-      {/* Filtros ativos - chips */}
-      {activeFiltersCount > 0 && (
-        <div className="filter-sidebar__active-filters">
-          <div className="filter-sidebar__active-filters-title">
-            Filtros aplicados
-          </div>
-          <div className="filter-sidebar__active-filters-list">
-            {activeFiltersList.map((filter, index) => (
-              <div key={index} className="filter-sidebar__active-chip">
-                <span className="filter-sidebar__active-chip-label">{filter.label}:</span>
-                <span className="filter-sidebar__active-chip-value">{filter.value}</span>
-                <button 
-                  onClick={() => handleRemoveFilter(filter.type)}
-                  aria-label={`Remover filtro de ${filter.label}`}
-                >
-                  <X size={12} />
-                </button>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
+      {/* BODY */}
+      <div
+        className={`filters-body ${
+          isExpanded ? "expanded" : ""
+        }`}
+      >
+        <div className="filters-grid">
 
-      {/* Seção Marca */}
-      <div className="filter-sidebar__section">
-        <button 
-          className="filter-sidebar__section-header"
-          onClick={() => handleToggleSecao('marca')}
-          aria-expanded={secoesAbertas.marca}
-        >
-          <div className="filter-sidebar__section-title">
-            <Tag className="filter-sidebar__section-icon" />
-            <span>Marca</span>
-            {filtros.marca !== "Todas" && (
-              <span className="filter-sidebar__section-badge">{filtros.marca}</span>
-            )}
-          </div>
-          <ChevronRight className={`filter-sidebar__section-arrow ${secoesAbertas.marca ? 'rotated' : ''}`} />
-        </button>
-        
-        {secoesAbertas.marca && (
-          <div className="filter-sidebar__section-content">
-            <div className="filter-sidebar__search">
-              <Search className="filter-sidebar__search-icon" />
-              <input 
-                type="text"
-                placeholder="Buscar marca..."
-                value={buscaMarca}
-                onChange={(e) => setBuscaMarca(e.target.value)}
-                aria-label="Buscar marcas"
-              />
-            </div>
-            <div className="filter-sidebar__grid filter-sidebar__grid--scrollable">
-              {marcasFiltradas.map(marca => (
-                <button
-                  key={marca}
-                  className={`filter-sidebar__chip ${filtros.marca === marca ? 'active' : ''}`}
-                  onClick={() => onFiltroChange('marca', marca)}
-                  aria-pressed={filtros.marca === marca}
-                >
-                  {marca}
-                  {filtros.marca === marca && <Check size={12} />}
-                </button>
-              ))}
-              {marcasFiltradas.length === 0 && (
-                <div className="filter-sidebar__no-results">
-                  Nenhuma marca encontrada
-                </div>
-              )}
-            </div>
-          </div>
-        )}
-      </div>
+          {/* MARCAS */}
+          <div className="filter-group">
+            <label className="filter-label">
+              Marca
+            </label>
 
-      {/* Seção Preço */}
-      <div className="filter-sidebar__section">
-        <button 
-          className="filter-sidebar__section-header"
-          onClick={() => toggleSecao('preco')}
-          aria-expanded={secoesAbertas.preco}
-        >
-          <div className="filter-sidebar__section-title">
-            <Gauge className="filter-sidebar__section-icon" />
-            <span>Faixa de Preço</span>
-            {filtros.preco !== "Todos" && (
-              <span className="filter-sidebar__section-badge">{getPrecoLabel(filtros.preco)}</span>
-            )}
-          </div>
-          <ChevronRight className={`filter-sidebar__section-arrow ${secoesAbertas.preco ? 'rotated' : ''}`} />
-        </button>
-        
-        {secoesAbertas.preco && (
-          <div className="filter-sidebar__section-content">
-            <div className="filter-sidebar__radio-group">
-              <label className="filter-sidebar__radio">
-                <input
-                  type="radio"
-                  name="preco"
-                  checked={filtros.preco === "Todos"}
-                  onChange={() => onFiltroChange('preco', 'Todos')}
-                />
-                <span className="filter-sidebar__radio-custom"></span>
-                <span className="filter-sidebar__radio-label">Todos os preços</span>
-              </label>
-              {faixasPreco.map(faixa => (
-                <label key={faixa.label} className="filter-sidebar__radio">
-                  <input
-                    type="radio"
-                    name="preco"
-                    checked={filtros.preco === faixa.label}
-                    onChange={() => onFiltroChange('preco', faixa.label)}
-                  />
-                  <span className="filter-sidebar__radio-custom"></span>
-                  <span className="filter-sidebar__radio-label">{faixa.label}</span>
-                </label>
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* Seção Ano */}
-      <div className="filter-sidebar__section">
-        <button 
-          className="filter-sidebar__section-header"
-          onClick={() => toggleSecao('ano')}
-          aria-expanded={secoesAbertas.ano}
-        >
-          <div className="filter-sidebar__section-title">
-            <Calendar className="filter-sidebar__section-icon" />
-            <span>Ano</span>
-            {filtros.ano !== "Todos" && (
-              <span className="filter-sidebar__section-badge">{filtros.ano}</span>
-            )}
-          </div>
-          <ChevronRight className={`filter-sidebar__section-arrow ${secoesAbertas.ano ? 'rotated' : ''}`} />
-        </button>
-        
-        {secoesAbertas.ano && (
-          <div className="filter-sidebar__section-content">
-            <div className="filter-sidebar__grid filter-sidebar__grid--3cols">
-              <button
-                className={`filter-sidebar__chip ${filtros.ano === "Todos" ? 'active' : ''}`}
-                onClick={() => onFiltroChange('ano', 'Todos')}
-              >
-                Todos
-                {filtros.ano === "Todos" && <Check size={12} />}
-              </button>
-              {anos.map(ano => (
-                <button
-                  key={ano}
-                  className={`filter-sidebar__chip ${filtros.ano === ano ? 'active' : ''}`}
-                  onClick={() => onFiltroChange('ano', ano)}
-                  aria-pressed={filtros.ano === ano}
-                >
-                  {ano}
-                  {filtros.ano === ano && <Check size={12} />}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* Seção Especiais */}
-      <div className="filter-sidebar__section">
-        <button 
-          className="filter-sidebar__section-header"
-          onClick={() => toggleSecao('especiais')}
-          aria-expanded={secoesAbertas.especiais}
-        >
-          <div className="filter-sidebar__section-title">
-            <Zap className="filter-sidebar__section-icon" />
-            <span>Características Especiais</span>
-          </div>
-          <ChevronRight className={`filter-sidebar__section-arrow ${secoesAbertas.especiais ? 'rotated' : ''}`} />
-        </button>
-        
-        {secoesAbertas.especiais && (
-          <div className="filter-sidebar__section-content">
-            <button 
-              className={`filter-sidebar__special ${filtros.blindado ? 'active' : ''}`}
-              onClick={() => onFiltroChange('blindado', !filtros.blindado)}
-              aria-pressed={filtros.blindado}
+            <select
+              className="professional-select"
+              value={filtros.marca || "Todas"}
+              onChange={(e) =>
+                onFiltroChange(
+                  "marca",
+                  e.target.value
+                )
+              }
             >
-              <div className="filter-sidebar__special-icon">
-                <Shield size={24} />
-              </div>
-              <div className="filter-sidebar__special-info">
-                <span className="filter-sidebar__special-title">Blindados</span>
-                <span className="filter-sidebar__special-desc">Apenas veículos com blindagem</span>
-              </div>
-              <div className="filter-sidebar__special-check">
-                {filtros.blindado && <Check size={16} />}
-              </div>
+              <option value="Todas">
+                Todas as Marcas
+              </option>
+
+              {marcasData.map((marca) => (
+                <option
+                  key={marca.id}
+                  value={marca.nome}
+                >
+                  {marca.nome.toUpperCase()}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* ANOS */}
+          <div className="filter-group">
+            <label className="filter-label">
+              Ano Mínimo
+            </label>
+
+            <select
+              className="professional-select"
+              value={filtros.ano || "Todos"}
+              onChange={(e) =>
+                onFiltroChange(
+                  "ano",
+                  e.target.value
+                )
+              }
+            >
+              <option value="Todos">
+                Todos
+              </option>
+
+              {anosData
+                .filter(
+                  (a) => a !== "Todos"
+                )
+                .sort(
+                  (a, b) =>
+                    Number(b) - Number(a)
+                )
+                .map((ano) => (
+                  <option
+                    key={ano}
+                    value={ano}
+                  >
+                    {ano}
+                  </option>
+                ))}
+            </select>
+          </div>
+
+          {/* PREÇO */}
+          <div className="filter-group filter-group--price">
+            <label className="filter-label">
+              Faixa de Preço
+            </label>
+
+            <select
+              className="professional-select"
+              value={filtros.preco || "Todos"}
+              onChange={(e) =>
+                onFiltroChange(
+                  "preco",
+                  e.target.value
+                )
+              }
+            >
+              <option value="Todos">
+                Todas as Faixas
+              </option>
+
+              <option value="Até R$ 500 mil">
+                Até R$ 500 mil
+              </option>
+
+              <option value="R$ 500 mil - R$ 1 milhão">
+                R$ 500 mil - R$ 1 milhão
+              </option>
+
+              <option value="R$ 1 milhão - R$ 2 milhões">
+                R$ 1 milhão - R$ 2 milhões
+              </option>
+
+              <option value="Acima de R$ 2 milhões">
+                Acima de R$ 2 milhões
+              </option>
+            </select>
+          </div>
+
+          {/* BLINDAGEM */}
+          <div className="filter-group">
+            <label className="filter-label">
+              <Icons.Shield /> Blindagem
+            </label>
+
+            <div className="blindado-toggle-group">
+              <button
+                type="button"
+                className={`toggle-btn ${
+                  filtros.blindado === true
+                    ? "active"
+                    : ""
+                }`}
+                onClick={() =>
+                  onFiltroChange(
+                    "blindado",
+                    filtros.blindado === true
+                      ? ""
+                      : true
+                  )
+                }
+              >
+                Sim
+              </button>
+
+              <button
+                type="button"
+                className={`toggle-btn ${
+                  filtros.blindado === false
+                    ? "active"
+                    : ""
+                }`}
+                onClick={() =>
+                  onFiltroChange(
+                    "blindado",
+                    filtros.blindado === false
+                      ? ""
+                      : false
+                  )
+                }
+              >
+                Não
+              </button>
+            </div>
+          </div>
+
+          {/* LIMPAR */}
+          <div className="filter-group filter-group--action">
+            <label
+              className="filter-label"
+              style={{ opacity: 0 }}
+            >
+              Limpar
+            </label>
+
+            <button
+              className={`btn-clear ${
+                hasActiveFilters
+                  ? "btn-clear--active"
+                  : ""
+              }`}
+              onClick={onLimparFiltros}
+              disabled={!hasActiveFilters}
+            >
+              <Icons.X />
+              Limpar Filtros
             </button>
           </div>
-        )}
-      </div>
 
-      {/* Botão de reset rápido (mobile) */}
-      {activeFiltersCount > 0 && (
-        <button className="filter-sidebar__reset-mobile" onClick={onLimparFiltros}>
-          <X size={16} />
-          <span>Limpar todos os filtros ({activeFiltersCount})</span>
-        </button>
-      )}
-    </div>
+        </div>
+      </div>
+    </section>
   );
 };
 

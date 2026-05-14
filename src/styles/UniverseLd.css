@@ -1,0 +1,220 @@
+/* ===============================
+   UNIVERSE LD EVENTS - PREMIUM
+   Branco + Laranja Luxo
+================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap');
+
+:root {
+  --white: #ffffff;
+  --orange: #ff6a00;
+  --orange-dark: #e65c00;
+  --orange-soft: #fff3eb;
+  --gray: #777;
+  --dark: #111;
+}
+
+/* Base */
+body {
+  font-family: "Inter", sans-serif;
+  background: linear-gradient(to bottom, #ffffff, #fff7f2);
+}
+
+/* Container */
+.events-container {
+  min-height: 100vh;
+  padding: 80px 8%;
+}
+
+/* ================= HEADER ================= */
+
+.events-header {
+  text-align: center;
+  margin-bottom: 80px;
+  position: relative;
+}
+
+.events-header h1 {
+  font-size: 56px;
+  font-weight: 900;
+  background: linear-gradient(90deg, var(--orange), #ff9a3c);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 3px;
+}
+
+.events-header p {
+  font-size: 18px;
+  color: var(--gray);
+  margin-top: 15px;
+}
+
+/* linha decorativa */
+.events-header::after {
+  content: "";
+  width: 120px;
+  height: 4px;
+  background: linear-gradient(90deg, var(--orange), transparent);
+  display: block;
+  margin: 20px auto 0;
+  border-radius: 10px;
+}
+
+/* ================= GRID ================= */
+
+.events-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 40px;
+}
+
+/* ================= CARD ================= */
+
+.event-card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+  transition: all 0.4s ease;
+  position: relative;
+}
+
+/* borda glow */
+.event-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 22px;
+  padding: 1px;
+  background: linear-gradient(120deg, transparent, var(--orange), transparent);
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  opacity: 0;
+  transition: 0.4s;
+}
+
+.event-card:hover::before {
+  opacity: 1;
+}
+
+.event-card:hover {
+  transform: translateY(-12px) scale(1.01);
+  box-shadow: 0 25px 60px rgba(255,106,0,0.25);
+}
+
+/* ================= IMAGEM ================= */
+
+.event-image {
+  height: 230px;
+  overflow: hidden;
+  position: relative;
+}
+
+.event-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: 0.6s ease;
+}
+
+.event-card:hover img {
+  transform: scale(1.12);
+}
+
+/* overlay leve */
+.event-image::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.4), transparent);
+}
+
+/* ================= CONTEÚDO ================= */
+
+.event-content {
+  padding: 28px;
+}
+
+.event-content h2 {
+  font-size: 22px;
+  margin-bottom: 8px;
+  color: var(--dark);
+}
+
+/* data com badge */
+.event-date {
+  display: inline-block;
+  background: var(--orange-soft);
+  color: var(--orange);
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.event-location {
+  font-size: 14px;
+  color: var(--gray);
+  margin-bottom: 12px;
+}
+
+.event-desc {
+  font-size: 14px;
+  color: #444;
+  margin-bottom: 22px;
+  line-height: 1.5;
+}
+
+/* ================= BOTÃO ================= */
+
+.event-button {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(90deg, var(--orange), #ff8a2d);
+  color: white;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+/* efeito brilho */
+.event-button::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: -100%;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.5), transparent);
+  transition: 0.5s;
+}
+
+.event-button:hover::after {
+  left: 100%;
+}
+
+.event-button:hover {
+  transform: scale(1.03);
+  box-shadow: 0 10px 25px rgba(255,106,0,0.4);
+}
+
+/* ================= RESPONSIVO ================= */
+
+@media (max-width: 768px) {
+  .events-header h1 {
+    font-size: 40px;
+  }
+
+  .events-container {
+    padding: 60px 5%;
+  }
+}
