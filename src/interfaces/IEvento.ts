@@ -6,4 +6,5 @@ export interface IEvento {
   data: string;
   descricao: string;
   ingressosVendidos: number;
+  imagem?: string; // Adicionado para suportar as fotos dos carros
 }

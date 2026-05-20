@@ -1,220 +1,197 @@
-/* ===============================
-   UNIVERSE LD EVENTS - PREMIUM
-   Branco + Laranja Luxo
-================================ */
-
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap');
 
 :root {
   --white: #ffffff;
-  --orange: #ff6a00;
-  --orange-dark: #e65c00;
-  --orange-soft: #fff3eb;
-  --gray: #777;
-  --dark: #111;
+  --gray-light: #cccccc;
+  --gray-dark: #1a1a1a;
+  --accent: #d4af37; /* Tom dourado opcional para detalhes */
+  --bg-dark: #0a0a0a;
 }
 
-/* Base */
 body {
   font-family: "Inter", sans-serif;
-  background: linear-gradient(to bottom, #ffffff, #fff7f2);
+  background-color: var(--bg-dark);
+  margin: 0;
+  color: var(--white);
 }
 
-/* Container */
-.events-container {
-  min-height: 100vh;
-  padding: 80px 8%;
-}
+/* ================= HERO BANNER ================= */
 
-/* ================= HEADER ================= */
-
-.events-header {
-  text-align: center;
-  margin-bottom: 80px;
+.events-hero {
   position: relative;
+  height: 90vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  text-align: left;
+  background: url('../assets/cars/classicos.jpeg') no-repeat center center;
+  background-size: cover;
+  overflow: hidden;
 }
 
-.events-header h1 {
-  font-size: 56px;
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, transparent 50%, rgba(0,0,0,0.9) 100%);
+  z-index: 1;
+}
+
+.separator {
+  color: rgba(255, 255, 255, 0.2);
+  font-size: 12px;
+}
+
+/* Conteúdo do Texto */
+.hero-content {
+  position: relative;
+  z-index: 5;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0 8%;
+}
+
+.hero-title-group {
+  display: flex;
+  flex-direction: column; 
+  align-items: flex-start; 
+  gap: 0; 
+}
+
+.hero-top-label {
+  font-size: clamp(12px, 1.5vw, 16px);
+  letter-spacing: 4px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.7); 
+  margin-bottom: -5px; 
+  text-transform: uppercase;
+}
+
+.hero-main-title {
+  font-size: clamp(45px, 10vw, 110px);
   font-weight: 900;
-  background: linear-gradient(90deg, var(--orange), #ff9a3c);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  letter-spacing: 3px;
+  margin: 0;
+  line-height: 0.9;
+  letter-spacing: -2px;
+  text-transform: uppercase;
+  color: var(--white);
 }
 
-.events-header p {
-  font-size: 18px;
-  color: var(--gray);
-  margin-top: 15px;
-}
+/* ================= GRID DE CARDS ================= */
 
-/* linha decorativa */
-.events-header::after {
-  content: "";
-  width: 120px;
-  height: 4px;
-  background: linear-gradient(90deg, var(--orange), transparent);
-  display: block;
-  margin: 20px auto 0;
-  border-radius: 10px;
+.events-container {
+  padding-bottom: 100px;
 }
-
-/* ================= GRID ================= */
 
 .events-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-  gap: 40px;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 30px;
+  padding: 80px 8%;
+  background-color: var(--bg-dark);
+  
+  /* ✨ CONSERTADO: Força todas as células da mesma linha do grid a terem rigorosamente a mesma altura */
+  grid-auto-rows: 1fr; 
 }
-
-/* ================= CARD ================= */
 
 .event-card {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(10px);
-  border-radius: 22px;
+  background: #111;
+  border: 1px solid #222;
+  border-radius: 4px;
   overflow: hidden;
-  box-shadow: 0 15px 40px rgba(0,0,0,0.08);
-  transition: all 0.4s ease;
-  position: relative;
-}
-
-/* borda glow */
-.event-card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 22px;
-  padding: 1px;
-  background: linear-gradient(120deg, transparent, var(--orange), transparent);
-  -webkit-mask: 
-    linear-gradient(#fff 0 0) content-box, 
-    linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  opacity: 0;
-  transition: 0.4s;
-}
-
-.event-card:hover::before {
-  opacity: 1;
+  transition: 0.4s ease;
+  
+  /* Força o card a preencher 100% da altura da linha do Grid */
+  display: flex;
+  flex-direction: column;
+  height: 100%; 
+  box-sizing: border-box;
 }
 
 .event-card:hover {
-  transform: translateY(-12px) scale(1.01);
-  box-shadow: 0 25px 60px rgba(255,106,0,0.25);
+  border-color: #444;
+  transform: translateY(-5px);
 }
 
-/* ================= IMAGEM ================= */
-
 .event-image {
-  height: 230px;
-  overflow: hidden;
   position: relative;
+  height: 250px;
+  flex-shrink: 0; /* Impede que a imagem mude de tamanho nos cards maiores */
 }
 
 .event-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: 0.6s ease;
 }
 
-.event-card:hover img {
-  transform: scale(1.12);
-}
-
-/* overlay leve */
-.event-image::after {
-  content: "";
+.image-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(0,0,0,0.4), transparent);
+  background: linear-gradient(to top, #111, transparent);
 }
 
-/* ================= CONTEÚDO ================= */
-
 .event-content {
-  padding: 28px;
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  
+  /* ✨ CONSERTADO: Faz com que o container interno estique de forma igual */
+  flex: 1 0 auto; 
+}
+
+.event-date {
+  font-size: 12px;
+  color: var(--accent);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 700;
 }
 
 .event-content h2 {
-  font-size: 22px;
-  margin-bottom: 8px;
-  color: var(--dark);
-}
-
-/* data com badge */
-.event-date {
-  display: inline-block;
-  background: var(--orange-soft);
-  color: var(--orange);
-  padding: 6px 12px;
-  border-radius: 999px;
-  font-size: 13px;
-  font-weight: 600;
-  margin-bottom: 10px;
+  font-size: 24px;
+  margin: 10px 0;
 }
 
 .event-location {
   font-size: 14px;
-  color: var(--gray);
-  margin-bottom: 12px;
+  color: #888;
+  margin-bottom: 15px;
 }
 
 .event-desc {
   font-size: 14px;
-  color: #444;
-  margin-bottom: 22px;
-  line-height: 1.5;
+  line-height: 1.6;
+  color: #aaa;
+  margin-bottom: 25px;
 }
-
-/* ================= BOTÃO ================= */
 
 .event-button {
+  background: transparent;
+  border: 1px solid #444;
+  color: var(--white);
+  padding: 12px 25px;
   width: 100%;
-  padding: 14px;
-  border: none;
-  border-radius: 10px;
-  background: linear-gradient(90deg, var(--orange), #ff8a2d);
-  color: white;
-  font-weight: 600;
-  letter-spacing: 0.5px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-/* efeito brilho */
-.event-button::after {
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: -100%;
-  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.5), transparent);
-  transition: 0.5s;
-}
-
-.event-button:hover::after {
-  left: 100%;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: 0.3s;
+  
+  /* Empurra o botão exatamente para o rodapé final do card */
+  margin-top: auto; 
 }
 
 .event-button:hover {
-  transform: scale(1.03);
-  box-shadow: 0 10px 25px rgba(255,106,0,0.4);
+  background: var(--white);
+  color: var(--bg-dark);
 }
 
-/* ================= RESPONSIVO ================= */
-
+/* Responsividade */
 @media (max-width: 768px) {
-  .events-header h1 {
-    font-size: 40px;
-  }
-
-  .events-container {
-    padding: 60px 5%;
-  }
+  .hero-nav { display: none; }
+  .hero-footer-controls { right: auto; width: 100%; justify-content: center; }
+  .events-grid { padding: 40px 5%; }
+  .hero-content { padding: 0 5%; }
 }

@@ -84,9 +84,9 @@ function Navbar() {
         </button>
           
           <nav className="menu-nav">
-            <Link to="/" onClick={() => setMenuOpen(false)}>Home</Link>
+            <Link to="/" onClick={() => setMenuOpen(false)}>Início</Link>
             <Link to="/models" onClick={() => setMenuOpen(false)}>Modelos</Link>
-            <Link to="/universe" onClick={() => setMenuOpen(false)}>Universe LD</Link>
+            <Link to="/universe" onClick={() => setMenuOpen(false)}>Universo LD</Link>
             <Link to="/about" onClick={() => setMenuOpen(false)}>Sobre</Link>
             <Link to="/register" onClick={() => setMenuOpen(false)}>Contato</Link>
           </nav>
