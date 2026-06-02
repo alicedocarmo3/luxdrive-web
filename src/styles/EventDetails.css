@@ -964,201 +964,998 @@
 /* =========================================================================
    8. ELEMENTOS DE CHECKOUT (MODAL COMPARTILHADO E ADAPTAÇÕES)
    ========================================================================= */
+
+/* Fundo do Modal com Blur de Alta Definição */
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.85);
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  padding: 20px;
 }
 
-.porsche-modal {
-  background: #000000;       /* Invertido: Branco -> Preto */
-  color: #ffffff;            /* Invertido: Preto -> Branco */
-  border: 1px solid #ffffff; /* Invertido: Borda Preta -> Branca */
+/* Estilo Base Compartilhado para Todos os Modais (Evita repetição de código) */
+.porsche-modal, .lambo-modal, .ferrari-modal, .pagani-modal {
   padding: 40px;
   width: 100%;
-  max-width: 420px;
+  max-width: 440px;
+  border-radius: 8px;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.5);
+  animation: modalFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Identidades Visuais Customizadas */
+.porsche-modal {
+  background: #000000;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .lambo-modal {
-  background: #111;
-  border: 1px solid #333;
-  color: white;
-  padding: 40px;
-  width: 100%;
-  max-width: 420px;
+  background: #111111;
+  color: #ffffff;
+  border: 1px solid rgba(197, 255, 0, 0.25);
 }
 
 .ferrari-modal {
-  background: #141414;
-  border: 1px solid #ff2828;
-  color: white;
-  padding: 40px;
-  width: 100%;
-  max-width: 420px;
+  background: #0d0d0d;
+  color: #ffffff;
+  border: 1px solid rgba(255, 40, 40, 0.3);
 }
 
 .pagani-modal {
-  background: #10121a;
-  border: 1px solid #9d8353;
-  color: white;
-  padding: 40px;
-  width: 100%;
-  max-width: 420px;
+  background: #0b0d14;
+  color: #ffffff;
+  border: 1px solid rgba(157, 131, 83, 0.3);
 }
 
+/* Abas de Pagamento Modernizadas */
 .payment-tabs {
   display: flex;
-  gap: 10px;
-  margin: 20px 0;
+  gap: 8px;
+  margin: 24px 0;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 4px;
+  border-radius: 6px;
 }
 
 .payment-tabs button {
   flex: 1;
-  padding: 10px;
+  padding: 12px 8px;
   background: transparent;
-  border: 1px solid #ddd;
+  border: none;
+  border-radius: 4px;
   cursor: pointer;
-  color: inherit;
+  color: #888888;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.2s ease;
 }
 
-/* Abas Ativas Dinâmicas */
-.active-porsche {
-  background: #ffffff !important;   /* Invertido: Preto -> Branco */
-  color: #000000 !important;        /* Invertido: Branco -> Preto */
-  font-weight: bold;
-  border-color: #ffffff !important; /* Invertido: Borda Preta -> Branca */
+.payment-tabs button:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.03);
 }
 
-.active-lambo {
+/* Estados Ativos Dinâmicos (Abas) */
+.payment-tabs button.active-porsche {
+  background: #ffffff !important;
+  color: #000000 !important;
+}
+
+.payment-tabs button.active-lambo {
   background: #c5ff00 !important;
-  color: #000 !important;
-  font-weight: 900;
+  color: #000000 !important;
 }
 
-.active-ferrari {
+.payment-tabs button.active-ferrari {
   background: #ff2828 !important;
-  color: #fff !important;
-  font-weight: bold;
-  border-color: #ff2828 !important;
+  color: #ffffff !important;
 }
 
-.active-pagani {
+.payment-tabs button.active-pagani {
   background: #9d8353 !important;
-  color: #10121a !important;
-  font-weight: bold;
-  border-color: #9d8353 !important;
+  color: #0b0d14 !important;
 }
 
+/* Inputs de Checkout Premium */
 .payment-box input {
   width: 100%;
-  padding: 12px;
-  margin-bottom: 12px;
+  padding: 14px 16px;
+  margin-bottom: 14px;
   box-sizing: border-box;
-  background: rgba(120, 120, 120, 0.1);
-  border: 1px solid rgba(120, 120, 120, 0.3);
-  color: inherit;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 6px;
+  color: #ffffff;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
 }
 
-/* Botões de Confirmação */
-.confirm-button-porsche {
+.payment-box input::placeholder {
+  color: #555555;
+}
+
+/* Efeitos de foco específicos por marca para os Inputs */
+.porsche-modal .payment-box input:focus { outline: none; border-color: #ffffff; background: rgba(255,255,255,0.08); }
+.lambo-modal .payment-box input:focus { outline: none; border-color: #c5ff00; background: rgba(197,255,0,0.04); }
+.ferrari-modal .payment-box input:focus { outline: none; border-color: #ff2828; background: rgba(255,40,40,0.04); }
+.pagani-modal .payment-box input:focus { outline: none; border-color: #9d8353; background: rgba(157,131,83,0.04); }
+
+/* Botões de Confirmação Unificados com Transição */
+.confirm-button-porsche, .confirm-button-lambo, .confirm-button-ferrari, .confirm-button-pagani {
   width: 100%;
-  background: #ffffff;       /* Invertido: Preto -> Branco */
-  color: #000000;            /* Invertido: Branco -> Preto */
-  padding: 15px;
-  border: 1px solid #ffffff; /* Invertido: Borda Preta -> Branca */
-  font-weight: bold;
-  cursor: pointer;
-  margin-top: 15px;
+  padding: 16px;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  letter-spacing: 1px;
   text-transform: uppercase;
-  transition: 0.3s;
-}
-
-.confirm-button-porsche:hover {
-  background: #000000; /* Invertido: Branco -> Preto */
-  color: #ffffff;      /* Invertido: Preto -> Branco */
-}
-
-.confirm-button-lambo {
-  width: 100%;
-  background: #c5ff00;
-  color: black;
-  padding: 15px;
-  border: none;
-  font-weight: 900;
   cursor: pointer;
-  margin-top: 15px;
+  margin-top: 18px;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-.confirm-button-ferrari {
-  width: 100%;
-  background: #ff2828;
-  color: white;
-  padding: 15px;
+/* Porsche Button */
+.confirm-button-porsche { background: #ffffff; color: #000000; border: 1px solid #ffffff; font-weight: 700; }
+.confirm-button-porsche:hover { background: transparent; color: #ffffff; }
+
+/* Lamborghini Button */
+.confirm-button-lambo { background: #c5ff00; color: #000000; border: none; font-weight: 900; }
+.confirm-button-lambo:hover { background: #d6ff33; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(197, 255, 0, 0.3); }
+
+/* Ferrari Button */
+.confirm-button-ferrari { background: #ff2828; color: #ffffff; border: none; font-weight: 700; }
+.confirm-button-ferrari:hover { background: #e01b1b; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(255, 40, 40, 0.3); }
+
+/* Pagani Button */
+.confirm-button-pagani { background: #9d8353; color: #0b0d14; border: none; font-weight: 700; }
+.confirm-button-pagani:hover { background: #b09765; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(157, 131, 83, 0.3); }
+
+/* Botões de Copiar PIX Refinados */
+.copy-button-porsche, .copy-button-lambo, .copy-button-ferrari, .copy-button-pagani {
   border: none;
-  font-weight: bold;
+  padding: 12px 24px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  border-radius: 4px;
+  text-transform: uppercase;
   cursor: pointer;
-  margin-top: 15px;
+  transition: all 0.2s ease;
 }
+.copy-button-porsche { background: #ffffff; color: #000000; }
+.copy-button-porsche:hover { background: #dddddd; }
 
-.confirm-button-pagani {
-  width: 100%;
-  background: #9d8353;
-  color: #10121a;
-  padding: 15px;
-  border: none;
-  font-weight: bold;
-  cursor: pointer;
-  margin-top: 15px;
-}
+.copy-button-lambo { background: #c5ff00; color: #000000; }
+.copy-button-lambo:hover { background: #d6ff33; }
 
-/* Botões de Copiar PIX */
-.copy-button-porsche {
-  background: #ffffff; /* Invertido: Preto -> Branco */
-  color: #000000;      /* Invertido: Branco -> Preto */
-  border: none;
-  padding: 10px 20px;
-  font-weight: bold;
-  cursor: pointer;
-}
+.copy-button-ferrari { background: #ff2828; color: #ffffff; }
+.copy-button-ferrari:hover { background: #e01b1b; }
 
-.copy-button-lambo {
-  background: #c5ff00;
-  color: black;
-  border: none;
-  padding: 10px 20px;
-  font-weight: bold;
-  cursor: pointer;
-}
+.copy-button-pagani { background: #9d8353; color: #0b0d14; }
+.copy-button-pagani:hover { background: #b09765; }
 
-.copy-button-ferrari {
-  background: #ff2828;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.copy-button-pagani {
-  background: #9d8353;
-  color: #10121a;
-  border: none;
-  padding: 10px 20px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
+/* Link de Fechar Sutil */
 .close-link {
   display: block;
   text-align: center;
-  margin-top: 15px;
+  margin-top: 20px;
   background: none;
   border: none;
-  color: #888;
+  color: #666666;
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
   cursor: pointer;
   width: 100%;
+  transition: color 0.2s ease;
+}
+
+.close-link:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+/* =========================================================================
+   8. ELEMENTOS DE CHECKOUT (ESTILO FORMULÁRIO WIX EVENTS LUXO)
+   ========================================================================= */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1100;
+  padding: 24px;
+}
+
+/* Container do Layout Principal Baseado no Wix Events */
+.wix-checkout-form {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  width: 100%;
+  max-width: 880px;
+  background: #0d0d0d;
+  border-radius: 12px;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  animation: wixFormFade 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes wixFormFade {
+  from { opacity: 0; transform: scale(0.98) translateY(10px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* Colunas do Formulário */
+.form-left-column {
+  padding: 40px;
+  background: #0d0d0d;
+}
+
+.wix-summary-sidebar {
+  padding: 40px;
+  background: #141414;
+  border-left: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Títulos do Formulário */
+.wix-form-title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  margin: 0 0 6px 0;
+  letter-spacing: -0.5px;
+  color: #fff;
+}
+
+.wix-form-subtitle {
+  font-size: 0.9rem;
+  color: #8c8c8c;
+  margin: 0 0 28px 0;
+  line-height: 1.4;
+}
+
+/* Estrutura de Campos e Inputs */
+.wix-form-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group label, .wix-input-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #a6a6a6;
+}
+
+.wix-checkout-form input {
+  width: 100%;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  color: #fff;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+}
+
+.wix-checkout-form input:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.form-row-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* Abas de Escolha de Pagamento Superior */
+.payment-tabs-container {
+  margin-bottom: 24px;
+}
+
+.payment-tabs {
+  display: flex;
+  gap: 4px;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 4px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  margin-top: 6px;
+}
+
+.payment-tabs button {
+  flex: 1;
+  padding: 12px;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  color: #737373;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.2s ease;
+}
+
+.payment-tabs button:hover {
+  color: #fff;
+}
+
+/* Animações e Caixas Dinâmicas de Conteúdo */
+.dynamic-fields-animation {
+  animation: fieldsFade 0.3s ease-out;
+  background: rgba(255, 255, 255, 0.02);
+  padding: 18px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  margin-top: 8px;
+}
+
+@keyframes fieldsFade {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.payment-instruction-text {
+  font-size: 0.85rem;
+  color: #a3a3a3;
+  text-align: center;
+  margin: 0 0 16px 0;
+}
+
+.qr-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.qr-wrapper-box, .barcode-wrapper-box {
+  background: #fff;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  display: inline-block;
+}
+
+/* Customização Dinâmica de Abas Ativas por Marca */
+.payment-tabs button.active-porsche { background: #fff !important; color: #000 !important; }
+.payment-tabs button.active-lambo { background: #c5ff00 !important; color: #000 !important; }
+.payment-tabs button.active-ferrari { background: #ff2828 !important; color: #fff !important; }
+.payment-tabs button.active-pagani { background: #9d8353 !important; color: #000 !important; }
+.payment-tabs button.active-rolls { background: #a393bf !important; color: #000 !important; }
+.payment-tabs button.active-ultimate { background: #00e5ff !important; color: #000 !important; }
+
+/* Sidebar de Resumo (Coluna Direita) */
+.summary-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 20px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.summary-event-info {
+  margin-bottom: 24px;
+}
+
+.summary-event-name {
+  display: block;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #fff;
+}
+
+.summary-event-local {
+  display: block;
+  font-size: 0.85rem;
+  color: #8c8c8c;
+  margin-top: 4px;
+}
+
+.summary-row-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+  color: #a3a3a3;
+  padding: 14px 0;
+}
+
+.summary-value-highlight {
+  color: #fff;
+  font-weight: 600;
+}
+
+.total-separator {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: auto;
+  padding-top: 20px;
+}
+
+.summary-total-price {
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: -0.5px;
+}
+
+/* Responsividade Básica (Se a tela for pequena, vira uma coluna só) */
+@media (max-width: 768px) {
+  .wix-checkout-form {
+    grid-template-columns: 1fr;
+  }
+  .wix-summary-sidebar {
+    border-left: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+  }
+}
+/* =========================================================================
+   CHECKOUT ESTILO WIX EVENTS
+   ========================================================================= */
+
+.checkout-wix-style {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.checkout-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 0.6fr;
+  gap: 30px;
+  align-items: start;
+}
+
+/* Lado Esquerdo - Formulário */
+.checkout-form-section {
+  padding: 10px;
+}
+
+.checkout-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 25px;
+  color: inherit;
+}
+
+/* Abas de Pagamento */
+.payment-tabs-wix {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 25px;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 4px;
+  border-radius: 8px;
+}
+
+.payment-tabs-wix .tab-btn {
+  flex: 1;
+  padding: 12px 8px;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  color: #888888;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.payment-tabs-wix .tab-btn:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* Estados ativos por tema */
+.payment-tabs-wix .tab-btn.active-porsche {
+  background: #ffffff !important;
+  color: #000000 !important;
+}
+
+.payment-tabs-wix .tab-btn.active-lambo {
+  background: #c5ff00 !important;
+  color: #000000 !important;
+}
+
+.payment-tabs-wix .tab-btn.active-ferrari {
+  background: #ff2828 !important;
+  color: #ffffff !important;
+}
+
+.payment-tabs-wix .tab-btn.active-pagani {
+  background: #9d8353 !important;
+  color: #0b0d14 !important;
+}
+
+.payment-tabs-wix .tab-btn.active-rolls {
+  background: #a393bf !important;
+  color: #050505 !important;
+}
+
+.payment-tabs-wix .tab-btn.active-ultimate {
+  background: #00e5ff !important;
+  color: #06090e !important;
+}
+
+/* Campos do Formulário */
+.form-group-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-field.full {
+  margin-bottom: 15px;
+}
+
+.form-field label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #aaaaaa;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.form-field input {
+  width: 100%;
+  padding: 14px 16px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 6px;
+  color: #ffffff;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.form-field input::placeholder {
+  color: #555555;
+}
+
+.form-field input:focus {
+  outline: none;
+}
+
+/* Foco específico por tema */
+.porsche-modal .form-field input:focus {
+  border-color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.lambo-modal .form-field input:focus {
+  border-color: #c5ff00;
+  background: rgba(197, 255, 0, 0.04);
+}
+
+.ferrari-modal .form-field input:focus {
+  border-color: #ff2828;
+  background: rgba(255, 40, 40, 0.04);
+}
+
+.pagani-modal .form-field input:focus {
+  border-color: #9d8353;
+  background: rgba(157, 131, 83, 0.04);
+}
+
+.rolls-modal .form-field input:focus {
+  border-color: #a393bf;
+  background: rgba(163, 147, 191, 0.04);
+}
+
+.ultimate-modal .form-field input:focus {
+  border-color: #00e5ff;
+  background: rgba(0, 229, 255, 0.04);
+}
+
+/* Conteúdo de Pagamento */
+.payment-content {
+  margin: 20px 0;
+}
+
+.payment-box {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.payment-box h4 {
+  margin: 0 0 15px 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+/* Lado Direito - Resumo do Pedido */
+.checkout-summary {
+  position: sticky;
+  top: 20px;
+}
+
+.summary-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 25px;
+}
+
+.summary-card h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+  color: #ffffff;
+}
+
+.summary-date {
+  font-size: 0.85rem;
+  color: #888888;
+  margin: 0 0 4px 0;
+}
+
+.summary-location {
+  font-size: 0.8rem;
+  color: #666666;
+  margin: 0;
+}
+
+.summary-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 18px 0;
+}
+
+/* Seletor de Quantidade */
+.quantity-selector {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.quantity-selector label {
+  font-size: 0.85rem;
+  color: #aaaaaa;
+  font-weight: 600;
+}
+
+.qty-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+  padding: 4px;
+}
+
+.qty-btn {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  font-size: 1.2rem;
+  cursor: pointer;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.qty-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.qty-value {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #ffffff;
+  min-width: 24px;
+  text-align: center;
+}
+
+/* Links do Resumo */
+.summary-links {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.summary-link {
+  background: none;
+  border: none;
+  color: #888888;
+  font-size: 0.85rem;
+  cursor: pointer;
+  text-align: left;
+  padding: 0;
+  transition: color 0.2s ease;
+}
+
+.summary-link:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+/* Linhas de Cálculo */
+.summary-line {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: #aaaaaa;
+  margin-bottom: 10px;
+}
+
+.summary-total {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+/* Modal de Checkout */
+.checkout-modal {
+  width: 100%;
+  max-width: 800px;
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: 12px;
+  animation: modalFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Modais específicos por tema */
+.rolls-modal {
+  background: #0f0e14;
+  color: #ffffff;
+  border: 1px solid rgba(163, 147, 191, 0.3);
+}
+
+.ultimate-modal {
+  background: #0f172a;
+  color: #ffffff;
+  border: 1px solid rgba(0, 229, 255, 0.3);
+}
+
+/* Botões de confirmação por tema */
+.confirm-button-rolls {
+  width: 100%;
+  padding: 16px;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  margin-top: 18px;
+  transition: all 0.2s ease;
+  background: #a393bf;
+  color: #050505;
+  border: none;
+  font-weight: 700;
+}
+
+.confirm-button-rolls:hover {
+  background: #b8a8d4;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(163, 147, 191, 0.3);
+}
+
+.confirm-button-ultimate {
+  width: 100%;
+  padding: 16px;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  margin-top: 18px;
+  transition: all 0.2s ease;
+  background: #00e5ff;
+  color: #06090e;
+  border: none;
+  font-weight: 800;
+}
+
+.confirm-button-ultimate:hover {
+  background: #00b4cc;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(0, 229, 255, 0.3);
+}
+
+/* Botões copiar por tema */
+.copy-button-rolls {
+  border: none;
+  padding: 12px 24px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  border-radius: 4px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: #a393bf;
+  color: #050505;
+  margin-top: 10px;
+}
+
+.copy-button-rolls:hover {
+  background: #b8a8d4;
+}
+
+.copy-button-ultimate {
+  border: none;
+  padding: 12px 24px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  border-radius: 4px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: #00e5ff;
+  color: #06090e;
+  margin-top: 10px;
+}
+
+.copy-button-ultimate:hover {
+  background: #00b4cc;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .checkout-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .checkout-summary {
+    position: static;
+    order: -1;
+  }
+
+  .form-group-row {
+    grid-template-columns: 1fr;
+  }
+
+  .payment-tabs-wix {
+    flex-wrap: wrap;
+  }
+
+  .checkout-modal {
+    max-width: 95vw;
+    margin: 10px;
+  }
+}
+/* =========================================================================
+   MODAL DE AVISO DE LOGIN
+   ========================================================================= */
+
+.login-warning-modal {
+  background: #0a0a0a;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  padding: 50px 40px;
+  max-width: 420px;
+  width: 90%;
+  text-align: center;
+  animation: modalFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.6);
+}
+
+.login-warning-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.login-warning-icon {
+  font-size: 3rem;
+  margin-bottom: 10px;
+}
+
+.login-warning-content h3 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.login-warning-content p {
+  font-size: 0.95rem;
+  color: #999999;
+  line-height: 1.6;
+  margin: 0 0 10px 0;
+}
+
+.login-warning-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.btn-login-redirect {
+  width: 100%;
+  padding: 16px;
+  background: #ffffff;
+  color: #000000;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-login-redirect:hover {
+  background: #e0e0e0;
+  transform: translateY(-1px);
+}
+
+.btn-cancel {
+  width: 100%;
+  padding: 14px;
+  background: transparent;
+  color: #666666;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-cancel:hover {
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.3);
 }

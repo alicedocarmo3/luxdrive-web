@@ -95,14 +95,12 @@
 .card {
   background: #fafafa;
   border: 1px solid #f0f0f0;
-
   border-radius: 0px; /* 🔥 REMOVIDO ARREDONDAMENTO */
-
   display: flex;
   flex-direction: column;
-
   aspect-ratio: 1 / 1; /* 🔥 CARD QUADRADO PERFEITO */
-
+  cursor: pointer;
+  position: relative;
   overflow: hidden;
   transition: 0.3s ease;
 }
@@ -224,4 +222,17 @@
   .grid {
     grid-template-columns: 1fr;
   }
+}
+.card{
+  cursor: pointer;
+  position: relative;
+  z-index: 999;
+}
+
+.card *{
+  pointer-events: none;
+}
+
+.arrow{
+  pointer-events: all;
 }

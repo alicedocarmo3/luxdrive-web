@@ -1,21 +1,111 @@
-import { URL_API } from "../constants/URL_API";
-import { ICreateUsuario, IRespostaCreateUsuario } from "../interfaces/IUsers";
+// services/userService.ts
 
-const USERS_URL = URL_API + '/users'
+import api from "./api";
 
-export const userServiceFetch = {
-    
-    async createUser(data: ICreateUsuario): Promise<IRespostaCreateUsuario> {
-    const response = await fetch(`${USERS_URL}`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data)
-  });
+import { IUsers } from "../interfaces/IUsers";
 
-  if (!response.ok) {
-    throw new Error(`Erro ao criar usuário: ${response.status}`);
-  }
+// ============================================
+// LOGIN
+// ============================================
 
-  return response.json();
-}
-}
+export const loginService = async (
+  email: string,
+  senha: string
+) => {
+
+  const response =
+    await api.post(
+      "/users/login",
+      {
+        email,
+        senha,
+      }
+    );
+
+  return response;
+
+};
+
+// ============================================
+// REGISTRO
+// ============================================
+
+export const registerService = async (
+  body: IUsers
+) => {
+
+  const response =
+    await api.post(
+      "/users",
+      body
+    );
+
+  return response.data;
+
+};
+
+// ============================================
+// LISTAR USERS
+// ============================================
+
+export const getUsers = async () => {
+
+  const response =
+    await api.get("/users");
+
+  return response.data;
+
+};
+
+// ============================================
+// BUSCAR USER POR ID
+// ============================================
+
+export const getUserById = async (
+  id: string
+) => {
+
+  const response =
+    await api.get(
+      `/users/${id}`
+    );
+
+  return response.data;
+
+};
+
+// ============================================
+// UPDATE USER
+// ============================================
+
+export const updateUser = async (
+  id: string,
+  body: Partial<IUsers>
+) => {
+
+  const response =
+    await api.put(
+      `/users/${id}`,
+      body
+    );
+
+  return response.data;
+
+};
+
+// ============================================
+// DELETE USER
+// ============================================
+
+export const deleteUser = async (
+  id: string
+) => {
+
+  const response =
+    await api.delete(
+      `/users/${id}`
+    );
+
+  return response.data;
+
+};

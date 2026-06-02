@@ -10,38 +10,34 @@
   box-shadow: none;
   border-radius: 0;
   overflow: visible;
-  max-width: 100%;
 }
 
-/* REMOVE HEADER ANTIGO */
+/* HEADER OFF */
 .filters-header {
   display: none;
 }
 
-/* BODY SEM ANIMAÇÃO */
+/* BODY */
 .filters-body {
-  max-height: unset;
   opacity: 1;
   overflow: visible;
 }
 
-.filters-body.expanded {
-  max-height: unset;
-}
-
 /* ============================================
-   GRID
+   GRID HORIZONTAL (FORÇADO)
    ============================================ */
 
 .filters-grid {
   width: 100%;
   max-width: 1400px;
   margin: 0 auto;
+
   display: flex;
+  flex-direction: row;
+  /* 🔥 GARANTE HORIZONTAL */
+  flex-wrap: wrap;
   align-items: flex-end;
   gap: 2.5rem;
-  flex-wrap: wrap;
-  padding: 0;
 }
 
 /* ============================================
@@ -62,10 +58,7 @@
   margin-left: auto;
 }
 
-/* ============================================
-   LABELS
-   ============================================ */
-
+/* LABEL */
 .filter-label {
   font-family: 'Inter', sans-serif;
   font-size: 0.72rem;
@@ -74,27 +67,16 @@
   letter-spacing: 0.12em;
   color: #000;
   margin-bottom: 0.8rem;
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
 }
 
-/* ============================================
-   SELECTS
-   ============================================ */
-
+/* SELECT */
 .professional-select {
   appearance: none;
-  -webkit-appearance: none;
   border: none;
   border-bottom: 1px solid #000;
-  background-color: transparent;
-  border-radius: 0;
-  box-shadow: none;
+  background: transparent;
   padding: 0 1.5rem 0.7rem 0;
-  min-width: 150px;
 
-  font-family: 'Inter', sans-serif;
   font-size: 0.85rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -102,76 +84,9 @@
 
   outline: none;
   cursor: pointer;
-
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='black' d='M0 0l5 6 5-6z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right center;
 }
 
-.professional-select:hover {
-  background-color: transparent;
-  border-color: #000;
-}
-
-.professional-select:focus {
-  background-color: transparent;
-  border-color: #000;
-  box-shadow: none;
-}
-
-/* ============================================
-   PREÇO
-   ============================================ */
-
-.price-range-container {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-
-  background: transparent;
-  border: none;
-  border-radius: 0;
-  padding: 0;
-  box-shadow: none;
-}
-
-.price-range-container:focus-within {
-  border: none;
-  box-shadow: none;
-}
-
-.price-range-container input {
-  border: none;
-  border-bottom: 1px solid #000;
-  background: transparent;
-  padding: 0 0 0.7rem 0;
-
-  font-family: 'Inter', sans-serif;
-  font-size: 0.85rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: #000;
-
-  outline: none;
-  min-width: 120px;
-}
-
-.price-range-container input::placeholder {
-  color: #777;
-  text-transform: uppercase;
-}
-
-.price-range-container .divider {
-  width: 14px;
-  height: 1px;
-  background: #000;
-  margin-top: -8px;
-}
-
-/* ============================================
-   BLINDADO
-   ============================================ */
-
+/* BLINDADO */
 .blindado-toggle-group {
   display: flex;
   gap: 0.5rem;
@@ -181,24 +96,12 @@
   background: transparent;
   border: none;
   border-bottom: 1px solid #000;
-  border-radius: 0;
-  padding: 0 0 0.7rem 0;
+  padding-bottom: 0.7rem;
 
-  font-family: 'Inter', sans-serif;
   font-size: 0.82rem;
   font-weight: 700;
   text-transform: uppercase;
-  color: #000;
-
-  min-width: 55px;
   cursor: pointer;
-  transition: 0.2s ease;
-}
-
-.toggle-btn:hover {
-  opacity: 0.7;
-  background: transparent;
-  transform: none;
 }
 
 .toggle-btn.active {
@@ -208,66 +111,18 @@
   border-bottom: none;
 }
 
-.toggle-btn.active:hover {
-  background: #000;
-  transform: none;
-}
-
-/* ============================================
-   BOTÃO
-   ============================================ */
-
+/* BOTÃO */
 .btn-clear {
   background: #000;
   color: #fff;
   border: none;
-  border-radius: 0;
   padding: 1rem 2.5rem;
-
-  font-family: 'Inter', sans-serif;
-  font-size: 0.8rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-
-  cursor: pointer;
-  transition: 0.2s ease;
-}
-
-.btn-clear svg {
-  display: none;
-}
-
-.btn-clear:hover {
-  opacity: 0.85;
-  transform: none;
-}
-
-.btn-clear--active {
-  background: #000;
-  color: #fff;
-  border: none;
-  box-shadow: none;
-}
-
-.btn-clear--active:hover {
-  background: #000;
-  color: #fff;
-  box-shadow: none;
 }
 
 /* ============================================
-   REMOVE ELEMENTOS ANTIGOS
-   ============================================ */
-
-.filters-badge,
-.filters-header__icon,
-.filters-header__chevron {
-  display: none;
-}
-
-/* ============================================
-   RESPONSIVO
+   RESPONSIVO (VERTICAL SÓ NO MOBILE)
    ============================================ */
 
 @media (max-width: 1024px) {
@@ -277,43 +132,39 @@
 }
 
 @media (max-width: 768px) {
-
-  .filters-premium {
-    padding: 1.5rem 0;
-  }
-
   .filters-grid {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 1.5rem;
+    justify-content: flex-start;
   }
 
   .filter-group,
   .filter-group--price {
     width: 100%;
-    min-width: 100%;
-  }
-
-  .professional-select,
-  .price-range-container input {
-    width: 100%;
-  }
-
-  .price-range-container {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 1rem;
-  }
-
-  .price-range-container .divider {
-    display: none;
   }
 
   .filter-group--action {
-    margin-left: 0;
+    position: relative;
+    left: 30px;
   }
 
   .btn-clear {
     width: 100%;
   }
+}
+/* ============================================
+   FORÇAR DROPDOWN PARA BAIXO
+   ============================================ */
+
+.filters-grid {
+  align-items: center !important;
+  overflow: visible !important;
+}
+
+.filter-group {
+  position: relative !important;
+  overflow: visible !important;
+}
+
+.professional-select {
+  position: relative !important;
+  z-index: 9999 !important;
 }

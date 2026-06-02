@@ -238,3 +238,301 @@ body {
     right: 20px;
   }
 }
+/* NAVBAR SOMENTE CONTACT */
+
+.navbar-contact{
+  background: #dcdcdc !important;
+  border-bottom: 1px solid #c9c9c9;
+}
+
+/* EFEITO AO ROLAR */
+
+.navbar-contact.navbar--scrolled{
+  background: #d0d0d0 !important;
+  backdrop-filter: blur(10px);
+}
+/* =========================================
+   MODAL PREMIUM V2
+========================================= */
+
+.premium-modal-v2 {
+  width: 720px;
+  max-width: 95vw;
+  min-height: 780px;
+  background: #0f0f0f;
+  border-radius: 28px;
+  overflow: hidden;
+  position: relative;
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow:
+    0 20px 60px rgba(0,0,0,0.65),
+    0 0 0 1px rgba(255,255,255,0.04);
+  animation: modalFade .35s ease;
+}
+
+/* BANNER */
+
+.profile-banner {
+  height: 140px;
+  position: relative;
+  background:
+    url("https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=1600&auto=format&fit=crop")
+    center/cover;
+}
+
+.banner-gradient {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(0,0,0,0.15),
+      rgba(0,0,0,0.85)
+    );
+}
+
+/* HEADER */
+
+.profile-main {
+  position: relative;
+  padding: 0 28px 25px;
+}
+
+.profile-avatar-wrapper {
+  position: relative;
+  margin-top: -60px;
+  width: fit-content;
+}
+
+.profile-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 5px solid #0f0f0f;
+  box-shadow:
+    0 10px 30px rgba(0,0,0,0.4);
+}
+
+.edit-avatar-btn {
+  position: absolute;
+  bottom: 4px;
+  right: -5px;
+  border: none;
+  background: #fff;
+  color: #000;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 6px 10px;
+  border-radius: 30px;
+  cursor: pointer;
+}
+
+/* USER DATA */
+
+.profile-user-data {
+  margin-top: 18px;
+}
+
+.profile-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.profile-name {
+  color: white;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.profile-username {
+  color: rgba(255,255,255,0.55);
+  font-size: 14px;
+}
+
+.profile-description {
+  margin-top: 18px;
+  color: rgba(255,255,255,0.72);
+  line-height: 1.6;
+  font-size: 14px;
+}
+
+/* BADGES */
+
+.profile-badges {
+  display: flex;
+  gap: 8px;
+}
+
+.badge {
+  padding: 7px 12px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.badge.premium {
+  background: rgba(255,255,255,0.08);
+  color: white;
+}
+
+.badge.admin {
+  background: #ffffff;
+  color: #000;
+}
+
+/* CARDS */
+
+.profile-sections {
+  padding: 0 28px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.profile-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 18px;
+  padding: 18px;
+  transition: .3s;
+}
+
+.profile-card:hover {
+  transform: translateY(-2px);
+  background: rgba(255,255,255,0.06);
+}
+
+.card-title {
+  display: block;
+  color: rgba(255,255,255,0.4);
+  font-size: 11px;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.profile-card p {
+  color: white;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* REDES */
+
+.social-links {
+  display: flex;
+  gap: 10px;
+  padding: 24px 28px 10px;
+  flex-wrap: wrap;
+}
+
+.social-btn {
+  border: none;
+  background: rgba(255,255,255,0.05);
+  color: white;
+  padding: 10px 16px;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: .3s;
+  font-size: 13px;
+}
+
+.social-btn:hover {
+  background: rgba(255,255,255,0.1);
+}
+
+/* ACTIONS */
+
+.profile-actions-v2 {
+  padding: 20px 28px 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.edit-profile-btn,
+.admin-panel-btn,
+.logout-btn {
+  width: 100%;
+  border: none;
+  padding: 15px;
+  border-radius: 16px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: .3s;
+}
+
+.edit-profile-btn {
+  background: white;
+  color: black;
+}
+
+.edit-profile-btn:hover {
+  opacity: .9;
+}
+
+.admin-panel-btn {
+  background: rgba(255,255,255,0.08);
+  color: white;
+}
+
+.admin-panel-btn:hover {
+  background: rgba(255,255,255,0.12);
+}
+
+.logout-btn {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.8);
+}
+
+.logout-btn:hover {
+  background: rgba(255,255,255,0.05);
+}
+
+/* FECHAR */
+
+.modal-close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(10px);
+  color: white;
+  cursor: pointer;
+  z-index: 10;
+  transition: .3s;
+}
+
+.modal-close:hover {
+  transform: rotate(90deg);
+  background: rgba(0,0,0,0.7);
+}
+
+/* RESPONSIVO */
+
+@media (max-width: 600px) {
+
+  .premium-modal-v2 {
+    width: 95%;
+  }
+
+  .profile-sections {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-name {
+    font-size: 24px;
+  }
+
+}
