@@ -4,7 +4,7 @@
   --white: #ffffff;
   --gray-light: #cccccc;
   --gray-dark: #1a1a1a;
-  --accent: #d4af37; /* Tom dourado opcional para detalhes */
+  --accent: #d4af37;
   --bg-dark: #0a0a0a;
 }
 
@@ -19,13 +19,9 @@ body {
 
 .events-hero {
   position: relative;
-  height: 90vh;
+  /* MUDADO: Usando min-height para garantir que o contêiner respeite a proporção da tela */
+  min-height: 85vh; 
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  text-align: left;
   background: url('../assets/cars/classicos.jpeg') no-repeat center center;
   background-size: cover;
   overflow: hidden;
@@ -34,7 +30,8 @@ body {
 .hero-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, transparent 50%, rgba(0,0,0,0.9) 100%);
+  /* AJUSTADO: Escurece bem o fundo da metade para baixo para dar leitura ao texto */
+  background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.9) 100%);
   z-index: 1;
 }
 
@@ -45,7 +42,10 @@ body {
 
 /* Conteúdo do Texto */
 .hero-content {
-  position: relative;
+  /* ✨ SOLUÇÃO FORÇADA: Fixa o texto na base da imagem do banner, ignorando conflitos de altura */
+  position: absolute;
+  bottom: 50px; 
+  left: 0;
   z-index: 5;
   width: 100%;
   box-sizing: border-box;
@@ -56,23 +56,22 @@ body {
   display: flex;
   flex-direction: column; 
   align-items: flex-start; 
-  gap: 0; 
+  gap: 2px; 
 }
 
 .hero-top-label {
-  font-size: clamp(12px, 1.5vw, 16px);
+  font-size: clamp(12px, 1.5vw, 15px);
   letter-spacing: 4px;
   font-weight: 600;
   color: rgba(255, 255, 255, 0.7); 
-  margin-bottom: -5px; 
   text-transform: uppercase;
 }
 
 .hero-main-title {
-  font-size: clamp(45px, 10vw, 110px);
+  font-size: clamp(40px, 8vw, 100px);
   font-weight: 900;
   margin: 0;
-  line-height: 0.9;
+  line-height: 0.85;
   letter-spacing: -2px;
   text-transform: uppercase;
   color: var(--white);
@@ -90,8 +89,6 @@ body {
   gap: 30px;
   padding: 80px 8%;
   background-color: var(--bg-dark);
-  
-  /* ✨ CONSERTADO: Força todas as células da mesma linha do grid a terem rigorosamente a mesma altura */
   grid-auto-rows: 1fr; 
 }
 
@@ -101,8 +98,6 @@ body {
   border-radius: 4px;
   overflow: hidden;
   transition: 0.4s ease;
-  
-  /* Força o card a preencher 100% da altura da linha do Grid */
   display: flex;
   flex-direction: column;
   height: 100%; 
@@ -117,7 +112,7 @@ body {
 .event-image {
   position: relative;
   height: 250px;
-  flex-shrink: 0; /* Impede que a imagem mude de tamanho nos cards maiores */
+  flex-shrink: 0;
 }
 
 .event-image img {
@@ -136,8 +131,6 @@ body {
   padding: 25px;
   display: flex;
   flex-direction: column;
-  
-  /* ✨ CONSERTADO: Faz com que o container interno estique de forma igual */
   flex: 1 0 auto; 
 }
 
@@ -165,6 +158,9 @@ body {
   line-height: 1.6;
   color: #aaa;
   margin-bottom: 25px;
+  min-height: 90px;
+  max-height: 90px;
+  overflow: hidden;
 }
 
 .event-button {
@@ -178,8 +174,6 @@ body {
   text-transform: uppercase;
   letter-spacing: 1px;
   transition: 0.3s;
-  
-  /* Empurra o botão exatamente para o rodapé final do card */
   margin-top: auto; 
 }
 
@@ -193,5 +187,14 @@ body {
   .hero-nav { display: none; }
   .hero-footer-controls { right: auto; width: 100%; justify-content: center; }
   .events-grid { padding: 40px 5%; }
-  .hero-content { padding: 0 5%; }
+  
+  .hero-content { 
+    bottom: 30px;
+    padding: 0 5%; 
+  }
+  
+  .event-desc {
+    min-height: auto;
+    max-height: none;
+  }
 }

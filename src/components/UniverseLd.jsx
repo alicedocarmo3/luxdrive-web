@@ -4,6 +4,13 @@ import { Link } from "react-router-dom";
 import { eventos } from "../data/eventosData"; // ajuste o caminho se necessário
 
 export default function UniverseLd() {
+  // Função para limitar o texto da descrição
+  const limitarDescricao = (texto, limite = 150) => {
+    if (!texto) return "";
+    if (texto.length <= limite) return texto;
+    return texto.slice(0, limite) + "...";
+  };
+
   return (
     <div className="events-container">
       {/* BANNER HERO - ESTILO POLO STORICO */}
@@ -12,9 +19,9 @@ export default function UniverseLd() {
 
         {/* Substitua a parte do hero-content por esta estrutura */}
         <div className="hero-content">
-         <div className="hero-title-group">
-           <span className="hero-top-label">LEGACYDRIVE</span>
-           <h1 className="hero-main-title">UNIVERSOLD</h1>
+          <div className="hero-title-group">
+            <span className="hero-top-label">LEGACYDRIVE</span>
+            <h1 className="hero-main-title">UNIVERSOLD</h1>
           </div>
         </div> 
       </section>
@@ -34,7 +41,11 @@ export default function UniverseLd() {
               <p className="event-location">
                 <i className="location-icon"></i> {evento.local}
               </p>
-              <p className="event-desc">{evento.descricao}</p>
+              
+              {/* Descrição limitada para não quebrar o layout do grid */}
+              <p className="event-desc">
+                {limitarDescricao(evento.descricao, 160)}
+              </p>
 
               <Link to={`/evento/${evento.id}`}>
                 <button className="event-button">Ver Detalhes</button>

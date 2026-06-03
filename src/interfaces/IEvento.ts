@@ -5,6 +5,15 @@ export interface IEvento {
   local: string;
   data: string;
   descricao: string;
+  incluso: string;
   ingressosVendidos: number;
-  imagem?: string; // Adicionado para suportar as fotos dos carros
+  imagem: string;
+  precoIngresso: number;
+  // Novos campos:
+  duracao: string;
+  vagasRestantes: number;
+  tema: "porsche" | "lambo" | "ferrari" | "pagani" | "rolls" | "ultimate";
+  pixCode: string;
+  tituloResumo: string;
+  subtitulo: string;
 }
