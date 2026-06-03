@@ -1,20 +1,7 @@
-export interface IUsuarios {
+export interface IUsers {
   id: number
   nome: string
   email: string
   senha: string
-}
-
-export interface ICreateUsuario{
-  nome: string
-  email: string
-  senha: string
-}
-
-export interface IRespostaCreateUsuario{
-  id:number
-  nome:string
-  email:string
-  senha:string
-  createdAt:string
+   role?: "admin" | "user";
 }

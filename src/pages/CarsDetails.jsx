@@ -1,210 +1,420 @@
-// CarDetails.jsx
-
-import { useParams } from "react-router-dom";
-import { useState } from "react";
-
-import { carros } from "../data/cars";
-
 import "../styles/CarsDetails.css";
 
-export default function CarDetails() {
+import {
+  useParams,
+  Link,
+  useLocation
+} from "react-router-dom";
+
+import {
+  useState,
+  useEffect,
+  useRef
+} from "react";
+
+import emailjs from "@emailjs/browser";
+
+import {
+  getCars
+} from "../services/carService";
+
+export default function CarsDetails() {
 
   const { id } = useParams();
 
-  const carro = carros.find(
-    (c) => c.id === Number(id)
-  );
+  const location =
+    useLocation();
 
-  const [currentImage, setCurrentImage] = useState(0);
+  const formRef =
+    useRef();
 
-  if (!carro) {
+  const [carro, setCarro] =
+    useState(null);
+
+  const [carros, setCarros] =
+    useState([]);
+
+  const [imagemAtual, setImagemAtual] =
+    useState("");
+
+  // ============================================
+  // BUSCAR CARRO
+  // ============================================
+
+  useEffect(() => {
+
+    const fetchCarro =
+      async () => {
+
+        try {
+
+          // DEBUG
+          console.log("ID DA URL:", id);
+
+          // veio pela navegação
+          if (location.state?.car) {
+
+            console.log(
+              "Carro veio pelo state"
+            );
+
+            setCarro(
+              location.state.car
+            );
+
+            setImagemAtual(
+              location.state.car.imagens?.[0]
+            );
+
+            return;
+
+          }
+
+          // busca todos os carros
+          const cars =
+            await getCars();
+
+          console.log(
+            "TODOS OS CARROS:",
+            cars
+          );
+
+          // procura carro pelo id
+          const carroEncontrado =
+            cars.find(
+              (car) =>
+                String(car.id) ===
+                String(id)
+            );
+
+          console.log(
+            "CARRO ENCONTRADO:",
+            carroEncontrado
+          );
+
+          // se não encontrar
+          if (!carroEncontrado) {
+
+            setCarro(false);
+
+            return;
+
+          }
+
+          // define carro
+          setCarro(
+            carroEncontrado
+          );
+
+          // imagem principal
+          setImagemAtual(
+            carroEncontrado.imagens?.[0] || ""
+          );
+
+        } catch (error) {
+
+          console.log(
+            "ERRO:",
+            error
+          );
+
+          setCarro(false);
+
+        }
+
+      };
+
+    fetchCarro();
+
+  }, [id, location.state]);
+
+  // ============================================
+  // BUSCAR TODOS
+  // ============================================
+
+  useEffect(() => {
+
+    const fetchCars =
+      async () => {
+
+        try {
+
+          const data =
+            await getCars();
+
+          setCarros(data);
+
+        } catch (error) {
+
+          console.log(error);
+
+        }
+
+      };
+
+    fetchCars();
+
+  }, []);
+
+  // ============================================
+  // ERRO
+  // ============================================
+
+  if (carro === false) {
+
     return (
-      <div className="car-not-found">
-        Carro não encontrado.
+
+      <div
+        style={{
+          minHeight: "100vh",
+          background: "#111",
+          color: "white",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontSize: "32px"
+        }}
+      >
+        Carro não encontrado
       </div>
+
     );
+
   }
 
+  // ============================================
+  // CARREGANDO
+  // ============================================
+
+  if (!carro) {
+
+    return (
+
+      <div
+        style={{
+          minHeight: "100vh",
+          background: "#111",
+          color: "white",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontSize: "32px"
+        }}
+      >
+        Carregando...
+      </div>
+
+    );
+
+  }
+
+  // ============================================
+  // RELACIONADOS
+  // ============================================
+
+  const relacionados =
+    carros
+      .filter(
+        (c) =>
+          String(c.id) !==
+          String(carro.id)
+      )
+      .slice(0, 4);
+
+  // ============================================
+  // ENVIAR EMAIL
+  // ============================================
+
+  const enviarEmail =
+    (e) => {
+
+      e.preventDefault();
+
+      emailjs.sendForm(
+        "service_81j2voj",
+        "template_zjkuyul",
+        formRef.current,
+        "3IzifOeNqQKaMrdC6"
+      )
+
+        .then(() => {
+
+          alert(
+            "Mensagem enviada com sucesso!"
+          );
+
+          formRef.current.reset();
+
+        })
+
+        .catch((err) => {
+
+          console.log(err);
+
+          alert(
+            "Erro ao enviar mensagem"
+          );
+
+        });
+
+    };
+
   return (
+
     <div className="details-page">
 
-      {/* HERO */}
-      <section className="details-hero">
+      {/* BANNER */}
+      <section className="details-banner">
 
         <img
-          src={carro.imagens[currentImage]}
+          src={imagemAtual}
           alt={carro.modelo}
-          className="hero-image"
         />
 
-        <div className="hero-overlay" />
+        <div className="overlay"></div>
 
-        <div className="hero-content">
+        <div className="banner-content">
 
-          <span className="details-year">
+          <p>
             {carro.ano}
-          </span>
+          </p>
 
           <h1>
             {carro.modelo}
           </h1>
 
-          <p>
-            Performance. Luxo. Exclusividade.
-          </p>
+          <span>
 
-          <button className="btn-contact">
-            SOLICITAR VEÍCULO
-          </button>
+            {carro.preco?.toLocaleString(
+              "pt-BR",
+              {
+                style: "currency",
+                currency: "BRL"
+              }
+            )}
+
+          </span>
 
         </div>
 
       </section>
 
-      {/* THUMBNAILS */}
-      <section className="thumbs-wrapper">
+      {/* GALERIA */}
+      <section className="gallery">
 
-        {carro.imagens.map((img, index) => (
+        {carro.imagens?.map(
+          (img, index) => (
 
-          <img
-            key={index}
-            src={img}
-            alt=""
-            className={`thumb ${
-              currentImage === index
-                ? "active"
-                : ""
-            }`}
-            onClick={() =>
-              setCurrentImage(index)
-            }
-          />
+            <img
+              key={index}
+              src={img}
+              alt={carro.modelo}
+              onClick={() =>
+                setImagemAtual(img)
+              }
+              className={
+                imagemAtual === img
+                  ? "active"
+                  : ""
+              }
+            />
 
-        ))}
+          )
+        )}
 
       </section>
 
-      {/* INFO */}
-      <section className="details-info">
+      {/* CONTAINER */}
+      <section className="details-container">
 
-        <div className="info-left">
-
-          <span className="subtitle">
-            LEGACY DRIVE
-          </span>
+        {/* ESQUERDA */}
+        <div className="details-info">
 
           <h2>
-            {carro.modelo}
+            Sobre o veículo
           </h2>
 
           <p className="description">
-            Um superesportivo criado para
-            entregar o máximo desempenho,
-            luxo e presença nas ruas.
-            Design agressivo, acabamento
-            premium e tecnologia de ponta
-            em cada detalhe.
+
+            O {carro.modelo}
+            combina luxo,
+            performance e
+            tecnologia extrema.
+
           </p>
 
-        </div>
+          <div className="info-grid">
 
-        <div className="info-right">
+            <div className="info-card">
+              <span>Motor</span>
+              <h3>{carro.motor}</h3>
+            </div>
 
-          <div className="spec-card">
-            <span>Potência</span>
-            <strong>
-              {carro.potencia}
-            </strong>
-          </div>
+            <div className="info-card">
+              <span>Potência</span>
+              <h3>{carro.potencia}</h3>
+            </div>
 
-          <div className="spec-card">
-            <span>Motor</span>
-            <strong>
-              {carro.motor}
-            </strong>
-          </div>
+            <div className="info-card">
+              <span>Câmbio</span>
+              <h3>{carro.cambio}</h3>
+            </div>
 
-          <div className="spec-card">
-            <span>Câmbio</span>
-            <strong>
-              {carro.cambio}
-            </strong>
-          </div>
+            <div className="info-card">
+              <span>Cor</span>
+              <h3>{carro.cor}</h3>
+            </div>
 
-          <div className="spec-card">
-            <span>Cor</span>
-            <strong>
-              {carro.cor}
-            </strong>
-          </div>
+            <div className="info-card">
+              <span>KM</span>
+              <h3>{carro.km}</h3>
+            </div>
 
-          <div className="spec-card">
-            <span>Blindado</span>
-            <strong>
-              {carro.blindado
-                ? "Sim"
-                : "Não"}
-            </strong>
-          </div>
-
-          <div className="spec-card">
-            <span>KM</span>
-            <strong>
-              {carro.km.toLocaleString("pt-BR")}
-            </strong>
           </div>
 
         </div>
 
-      </section>
-
-      {/* PREÇO */}
-      <section className="price-section">
-
-        <span>PREÇO</span>
-
-        <h2>
-          R$ {carro.preco.toLocaleString("pt-BR")}
-        </h2>
-
-      </section>
-
-      {/* FORM */}
-      <section className="contact-section">
-
+        {/* DIREITA */}
         <div className="contact-box">
 
-          <span className="subtitle">
-            SOLICITAÇÃO
-          </span>
-
           <h2>
-            Solicite este veículo
+            Fale com a LEGACYDRIVE
           </h2>
 
-          <form className="contact-form">
+          <form
+            ref={formRef}
+            onSubmit={enviarEmail}
+          >
 
             <input
               type="text"
+              name="name"
               placeholder="Seu nome"
+              required
             />
 
             <input
               type="email"
+              name="email"
               placeholder="Seu e-mail"
+              required
             />
 
             <input
-              type="tel"
-              placeholder="Seu telefone"
+              type="hidden"
+              name="car_model"
+              value={carro.modelo}
             />
 
             <textarea
-              placeholder={`Olá, tenho interesse no ${carro.modelo}.`}
-            />
+              name="message"
+              rows="5"
+              placeholder="Mensagem"
+              required
+            ></textarea>
 
             <button type="submit">
-              ENVIAR SOLICITAÇÃO
+              Enviar mensagem
             </button>
 
           </form>
@@ -213,6 +423,56 @@ export default function CarDetails() {
 
       </section>
 
+      {/* RELACIONADOS */}
+      <section className="related-section">
+
+        <h2>
+          Veículos relacionados
+        </h2>
+
+        <div className="related-grid">
+
+          {relacionados.map(
+            (item) => (
+
+              <Link
+                key={item.id}
+                to={`/carsdetails/${item.id}`}
+                className="related-card"
+              >
+
+                <img
+                  src={item.imagens?.[0]}
+                  alt={item.modelo}
+                />
+
+                <h3>
+                  {item.modelo}
+                </h3>
+
+                <p>
+
+                  {item.preco?.toLocaleString(
+                    "pt-BR",
+                    {
+                      style: "currency",
+                      currency: "BRL"
+                    }
+                  )}
+
+                </p>
+
+              </Link>
+
+            )
+          )}
+
+        </div>
+
+      </section>
+
     </div>
+
   );
+
 }

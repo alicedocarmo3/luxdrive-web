@@ -1,7 +1,7 @@
 import React from "react";
 import "../styles/UniverseLd.css"; // Se o CSS estiver na pasta styles
 import { Link } from "react-router-dom";
-import { eventos } from "../data/eventosData"; // ajuste o caminho se necessário
+
 
 export default function UniverseLd() {
   // Função para limitar o texto da descrição
