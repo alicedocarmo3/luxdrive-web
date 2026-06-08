@@ -9,18 +9,20 @@ const API = axios.create({
 ========================= */
 
 export interface Car {
-   id: number
+  _id?: string
   modelo: string
   ano: number
   preco: number
   km: number
-  imagens:string[]
+  imagens: string[]
   blindado: boolean
   motor: string
   cor: string
   potencia: string
-  cambio:string
-  sedeId: number
+  cambio: string
+  sedeId?: number
+  createdAt?: string
+  updatedAt?: string
 }
 
 export interface User {
@@ -93,10 +95,15 @@ export const getCars = async () =>
 export const createCar = async (car: Car) =>
   (await API.post<Car>("/cars", car)).data;
 
-export const updateCar = async (id: number, car: Car) =>
+export const updateCar = async (
+  id: string,
+  car: Car
+) =>
   (await API.put<Car>(`/cars/${id}`, car)).data;
 
-export const deleteCar = async (id: number) =>
+export const deleteCar = async (
+  id: string
+) =>
   API.delete(`/cars/${id}`);
 
 /* =========================
@@ -120,64 +127,64 @@ export const deleteUser = async (id: number) =>
 ========================= */
 
 export const getEvents = async () =>
-  (await API.get<Event[]>("/events")).data;
+  (await API.get<Event[]>("/eventos")).data;
 
 export const createEvent = async (event: Event) =>
-  (await API.post<Event>("/events", event)).data;
+  (await API.post<Event>("/eventos", event)).data;
 
 export const updateEvent = async (id: number, event: Event) =>
-  (await API.put<Event>(`/events/${id}`, event)).data;
+  (await API.put<Event>(`/eventos/${id}`, event)).data;
 
 export const deleteEvent = async (id: number) =>
-  API.delete(`/events/${id}`);
+  API.delete(`/eventos/${id}`);
 
 /* =========================
    BRANDS (MARCAS)
 ========================= */
 
 export const getBrands = async () =>
-  (await API.get<Marca[]>("/brands")).data;
+  (await API.get<Marca[]>("/marcas")).data;
 
 export const createBrand = async (brand: Marca) =>
-  (await API.post<Marca>("/brands", brand)).data;
+  (await API.post<Marca>("/marcas", brand)).data;
 
 export const updateBrand = async (id: number, brand: Marca) =>
-  (await API.put<Marca>(`/brands/${id}`, brand)).data;
+  (await API.put<Marca>(`/marcas/${id}`, brand)).data;
 
 export const deleteBrand = async (id: number) =>
-  API.delete(`/brands/${id}`);
+  API.delete(`/marcas/${id}`);
 
 /* =========================
    NEWS (NOVIDADES)
 ========================= */
 
 export const getNews = async () =>
-  (await API.get<Novidades[]>("/news")).data;
+  (await API.get<Novidades[]>("/novidades")).data;
 
 export const createNews = async (news: Novidades) =>
-  (await API.post<Novidades>("/news", news)).data;
+  (await API.post<Novidades>("/novidades", news)).data;
 
 export const updateNews = async (id: number, news: Novidades) =>
-  (await API.put<Novidades>(`/news/${id}`, news)).data;
+  (await API.put<Novidades>(`/novidades/${id}`, news)).data;
 
 export const deleteNews = async (id: number) =>
-  API.delete(`/news/${id}`);
+  API.delete(`/novidades/${id}`);
 
 /* =========================
    SEDE (HQ)
 ========================= */
 
 export const getSedes = async () =>
-  (await API.get<Sede[]>("/sede")).data;
+  (await API.get<Sede[]>("/sedes")).data;
 
 export const createSede = async (sede: Sede) =>
-  (await API.post<Sede>("/sede", sede)).data;
+  (await API.post<Sede>("/sedes", sede)).data;
 
 export const updateSede = async (id: number, sede: Sede) =>
-  (await API.put<Sede>(`/sede/${id}`, sede)).data;
+  (await API.put<Sede>(`/sedes/${id}`, sede)).data;
 
 export const deleteSede = async (id: number) =>
-  API.delete(`/sede/${id}`);
+  API.delete(`/sedes/${id}`);
 
 /* =========================
    TICKETS

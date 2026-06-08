@@ -12,7 +12,7 @@ import sf90 from "../assets/carros/SF90.jpg";
 
 // Premium
 import showroom from "../assets/legacydrive.png";
-
+import api from "../services/api";
 import LeadCaptureSection from "../components/LeadCaptureSection";
 
 import { getMarcas } from "../services/marcaService";
@@ -29,27 +29,25 @@ export default function Home() {
   // BUSCAR MARCAS
   // ============================================
 
-useEffect(() => {
+  useEffect(() => {
 
-  const carregarMarcas = async () => {
+    const carregarMarcas = async () => {
+      try {
+        console.log("Base URL:", api.defaults.baseURL);
 
-    try {
+        const marcas = await getMarcas();
 
-      const marcas = await getMarcas();
+        console.log("Marcas:", marcas);
 
-      setMarcasData(marcas);
+        setMarcasData(marcas);
+      } catch (error) {
+        console.error(error);
+      }
+    };
 
-    } catch (error) {
+    carregarMarcas();
 
-      console.error("Erro ao carregar marcas:", error);
-
-    }
-
-  };
-
-  carregarMarcas();
-
-}, []);
+  }, []);
 
   // ============================================
   // NOVIDADES
@@ -121,7 +119,7 @@ useEffect(() => {
     if (
       index ===
       (indexAtual - 1 + novidades.length) %
-        novidades.length
+      novidades.length
     ) {
       return "card-left";
     }
