@@ -3,6 +3,33 @@ import "../styles/UniverseLd.css";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
+import porscheCenter from "../assets/cars/porsche/porscheCenter.jpg";
+import lamborghiniArena from "../assets/cars/lamborghini/lamborghiniArena.jpg";
+import ferrariExpo from "../assets/cars/ferrari/ferrariExpo.jpg";
+import paganiUtopia from "../assets/cars/pagani/paganiUtopia.jpg";
+import RollsRoyceEvent from "../assets/cars/RollsRoyce/RollsRoyceEvent.jpg";
+import garageExpo from "../assets/cars/garagem/garageExpo.jpg";
+
+const imagens = {
+  porsche: porscheCenter,
+  lambo: lamborghiniArena,
+  ferrari: ferrariExpo,
+  pagani: paganiUtopia,
+  rolls: RollsRoyceEvent,
+  ultimate: garageExpo,
+};
+
+const getImagem = (evento) => {
+  const nome = evento.nome?.toLowerCase() || "";
+  if (nome.includes("porsche"))    return porscheCenter;
+  if (nome.includes("lamborghini")) return lamborghiniArena;
+  if (nome.includes("ferrari"))    return ferrariExpo;
+  if (nome.includes("pagani"))     return paganiUtopia;
+  if (nome.includes("rolls"))      return RollsRoyceEvent;
+  if (nome.includes("supercars") || nome.includes("ultimate")) return garageExpo;
+  return null;
+};
+
 export default function UniverseLd() {
   const [eventos, setEventos] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -16,6 +43,7 @@ export default function UniverseLd() {
       const response = await axios.get(
         "http://localhost:3000/eventos"
       );
+      console.log("EVENTOS:", response.data);
 
       setEventos(response.data);
     } catch (error) {
@@ -52,7 +80,7 @@ export default function UniverseLd() {
         {eventos.map((evento) => (
           <div className="event-card" key={evento.id}>
             <div className="event-image">
-              <img src={evento.imagem} alt={evento.nome} />
+              <img src={getImagem(evento)} alt={evento.nome}/>
               <div className="image-overlay"></div>
             </div>
 

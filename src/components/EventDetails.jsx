@@ -1,83 +1,140 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react"; 
 import { useParams } from "react-router-dom";
 import { QRCodeCanvas } from "qrcode.react";
 import Barcode from "react-barcode";
 import "../styles/EventDetails.css";
+import { eventos as eventosData } from "../data/eventosData";
 
-// SERVICE
+import porscheCenter from "../assets/cars/porsche/porscheCenter.jpg";
+import lamborghiniArena from "../assets/cars/lamborghini/lamborghiniArena.jpg";
+import ferrariExpo from "../assets/cars/ferrari/ferrariExpo.jpg";
+import paganiUtopia from "../assets/cars/pagani/paganiUtopia.jpg";
+import RollsRoyceEvent from "../assets/cars/RollsRoyce/RollsRoyceEvent.jpg";
+import garageExpo from "../assets/cars/garagem/garageExpo.jpg";
+
 import { comprarIngresso } from "../services/eventoService";
+
+// ============================
+// GERADOR DE PAYLOAD PIX EMV
+// ============================
+const gerarPayloadPix = (chave, nome, cidade, valor = null) => {
+  const calcCRC16 = (str) => {
+    let crc = 0xFFFF;
+    for (let i = 0; i < str.length; i++) {
+      crc ^= str.charCodeAt(i) << 8;
+      for (let j = 0; j < 8; j++) {
+        crc = crc & 0x8000 ? (crc << 1) ^ 0x1021 : crc << 1;
+      }
+    }
+    return (crc & 0xFFFF).toString(16).toUpperCase().padStart(4, "0");
+  };
+
+  const field = (id, value) => `${id}${String(value.length).padStart(2, "0")}${value}`;
+
+  // Campo 26 — Merchant Account Info (PIX)
+  const gui        = field("00", "BR.GOV.BCB.PIX");
+  const keyField   = field("01", chave);
+  const merchant   = field("26", gui + keyField);
+
+  // Campo 54 — valor (opcional)
+  const valorField = valor ? field("54", valor.toFixed(2)) : "";
+
+  // Nome (máx 25) e Cidade (máx 15)
+  const nomeClean  = nome.normalize("NFD").replace(/[\u0300-\u036f]/g, "").substring(0, 25);
+  const cidadeClean = cidade.normalize("NFD").replace(/[\u0300-\u036f]/g, "").substring(0, 15);
+
+  const payload =
+    field("00", "01")          +  // Payload Format Indicator
+    merchant                   +  // Merchant Account Info
+    field("52", "0000")        +  // MCC
+    field("53", "986")         +  // Moeda BRL
+    valorField                 +  // Valor (se houver)
+    field("58", "BR")          +  // País
+    field("59", nomeClean)     +  // Nome do recebedor
+    field("60", cidadeClean)   +  // Cidade
+    field("62", field("05", "***")) + // Additional Data
+    "6304";                        // CRC placeholder
+
+  return payload + calcCRC16(payload);
+};
+
+// Dados PIX
+const PIX_CHAVE = "14411621606";
+const PIX_NOME  = "Alice";
+const PIX_CIDADE = "Sabara";
+
+const getImagem = (nome = "") => {
+  const n = nome.toLowerCase();
+  if (n.includes("porsche"))     return porscheCenter;
+  if (n.includes("lamborghini")) return lamborghiniArena;
+  if (n.includes("ferrari"))     return ferrariExpo;
+  if (n.includes("pagani"))      return paganiUtopia;
+  if (n.includes("rolls"))       return RollsRoyceEvent;
+  if (n.includes("supercars") || n.includes("ultimate")) return garageExpo;
+  return porscheCenter;
+};
 
 export default function EventDetails() {
   const { id } = useParams();
 
-  const [open, setOpen] = useState(false);
-  const [metodo, setMetodo] = useState("cartao");
-  const [quantidade, setQuantidade] = useState(1);
-  const [loading, setLoading] = useState(false);
-  const [erroMensagem, setErroMensagem] = useState(null);
+  const [open, setOpen]               = useState(false);
+  const [metodo, setMetodo]           = useState("cartao");
+  const [quantidade, setQuantidade]   = useState(1);
+  const [loading, setLoading]         = useState(false);
+  const [erroMensagem, setErroMensagem]     = useState(null);
   const [sucessoMensagem, setSucessoMensagem] = useState(null);
-  const [copiadoPix, setCopiadoPix] = useState(false);
-
-  // EVENTO VINDO DO BACKEND
-  const [evento, setEvento] = useState(null);
+  const [copiadoPix, setCopiadoPix]   = useState(false);
+  const [evento, setEvento]           = useState(null);
 
   const [cartao, setCartao] = useState({
-    numero: "",
-    nome: "",
-    validade: "",
-    cvv: ""
+    numero: "", nome: "", validade: "", cvv: ""
   });
 
   const [dadosComprador, setDadosComprador] = useState({
-    primeiroNome: "",
-    sobrenome: "",
-    email: "",
-    telefone: ""
+    primeiroNome: "", sobrenome: "", email: "", telefone: ""
   });
 
-  // ============================
-  // BUSCAR EVENTO NO BACKEND
-  // ============================
   useEffect(() => {
     async function carregarEvento() {
       try {
-        const response = await fetch(`http://localhost:3000/api/eventos/${id}`);
-        const data = await response.json();
-        setEvento(data);
+        const response     = await fetch(`http://localhost:3000/eventos/${id}`);
+        const dadosBackend = await response.json();
+        const dadosLocais  = eventosData.find(e => e.id === dadosBackend.id);
+        setEvento({ ...dadosBackend, ...dadosLocais });
       } catch (error) {
         console.log(error);
       }
     }
-
     carregarEvento();
   }, [id]);
 
-  if (!evento) {
-    return <h1>Carregando evento...</h1>;
-  }
+  if (!evento) return <h1>Carregando evento...</h1>;
 
-  // Lógica de Temas Baseada no Nome do Evento
+  // Temas
   const nomeMinusculo = evento.nome?.toLowerCase() || "";
-  const isLambo = nomeMinusculo.includes("lamborghini");
-  const isFerrari = nomeMinusculo.includes("ferrari");
-  const isPagani = nomeMinusculo.includes("pagani");
-  const isRolls = nomeMinusculo.includes("rolls-royce") || nomeMinusculo.includes("rolls royce");
-  const isUltimateParis = nomeMinusculo.includes("ultimate meeting") || nomeMinusculo.includes("ultimate supercar garage") || nomeMinusculo.includes("paris");
-
   let themeClass = "porsche-theme";
-  if (isLambo) themeClass = "lambo-theme";
-  if (isFerrari) themeClass = "ferrari-theme";
-  if (isPagani) themeClass = "pagani-theme";
-  if (isRolls) themeClass = "rolls-theme";
-  if (isUltimateParis) themeClass = "ultimate-theme";
+  if (nomeMinusculo.includes("lamborghini")) themeClass = "lambo-theme";
+  if (nomeMinusculo.includes("ferrari"))     themeClass = "ferrari-theme";
+  if (nomeMinusculo.includes("pagani"))      themeClass = "pagani-theme";
+  if (nomeMinusculo.includes("rolls-royce") || nomeMinusculo.includes("rolls royce")) themeClass = "rolls-theme";
+  if (nomeMinusculo.includes("ultimate meeting") || nomeMinusculo.includes("ultimate supercar garage") || nomeMinusculo.includes("paris")) themeClass = "ultimate-theme";
 
   const temaEvento = evento.tema || "porsche";
 
-  // Cálculos de Preço
+  // Preços
   const precoUnitario = evento.preco || evento.precoIngresso || 0;
-  const taxaServico = precoUnitario * 0.02;
-  const subtotal = precoUnitario * quantidade;
-  const total = subtotal + taxaServico;
+  const taxaServico   = precoUnitario * 0.02;
+  const subtotal      = precoUnitario * quantidade;
+  const total         = subtotal + taxaServico;
+
+  // PIX — gera payload EMV com o valor total da compra
+  const pixPayload = gerarPayloadPix(PIX_CHAVE, PIX_NOME, PIX_CIDADE, total);
+  const pixCodeMascarado =
+    PIX_CHAVE.substring(0, 3) + "•••••" + PIX_CHAVE.substring(PIX_CHAVE.length - 3);
+
+  // Boleto
+  const boletoFormatado    = "34191.79001 01043.510047 91020.150008 2 91070000015000";
+  const boletoCodeLinhaLimpa = boletoFormatado.replace(/[^0-9]/g, "");
 
   const formatarDataBR = (dataString) => {
     if (!dataString) return "";
@@ -87,36 +144,24 @@ export default function EventDetails() {
     return `${dia}/${mes}/${ano}`;
   };
 
-  const vagasRestantes = evento.limite && evento.ingressosVendidos ? (evento.limite - evento.ingressosVendidos) : 10;
-
-  const pixCode = "000201PIX-UNIVERSE-LD-123456";
-  const boletoFormatado = "34191.79001 01043.510047 91020.150008 2 91070000015000";
-  const boletoCodeLinhaLimpa = boletoFormatado.replace(/[^0-9]/g, "");
+  const vagasRestantes = evento.limite && evento.ingressosVendidos
+    ? (evento.limite - evento.ingressosVendidos)
+    : 10;
 
   const copiarPix = () => {
-    navigator.clipboard.writeText(pixCode);
+    navigator.clipboard.writeText(pixPayload);
     setCopiadoPix(true);
     setTimeout(() => setCopiadoPix(false), 3000);
   };
 
-  // ============================
-  // COMPRA PELO SERVICE
-  // ============================
   const handleCompra = async () => {
     if (!dadosComprador.primeiroNome.trim() || !dadosComprador.sobrenome.trim() || !dadosComprador.email.trim()) {
-      setErroMensagem({
-        tipo: "comprador",
-        texto: "Por favor, preencha todos os campos obrigatórios."
-      });
+      setErroMensagem({ tipo: "comprador", texto: "Por favor, preencha todos os campos obrigatórios." });
       return;
     }
-
     if (metodo === "cartao") {
       if (!cartao.numero.trim() || !cartao.nome.trim() || !cartao.validade.trim() || !cartao.cvv.trim()) {
-        setErroMensagem({
-          tipo: "cartao",
-          texto: "Por favor, preencha todos os dados do cartão de crédito."
-        });
+        setErroMensagem({ tipo: "cartao", texto: "Por favor, preencha todos os dados do cartão de crédito." });
         return;
       }
     }
@@ -125,25 +170,18 @@ export default function EventDetails() {
       setLoading(true);
       setErroMensagem(null);
 
-      const payloadEnvio = {
-        eventoId: evento.id,
+      await comprarIngresso(evento._id, {
         quantidade,
         metodoPagamento: metodo,
         subtotal,
         taxaServico,
         total,
         comprador: dadosComprador,
-        cartao: metodo === "cartao" ? cartao : null
-      };
-
-      await comprarIngresso(payloadEnvio);
+        cartao: metodo === "cartao" ? cartao : null,
+      });
 
       setSucessoMensagem(`Compra realizada com sucesso para o evento ${evento.nome}!`);
-     
-      setTimeout(() => {
-        setOpen(false);
-        setSucessoMensagem(null);
-      }, 4000);
+      setTimeout(() => { setOpen(false); setSucessoMensagem(null); }, 4000);
 
     } catch (error) {
       console.log(error);
@@ -159,26 +197,23 @@ export default function EventDetails() {
 
   const parseIncluso = (inclusoString) => {
     if (!inclusoString) return [];
-    return inclusoString.split(/\.(?=\s|$)/).map(item => item.trim()).filter(item => item.length > 0);
+    return inclusoString.split(/\.(?=\s|$)/).map(i => i.trim()).filter(i => i.length > 0);
   };
 
   const parseHighlights = (inclusoString) => {
     if (!inclusoString) return [];
     return inclusoString
       .split(/\.(?=\s|$)/)
-      .map(item => item.trim())
-      .filter(item => item.length > 0)
-      .map(item => {
-        const [titulo, ...descricaoParts] = item.split(":");
-        return {
-          titulo: titulo.trim(),
-          descricao: descricaoParts.join(":").trim()
-        };
+      .map(i => i.trim())
+      .filter(i => i.length > 0)
+      .map(i => {
+        const [titulo, ...descricaoParts] = i.split(":");
+        return { titulo: titulo.trim(), descricao: descricaoParts.join(":").trim() };
       });
   };
 
   const inclusoItens = parseIncluso(evento.incluso);
-  const highlights = parseHighlights(evento.incluso);
+  const highlights   = parseHighlights(evento.incluso);
 
   const renderCheckoutForm = () => (
     <div className="checkout-wix-style">
@@ -187,128 +222,78 @@ export default function EventDetails() {
           <h2 className="checkout-title">Adicione seus dados</h2>
 
           <div className="payment-tabs-wix">
-            <button
-              className={`tab-btn ${metodo === "cartao" ? `active-${temaEvento}` : ""}`}
-              onClick={() => { setMetodo("cartao"); setErroMensagem(null); }}
-            >
-              Cartão
-            </button>
-            <button
-              className={`tab-btn ${metodo === "pix" ? `active-${temaEvento}` : ""}`}
-              onClick={() => { setMetodo("pix"); setErroMensagem(null); }}
-            >
-              PIX
-            </button>
-            <button
-              className={`tab-btn ${metodo === "boleto" ? `active-${temaEvento}` : ""}`}
-              onClick={() => { setMetodo("boleto"); setErroMensagem(null); }}
-            >
-              Boleto
-            </button>
+            <button className={`tab-btn ${metodo === "cartao" ? `active-${temaEvento}` : ""}`} onClick={() => { setMetodo("cartao"); setErroMensagem(null); }}>Cartão</button>
+            <button className={`tab-btn ${metodo === "pix"    ? `active-${temaEvento}` : ""}`} onClick={() => { setMetodo("pix");    setErroMensagem(null); }}>PIX</button>
+            <button className={`tab-btn ${metodo === "boleto" ? `active-${temaEvento}` : ""}`} onClick={() => { setMetodo("boleto"); setErroMensagem(null); }}>Boleto</button>
           </div>
 
           <div className="form-group-row">
             <div className="form-field">
               <label>*Primeiro nome</label>
-              <input
-                type="text"
-                name="primeiroNome"
+              <input type="text" name="primeiroNome"
                 className={erroMensagem?.tipo === "comprador" && !dadosComprador.primeiroNome.trim() ? "input-error" : ""}
                 value={dadosComprador.primeiroNome}
                 onChange={(e) => handleInputChange(e, setDadosComprador, dadosComprador)}
-                placeholder="João"
-                maxLength={50}
-                required
-              />
+                placeholder="João" maxLength={50} required />
             </div>
             <div className="form-field">
               <label>*Sobrenome</label>
-              <input
-                type="text"
-                name="sobrenome"
+              <input type="text" name="sobrenome"
                 className={erroMensagem?.tipo === "comprador" && !dadosComprador.sobrenome.trim() ? "input-error" : ""}
                 value={dadosComprador.sobrenome}
                 onChange={(e) => handleInputChange(e, setDadosComprador, dadosComprador)}
-                placeholder="Silva"
-                maxLength={50}
-                required
-              />
+                placeholder="Silva" maxLength={50} required />
             </div>
           </div>
 
           <div className="form-field full">
             <label>*Email</label>
-            <input
-              type="email"
-              name="email"
+            <input type="email" name="email"
               className={erroMensagem?.tipo === "comprador" && !dadosComprador.email.trim() ? "input-error" : ""}
               value={dadosComprador.email}
               onChange={(e) => handleInputChange(e, setDadosComprador, dadosComprador)}
-              placeholder="joao@email.com"
-              maxLength={100}
-              required
-            />
+              placeholder="joao@email.com" maxLength={100} required />
           </div>
 
           <div className="form-field full">
             <label>Telefone</label>
-            <input
-              type="tel"
-              name="telefone"
+            <input type="tel" name="telefone"
               value={dadosComprador.telefone}
               onChange={(e) => handleInputChange(e, setDadosComprador, dadosComprador)}
-              placeholder="(11) 99999-9999"
-              maxLength={15}
-            />
+              placeholder="(11) 99999-9999" maxLength={15} />
           </div>
 
           {erroMensagem?.tipo === "comprador" && (
-            <div className="error-message-wix" style={{ color: "#ff2828", fontSize: "14px", fontWeight: "bold", marginBottom: "15px" }}>
+            <div style={{ color: "#ff2828", fontSize: "14px", fontWeight: "bold", marginBottom: "15px" }}>
               {erroMensagem.texto}
             </div>
           )}
 
           <div className="payment-content">
+
             {metodo === "cartao" && (
               <div className="payment-box">
                 <h4>Dados do Cartão</h4>
-                <input
-                  type="text"
-                  placeholder="Número do cartão"
+                <input type="text" placeholder="Número do cartão"
                   className={erroMensagem?.tipo === "cartao" && !cartao.numero.trim() ? "input-error" : ""}
-                  value={cartao.numero}
-                  maxLength={16}
-                  onChange={(e) => setCartao({ ...cartao, numero: e.target.value.replace(/[^0-9]/g, "") })}
-                />
-                <input
-                  type="text"
-                  placeholder="Nome no cartão"
+                  value={cartao.numero} maxLength={16}
+                  onChange={(e) => setCartao({ ...cartao, numero: e.target.value.replace(/[^0-9]/g, "") })} />
+                <input type="text" placeholder="Nome no cartão"
                   className={erroMensagem?.tipo === "cartao" && !cartao.nome.trim() ? "input-error" : ""}
-                  value={cartao.nome}
-                  maxLength={60}
-                  onChange={(e) => setCartao({ ...cartao, nome: e.target.value })}
-                />
+                  value={cartao.nome} maxLength={60}
+                  onChange={(e) => setCartao({ ...cartao, nome: e.target.value })} />
                 <div className="form-group-row">
-                  <input
-                    type="text"
-                    placeholder="MM/AA"
+                  <input type="text" placeholder="MM/AA"
                     className={erroMensagem?.tipo === "cartao" && !cartao.validade.trim() ? "input-error" : ""}
-                    value={cartao.validade}
-                    maxLength={5}
-                    onChange={(e) => setCartao({ ...cartao, validade: e.target.value })}
-                  />
-                  <input
-                    type="text"
-                    placeholder="CVV"
+                    value={cartao.validade} maxLength={5}
+                    onChange={(e) => setCartao({ ...cartao, validade: e.target.value })} />
+                  <input type="text" placeholder="CVV"
                     className={erroMensagem?.tipo === "cartao" && !cartao.cvv.trim() ? "input-error" : ""}
-                    value={cartao.cvv}
-                    maxLength={4}
-                    onChange={(e) => setCartao({ ...cartao, cvv: e.target.value.replace(/[^0-9]/g, "") })}
-                  />
+                    value={cartao.cvv} maxLength={4}
+                    onChange={(e) => setCartao({ ...cartao, cvv: e.target.value.replace(/[^0-9]/g, "") })} />
                 </div>
-
                 {erroMensagem?.tipo === "cartao" && (
-                  <div className="error-message-wix" style={{ color: "#ff2828", fontSize: "14px", fontWeight: "bold", marginTop: "15px" }}>
+                  <div style={{ color: "#ff2828", fontSize: "14px", fontWeight: "bold", marginTop: "15px" }}>
                     {erroMensagem.texto}
                   </div>
                 )}
@@ -319,10 +304,13 @@ export default function EventDetails() {
               <div className="payment-box qr-center">
                 <h4>Pagamento via PIX</h4>
                 <div className="pix-qrcode-wrapper">
-                  <QRCodeCanvas value={pixCode} size={220} bgColor="#ffffff" fgColor="#000000" />
+                  {/* ✅ pixPayload é o payload EMV completo e válido */}
+                  <QRCodeCanvas value={pixPayload} size={220} bgColor="#ffffff" fgColor="#000000" level="H" />
                 </div>
                 <p className="pix-description">Escaneie o QR Code ou copie o código PIX abaixo.</p>
-                <div className="pix-code-box"><span>{pixCode}</span></div>
+                <div className="pix-code-box">
+                  <span>{pixCodeMascarado}</span>
+                </div>
                 <button className={`copy-button-${temaEvento}`} onClick={copiarPix}>
                   {copiadoPix ? "✓ Código copiado!" : "Copiar código PIX"}
                 </button>
@@ -335,7 +323,7 @@ export default function EventDetails() {
                 <div className="boleto-wrapper">
                   <Barcode value={boletoCodeLinhaLimpa} format="CODE128" width={1.2} height={60} displayValue={false} />
                 </div>
-                <div className="boleto-code-box" style={{ fontSize: '13px', letterSpacing: '0.5px' }}>
+                <div className="boleto-code-box" style={{ fontSize: "13px", letterSpacing: "0.5px" }}>
                   {boletoFormatado}
                 </div>
                 <p className="boleto-info">O boleto vence em 3 dias úteis.</p>
@@ -344,7 +332,7 @@ export default function EventDetails() {
           </div>
 
           {sucessoMensagem && (
-            <div className="success-banner-wix" style={{ backgroundColor: "#d4edda", color: "#155724", padding: "12px", borderRadius: "6px", marginTop: "20px", marginBottom: "10px", fontWeight: "bold", textAlign: "center", border: "1px solid #c3e6cb", fontSize: "15px" }}>
+            <div style={{ backgroundColor: "#d4edda", color: "#155724", padding: "12px", borderRadius: "6px", marginTop: "20px", marginBottom: "10px", fontWeight: "bold", textAlign: "center", border: "1px solid #c3e6cb", fontSize: "15px" }}>
               {sucessoMensagem}
             </div>
           )}
@@ -375,16 +363,16 @@ export default function EventDetails() {
             <div className="summary-divider"></div>
             <div className="summary-line">
               <span>Ingresso ({quantidade}x)</span>
-              <span>R$ {subtotal.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
+              <span>R$ {subtotal.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}</span>
             </div>
             <div className="summary-line">
               <span>Taxa de serviço</span>
-              <span>R$ {taxaServico.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
+              <span>R$ {taxaServico.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}</span>
             </div>
             <div className="summary-divider"></div>
             <div className="summary-total">
               <span>Total</span>
-              <span>R$ {total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
+              <span>R$ {total.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}</span>
             </div>
           </div>
         </div>
@@ -395,21 +383,16 @@ export default function EventDetails() {
   return (
     <div className={`details-container ${themeClass} page-with-navbar`}>
       <div className={`${temaEvento}-layout`}>
-        <button
-          className="back-button-universeld"
-          onClick={() => window.location.href = "/universe"}
-        >
+        <button className="back-button-universeld" onClick={() => window.location.href = "/universe"}>
           &larr;
         </button>
 
         <section className="event-header">
-          <img src={evento.imagem} alt={evento.nome} className="details-image" />
+          <img src={getImagem(evento.nome)} alt={evento.nome} className="details-image" />
           <div className="header-overlay">
             <div className="header-text">
               <h1 className={`${temaEvento}-title`}>{evento.nome}</h1>
-              {evento.subtitulo && (
-                <p className={`subtitle-${temaEvento}`}>{evento.subtitulo}</p>
-              )}
+              {evento.subtitulo && <p className={`subtitle-${temaEvento}`}>{evento.subtitulo}</p>}
             </div>
           </div>
         </section>
@@ -421,21 +404,15 @@ export default function EventDetails() {
           </div>
           <div className="info-item">
             <span className="info-label">PREÇO</span>
-            <span className="info-value">
-              R$ {precoUnitario.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-            </span>
+            <span className="info-value">R$ {precoUnitario.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}</span>
           </div>
           <div className="info-item">
             <span className="info-label">INGRESSOS</span>
-            <span className="info-value">
-              {vagasRestantes > 0 ? `${vagasRestantes} VAGAS RESTANTES` : "ESGOTADO"}
-            </span>
+            <span className="info-value">{vagasRestantes > 0 ? `${vagasRestantes} VAGAS RESTANTES` : "ESGOTADO"}</span>
           </div>
           <div className="info-item">
             <span className="info-label">{evento.duracao?.includes("DIA") ? "DURAÇÃO" : "DATA"}</span>
-            <span className="info-value">
-              {evento.duracao || formatarDataBR(evento.data)}
-            </span>
+            <span className="info-value">{evento.duracao || formatarDataBR(evento.data)}</span>
           </div>
         </section>
 
@@ -457,9 +434,7 @@ export default function EventDetails() {
               <div className={`details-list-${temaEvento}`}>
                 <h3>O que está incluso:</h3>
                 <ul>
-                  {inclusoItens.map((item, index) => (
-                    <li key={index}>{item}</li>
-                  ))}
+                  {inclusoItens.map((item, index) => <li key={index}>{item}</li>)}
                 </ul>
               </div>
             )}
@@ -468,20 +443,12 @@ export default function EventDetails() {
           <div className={`booking-card-${temaEvento}`}>
             <div className={`price-tag-${temaEvento}`}>
               <small>A partir de</small>
-              <span>R$ {precoUnitario.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}</span>
+              <span>R$ {precoUnitario.toLocaleString("pt-BR", { maximumFractionDigits: 0 })}</span>
             </div>
-
-            <button
-              className={`buy-button-${temaEvento}`}
-              onClick={() => setOpen(true)}
-              disabled={vagasRestantes <= 0}
-            >
+            <button className={`buy-button-${temaEvento}`} onClick={() => setOpen(true)} disabled={vagasRestantes <= 0}>
               {vagasRestantes > 0 ? "RESERVAR EXPERIÊNCIA" : "ESGOTADO"}
             </button>
-
-            <p className={`tax-notice-${temaEvento}`}>
-              Impostos inclusos. Sujeito a disponibilidade de agenda.
-            </p>
+            <p className={`tax-notice-${temaEvento}`}>Impostos inclusos. Sujeito a disponibilidade de agenda.</p>
           </div>
         </section>
       </div>
