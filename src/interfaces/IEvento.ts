@@ -9,10 +9,6 @@ export interface IEvento {
   ingressosVendidos: number;
   imagem: string;
   precoIngresso: number;
-<<<<<<< HEAD
-  // Novos campos:
-=======
->>>>>>> 706844609f723905d7b66d8765c7d10306f3d415
   duracao: string;
   vagasRestantes: number;
   tema: "porsche" | "lambo" | "ferrari" | "pagani" | "rolls" | "ultimate";

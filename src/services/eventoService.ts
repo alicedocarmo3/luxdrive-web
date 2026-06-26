@@ -91,12 +91,9 @@ export const comprarIngresso = async (
   eventoId: string,
   ingressoData: any
 ) => {
-
   const response = await api.post(
     `/eventos/${eventoId}/comprar`,
     ingressoData
   );
-
   return response.data;
-
 };

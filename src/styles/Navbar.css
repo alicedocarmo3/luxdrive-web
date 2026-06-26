@@ -519,6 +519,21 @@ body {
   background: rgba(0,0,0,0.7);
 }
 
+.menu-nav .admin-link {
+  color: #c9a96e; /* dourado */
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: 12px;
+  padding-top: 16px;
+}
+
+.menu-nav .admin-link:hover {
+  color: #fff;
+}
+
 /* RESPONSIVO */
 
 @media (max-width: 600px) {

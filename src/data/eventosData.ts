@@ -1,6 +1,6 @@
 import { IEvento } from "../interfaces/IEvento";
 
-import porscheCenter from "../assets/cars/porsche/porscheCenter.jpg"
+import porscheCenter from "../assets/cars/porsche/porscheCenter.jpg";
 import lamborghiniArena from "../assets/cars/lamborghini/lamborghiniArena.jpg"
 import ferrariExpo from "../assets/cars/ferrari/ferrariExpo.jpg"
 import paganiUtopia from "../assets/cars/pagani/paganiUtopia.jpg"

@@ -1,8 +1,7 @@
-export interface IMarca {
-  id: number
-  nome: string
-  linkLogo: string
-  linkBanner: string
-  descricao: string
-  carrosId?: number[]
+export interface Marca {
+  _id?: string;
+  nome: string;
+  linkLogo: string;
+  linkBanner: string;
+  descricao: string;
 }

@@ -28,9 +28,12 @@ export const updateSede = async (
   return response.data;
 };
 
+
 export const deleteSede = async (
   id: string
 ): Promise<{ message: string }> => {
+
+  
   const response = await api.delete(`/sedes/${id}`);
   return response.data;
 };
