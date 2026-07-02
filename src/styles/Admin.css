@@ -206,13 +206,14 @@ body {
   display: flex;
   flex-direction: column;
   min-width: 0;
+  max-width: calc(100vw - 280px); /* ← ADICIONAR */
   transition: margin-left 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .main-content.full {
   margin-left: 72px;
+  max-width: calc(100vw - 72px); /* ← ADICIONAR */
 }
-
 /* BARRA DO TOPO */
 .topbar {
   height: 72px;
@@ -300,7 +301,7 @@ body {
 /* CORPO DO CONTEÚDO */
 .content-body {
   padding: 32px;
-  max-width: 100%;
+  max-width: 1400px; /* ← AJUSTAR: limite confortável */
   width: 100%;
   margin: 0 auto;
   box-sizing: border-box;
@@ -309,11 +310,10 @@ body {
 /* ===== CARDS DE ESTATÍSTICAS ===== */
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); /* ← AJUSTAR */
   gap: 20px;
   margin-bottom: 32px;
 }
-
 .stat-card {
   background: #111111;
   border: 1px solid rgba(255, 255, 255, 0.04);
@@ -482,10 +482,9 @@ body {
 
 .form-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* ← AJUSTAR */
   gap: 16px;
 }
-
 .form-group {
   display: flex;
   flex-direction: column;
@@ -815,8 +814,10 @@ body {
 ============================================ */
 .admin-page {
   padding: 0;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
-
 /* ============================================
    PAGE HEADER
 ============================================ */

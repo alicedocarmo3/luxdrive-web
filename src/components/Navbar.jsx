@@ -7,7 +7,6 @@ import {
 
 import {
   CircleUserRound,
-  Globe,
   Menu,
   X,
   Shield, 
@@ -101,12 +100,7 @@ function Navbar() {
 
           {/* DIREITA */}
           <div className="nav-right">
-            <button
-              className="nav-btn icon-only"
-              aria-label="Idioma"
-            >
-              <Globe size={22} strokeWidth={1.2} />
-            </button>
+
 
             {/* ÍCONE DE PERFIL COM A COORDENAÇÃO DE DIRECIONAMENTO */}
             <button

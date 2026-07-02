@@ -225,39 +225,54 @@ export default function CarsDetails() {
   // ENVIAR EMAIL
   // ============================================
 
-  const enviarEmail =
-    (e) => {
+// ============================================
+// ENVIAR EMAIL
+// ============================================
 
-      e.preventDefault();
+const enviarEmail = (e) => {
+  e.preventDefault();
 
-      emailjs.sendForm(
-        "service_81j2voj",
-        "template_zjkuyul",
-        formRef.current,
-        "3IzifOeNqQKaMrdC6"
-      )
+  // Pega os valores diretamente dos inputs pelo formRef
+  const form = formRef.current;
+  
+  const nome = form.querySelector('input[name="name"]').value.trim();
+  const email = form.querySelector('input[name="email"]').value.trim();
+  const mensagem = form.querySelector('textarea[name="message"]').value.trim();
 
-        .then(() => {
+  // Debug — veja no console se os valores estão vindo
+  console.log("Nome:", nome);
+  console.log("Email:", email);
+  console.log("Mensagem:", mensagem);
+  console.log("Carro:", carro.modelo);
 
-          alert(
-            "Mensagem enviada com sucesso!"
-          );
+  if (!nome || !email || !mensagem) {
+    alert("Preencha todos os campos.");
+    return;
+  }
 
-          formRef.current.reset();
+  const templateParams = {
+    name: nome,
+    email: email,
+    message: mensagem,
+    car_model: carro.modelo,
+  };
 
-        })
-
-        .catch((err) => {
-
-          console.log(err);
-
-          alert(
-            "Erro ao enviar mensagem"
-          );
-
-        });
-
-    };
+  emailjs
+    .send(
+      "service_81j2voj",
+      "template_kohotzg",
+      templateParams,
+      "3IzifOeNqQKaMrdC6"
+    )
+    .then(() => {
+      alert("Mensagem enviada com sucesso!");
+      form.reset();
+    })
+    .catch((err) => {
+      console.error("Erro EmailJS:", err);
+      alert("Erro ao enviar mensagem. Tente novamente.");
+    });
+};
 
   return (
 
@@ -400,11 +415,11 @@ export default function CarsDetails() {
               required
             />
 
-            <input
-              type="hidden"
-              name="car_model"
-              value={carro.modelo}
-            />
+<input
+  type="hidden"
+  name="car_model"
+  value={carro.modelo}
+/>
 
             <textarea
               name="message"
