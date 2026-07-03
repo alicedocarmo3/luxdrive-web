@@ -72,8 +72,13 @@ export default function UniverseLd() {
           <div className="hero-title-group">
             <span className="hero-top-label">LEGACYDRIVE</span>
             <h1 className="hero-main-title">UNIVERSOLD</h1>
+
           </div>
         </div>
+        {/* ✨ DEGRADÊ NA BASE DO BANNER — transição suave para a grid */}
+<div className="hero-bottom-fade">
+  
+</div>
       </section>
 
       <section className="events-grid">

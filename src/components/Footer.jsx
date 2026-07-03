@@ -6,9 +6,12 @@ import {
   Mail,
   Phone,
   Clock,
-  ArrowUp
+  ArrowUp,
+  FileText,
+  Shield
 } from "lucide-react";
 
+import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "../styles/Footer.css";
 
@@ -69,10 +72,10 @@ function Footer() {
 
           <div className="footer-column">
             <h3>Navegação</h3>
-            <a href="/">Início</a>
-            <a href="/cars">Veículos</a>
-            <a href="/eventos">Eventos</a>
-            <a href="/contato">Contato</a>
+            <Link to="/">Início</Link>
+            <Link to="/models">Veículos</Link>
+            <Link to="/universe">Eventos</Link>
+            <Link to="/contact">Contato</Link>
           </div>
 
           <div className="footer-column">
@@ -81,6 +84,16 @@ function Footer() {
             <p><Mail size={16} /> legacydrive@gmail.com</p>
             <p><Phone size={16} /> +55 31 99999-9999</p>
             <p><Clock size={16} /> Seg - Sex, 9h às 18h</p>
+          </div>
+
+          <div className="footer-column">
+            <h3>Segurança</h3>
+            <Link to="/termos">
+              <FileText size={14} /> Termos de Serviço
+            </Link>
+            <Link to="/privacidade">
+              <Shield size={14} /> Política de Privacidade
+            </Link>
           </div>
         </div>
 
@@ -106,3 +119,4 @@ function Footer() {
 }
 
 export default Footer;
+

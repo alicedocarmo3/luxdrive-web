@@ -14,6 +14,11 @@ import {
   AlertTriangle,
   CheckCircle,
   Loader2,
+  Eye,
+  EyeOff,
+  UserCheck,
+  Crown,
+  ArrowUpRight,
 } from "lucide-react";
 import {
   getUsers,
@@ -21,7 +26,7 @@ import {
   updateUser,
   deleteUser,
 } from "../../services/userService";
-import "../../styles/Admin.css";
+import "../../styles/UsersPage.css";
 
 export default function UsersPage() {
   const [users, setUsers] = useState([]);
@@ -46,6 +51,7 @@ export default function UsersPage() {
   const [formErrors, setFormErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
   const [toast, setToast] = useState(null);
+  const [showPassword, setShowPassword] = useState(false);
 
   // Fetch users
   const fetchUsers = async () => {
@@ -94,6 +100,7 @@ export default function UsersPage() {
     setEditingUser(null);
     setFormData({ nome: "", email: "", senha: "", role: "user" });
     setFormErrors({});
+    setShowPassword(false);
     setIsModalOpen(true);
   };
 
@@ -107,6 +114,7 @@ export default function UsersPage() {
       role: user.role || "user",
     });
     setFormErrors({});
+    setShowPassword(false);
     setIsModalOpen(true);
   };
 
@@ -122,7 +130,7 @@ export default function UsersPage() {
     if (!formData.nome.trim()) errors.nome = "Nome é obrigatório";
     if (!formData.email.trim()) {
       errors.email = "Email é obrigatório";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+    } else if (!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(formData.email)) {
       errors.email = "Email inválido";
     }
     if (!editingUser && !formData.senha.trim()) {
@@ -202,7 +210,7 @@ export default function UsersPage() {
     <span className={`role-badge role-${role}`}>
       {role === "admin" ? (
         <>
-          <Shield size={12} /> Admin
+          <Crown size={12} /> Admin
         </>
       ) : (
         <>
@@ -213,7 +221,7 @@ export default function UsersPage() {
   );
 
   return (
-    <div className="admin-page">
+    <div className="users-page">
       {/* Toast Notification */}
       {toast && (
         <div className={`toast toast-${toast.type}`}>
@@ -239,6 +247,37 @@ export default function UsersPage() {
           <Plus size={18} />
           <span>Novo Usuário</span>
         </button>
+      </div>
+
+      {/* Stats Cards */}
+      <div className="stats-row">
+        <div className="stat-card">
+          <div className="stat-icon total">
+            <UsersIcon size={20} />
+          </div>
+          <div className="stat-info">
+            <span className="stat-value">{users.length}</span>
+            <span className="stat-label">Total</span>
+          </div>
+        </div>
+        <div className="stat-card">
+          <div className="stat-icon admin">
+            <Crown size={20} />
+          </div>
+          <div className="stat-info">
+            <span className="stat-value">{users.filter(u => u.role === "admin").length}</span>
+            <span className="stat-label">Admins</span>
+          </div>
+        </div>
+        <div className="stat-card">
+          <div className="stat-icon user">
+            <UserCheck size={20} />
+          </div>
+          <div className="stat-info">
+            <span className="stat-value">{users.filter(u => u.role === "user").length}</span>
+            <span className="stat-label">Usuários</span>
+          </div>
+        </div>
       </div>
 
       {/* Search Bar */}
@@ -277,7 +316,7 @@ export default function UsersPage() {
           <table className="data-table">
             <thead>
               <tr>
-                <th>Nome</th>
+                <th>Usuário</th>
                 <th>Email</th>
                 <th>Função</th>
                 <th className="actions-col">Ações</th>
@@ -289,10 +328,15 @@ export default function UsersPage() {
                   <tr key={user._id || user.id}>
                     <td>
                       <div className="user-cell">
-                        <div className="user-avatar">
+                        <div className={`user-avatar ${user.role === "admin" ? "admin-avatar" : ""}`}>
                           {user.nome?.charAt(0)?.toUpperCase() || "?"}
                         </div>
-                        <span className="user-name">{user.nome}</span>
+                        <div className="user-info">
+                          <span className="user-name">{user.nome}</span>
+                          {user.role === "admin" && (
+                            <span className="admin-tag">Administrador</span>
+                          )}
+                        </div>
                       </div>
                     </td>
                     <td>
@@ -351,9 +395,17 @@ export default function UsersPage() {
             >
               <ChevronLeft size={16} />
             </button>
-            <span className="page-info">
-              Página {currentPage} de {totalPages}
-            </span>
+            <div className="page-numbers">
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                <button
+                  key={page}
+                  className={`page-number ${page === currentPage ? "active" : ""}`}
+                  onClick={() => setCurrentPage(page)}
+                >
+                  {page}
+                </button>
+              ))}
+            </div>
             <button
               className="btn-page"
               onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
@@ -368,23 +420,46 @@ export default function UsersPage() {
       {/* Create/Edit Modal */}
       {isModalOpen && (
         <div className="modal-overlay" onClick={() => setIsModalOpen(false)}>
-          <div className="modal" onClick={(e) => e.stopPropagation()}>
+          <div className="modal modal-form-card" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
-              <h2>{editingUser ? "Editar Usuário" : "Novo Usuário"}</h2>
+              <div className="modal-header-icon">
+                {editingUser ? <Pencil size={22} /> : <Plus size={22} />}
+              </div>
+              <div className="modal-header-text">
+                <h2>{editingUser ? "Editar Usuário" : "Novo Usuário"}</h2>
+                <p>{editingUser ? `Editando ${editingUser.nome}` : "Preencha os dados do novo usuário"}</p>
+              </div>
               <button className="btn-close" onClick={() => setIsModalOpen(false)}>
                 <X size={20} />
               </button>
             </div>
+
+            {editingUser && (
+              <div className="modal-user-preview">
+                <div className={`preview-avatar ${editingUser.role === "admin" ? "admin-avatar" : ""}`}>
+                  {editingUser.nome?.charAt(0)?.toUpperCase() || "?"}
+                </div>
+                <div className="preview-info">
+                  <span className="preview-name">{editingUser.nome}</span>
+                  <span className="preview-email">{editingUser.email}</span>
+                  <RoleBadge role={editingUser.role} />
+                </div>
+              </div>
+            )}
+
             <form onSubmit={handleSubmit} className="modal-form">
               <div className="form-group">
-                <label>Nome completo</label>
+                <label>
+                  <User size={14} />
+                  Nome completo
+                </label>
                 <input
                   type="text"
                   value={formData.nome}
                   onChange={(e) =>
                     setFormData({ ...formData, nome: e.target.value })
                   }
-                  placeholder="Digite o nome"
+                  placeholder="Digite o nome completo"
                   className={formErrors.nome ? "error" : ""}
                 />
                 {formErrors.nome && (
@@ -393,7 +468,10 @@ export default function UsersPage() {
               </div>
 
               <div className="form-group">
-                <label>Email</label>
+                <label>
+                  <Mail size={14} />
+                  Email
+                </label>
                 <input
                   type="email"
                   value={formData.email}
@@ -411,24 +489,38 @@ export default function UsersPage() {
               <div className="form-row">
                 <div className="form-group">
                   <label>
-                    Senha {editingUser && "(deixe em branco para manter)"}
+                    <Shield size={14} />
+                    Senha {editingUser && "(opcional)"}
                   </label>
-                  <input
-                    type="password"
-                    value={formData.senha}
-                    onChange={(e) =>
-                      setFormData({ ...formData, senha: e.target.value })
-                    }
-                    placeholder={editingUser ? "••••••" : "Mínimo 6 caracteres"}
-                    className={formErrors.senha ? "error" : ""}
-                  />
+                  <div className="password-input-wrapper">
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      value={formData.senha}
+                      onChange={(e) =>
+                        setFormData({ ...formData, senha: e.target.value })
+                      }
+                      placeholder={editingUser ? "Deixe em branco para manter" : "Mínimo 6 caracteres"}
+                      className={formErrors.senha ? "error" : ""}
+                    />
+                    <button
+                      type="button"
+                      className="toggle-password"
+                      onClick={() => setShowPassword(!showPassword)}
+                      tabIndex={-1}
+                    >
+                      {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                    </button>
+                  </div>
                   {formErrors.senha && (
                     <span className="error-text">{formErrors.senha}</span>
                   )}
                 </div>
 
                 <div className="form-group">
-                  <label>Função</label>
+                  <label>
+                    <Crown size={14} />
+                    Função
+                  </label>
                   <select
                     value={formData.role}
                     onChange={(e) =>
@@ -457,9 +549,15 @@ export default function UsersPage() {
                       Salvando...
                     </>
                   ) : editingUser ? (
-                    "Salvar Alterações"
+                    <>
+                      <Pencil size={16} />
+                      Salvar Alterações
+                    </>
                   ) : (
-                    "Criar Usuário"
+                    <>
+                      <Plus size={16} />
+                      Criar Usuário
+                    </>
                   )}
                 </button>
               </div>
@@ -471,19 +569,37 @@ export default function UsersPage() {
       {/* Delete Confirmation Modal */}
       {isDeleteModalOpen && (
         <div className="modal-overlay" onClick={() => setIsDeleteModalOpen(false)}>
-          <div className="modal modal-small" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-header danger">
-              <AlertTriangle size={24} />
-              <h2>Confirmar Exclusão</h2>
+          <div className="modal modal-delete" onClick={(e) => e.stopPropagation()}>
+            <div className="delete-illustration">
+              <div className="delete-icon-ring">
+                <Trash2 size={40} />
+              </div>
             </div>
-            <div className="modal-body">
-              <p>
-                Tem certeza que deseja excluir o usuário{" "}
-                <strong>{userToDelete?.nome}</strong>?
-              </p>
-              <p className="warning-text">Esta ação não pode ser desfeita.</p>
+
+            <div className="modal-header delete-header">
+              <h2>Excluir Usuário</h2>
+              <p>Você está prestes a remover permanentemente este usuário do sistema.</p>
             </div>
-            <div className="modal-footer">
+
+            {userToDelete && (
+              <div className="delete-user-card">
+                <div className={`delete-avatar ${userToDelete.role === "admin" ? "admin-avatar" : ""}`}>
+                  {userToDelete.nome?.charAt(0)?.toUpperCase() || "?"}
+                </div>
+                <div className="delete-user-info">
+                  <span className="delete-user-name">{userToDelete.nome}</span>
+                  <span className="delete-user-email">{userToDelete.email}</span>
+                  <RoleBadge role={userToDelete.role} />
+                </div>
+              </div>
+            )}
+
+            <div className="delete-warning">
+              <AlertTriangle size={16} />
+              <span>Esta ação não pode ser desfeita. Todos os dados associados a este usuário serão perdidos.</span>
+            </div>
+
+            <div className="modal-footer delete-footer">
               <button
                 className="btn-secondary"
                 onClick={() => setIsDeleteModalOpen(false)}
@@ -492,7 +608,7 @@ export default function UsersPage() {
               </button>
               <button className="btn-danger" onClick={handleDelete}>
                 <Trash2 size={16} />
-                Excluir
+                Sim, excluir usuário
               </button>
             </div>
           </div>

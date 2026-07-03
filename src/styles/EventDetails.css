@@ -1,8 +1,8 @@
 /* =========================================================================
-   EVENTDETAILS.CSS — LEGACYDRIVE THEME SYSTEM (CORRIGIDO)
+   EVENTDETAILS.CSS — LEGACYDRIVE THEME SYSTEM (CORRIGIDO v2)
    Temas: porsche | lambo | ferrari | pagani | rolls | ultimate
    ========================================================================= */
- 
+
 *, *::before, *::after {
   box-sizing: border-box;
 }
@@ -12,21 +12,23 @@ html, body {
   padding: 0;
   width: 100%;
   min-height: 100%;
-  height: auto; /* Garante que a página possa crescer além de 100vh */
+  height: auto;
 }
- 
+
 /* -------------------------------------------------------------------------
    1. BASE
    ------------------------------------------------------------------------- */
- 
+
 .details-container {
   width: 100%;
   min-height: 100vh;
   height: auto;
   font-family: 'Inter', sans-serif;
-  overflow-x: hidden; /* Evita quebras de layout horizontais */
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
 }
- 
+
 .porsche-layout,
 .lambo-layout,
 .ferrari-layout,
@@ -37,45 +39,73 @@ html, body {
   min-height: 100vh;
   height: auto;
   display: flex;
-  flex-direction: column; /* Força o fluxo vertical correto */
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
 }
- 
+
 /* -------------------------------------------------------------------------
-   2. HEADER COM IMAGEM
+   2. HEADER COM IMAGEM — IGUAL AO UNIVERSELD (IMAGEM ESTICADA 100%)
    ------------------------------------------------------------------------- */
- 
+
 .event-header {
   position: relative;
-  height: 65vh;
-  min-height: 400px; /* Evita que o banner suma em telas muito baixas */
-  width: 100%;
+  min-height: 85vh;
+  width: 100vw;              /* ← 100% da viewport width */
+  max-width: 100vw;
   overflow: hidden;
-  flex-shrink: 0; /* Impede o header de esmagar */
+  flex-shrink: 0;
+  margin: 0;
+  padding: 0;
+  left: 0;
+  right: 0;
 }
- 
+
 .details-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;               /* ← 100% do container */
+  height: 100%;              /* ← 100% do container */
+  min-width: 100%;
+  min-height: 100%;
+  object-fit: cover;         /* ← cobre tudo, mantendo proporção */
+  object-position: center;  /* ← centraliza o foco da imagem */
   display: block;
+  z-index: 0;
+  margin: 0;
+  padding: 0;
+  border: none;
 }
- 
-.header-overlay {
+
+.hero-overlay {
   position: absolute;
   inset: 0;
-  display: flex;
-  align-items: flex-end;
-  padding: 0 8% 60px;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.9) 100%);
+  z-index: 1;
 }
- 
+
+.header-overlay {
+  position: absolute;
+  bottom: 50px;
+  left: 0;
+  z-index: 5;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0 8%;
+}
+
 .header-text {
-  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
 }
- 
+
 /* -------------------------------------------------------------------------
    3. BOTÃO VOLTAR
    ------------------------------------------------------------------------- */
- 
+
 .back-button-universeld {
   position: fixed;
   top: 100px;
@@ -94,16 +124,16 @@ html, body {
   transition: all 0.2s ease;
   backdrop-filter: blur(6px);
 }
- 
+
 .back-button-universeld:hover {
   background: rgba(255, 255, 255, 0.1);
   border-color: rgba(255, 255, 255, 0.5);
 }
- 
+
 /* -------------------------------------------------------------------------
    4. INFO BAR
    ------------------------------------------------------------------------- */
- 
+
 .info-bar-porsche,
 .info-bar-lambo,
 .info-bar-ferrari,
@@ -116,7 +146,7 @@ html, body {
   padding: 0 8%;
   flex-shrink: 0;
 }
- 
+
 .info-item {
   display: flex;
   flex-direction: column;
@@ -125,10 +155,10 @@ html, body {
   padding-right: 30px;
   padding-left: 30px;
 }
- 
+
 .info-item:first-child { padding-left: 0; }
 .info-item:last-child  { border-right: none; }
- 
+
 .info-label {
   font-size: 10px;
   font-weight: 700;
@@ -136,37 +166,49 @@ html, body {
   text-transform: uppercase;
   margin-bottom: 6px;
 }
- 
+
 .info-value {
   font-size: 15px;
   font-weight: 700;
   letter-spacing: 0.3px;
 }
- 
+
 /* -------------------------------------------------------------------------
    5. CONTEÚDO PRINCIPAL
    ------------------------------------------------------------------------- */
- 
+
+.main-desc {
+  font-size: 16px;
+  line-height: 1.75;
+  opacity: 0.85;
+  text-align: left;
+  margin: 0 !important;        /* ← força zero margem */
+  padding: 0 !important;       /* ← força zero padding */
+  margin-left: 0 !important; /* ← PUXA para a borda esquerda da tela */
+  padding-left: 0 !important;
+  width: 100%;
+  display: block;
+}
+
+.description-section {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  margin-left: -30%;
+  padding-left: 0;
+}
+
 .main-content {
   display: grid;
   grid-template-columns: 1fr 360px;
   gap: 60px;
-  padding: 70px 8%;
+  padding: 70px 0;      /* ← ZEROU o padding lateral */
+  padding-left: 0;      /* ← GARANTE zero à esquerda */
   width: 100%;
   align-items: start;
-  flex-grow: 1; /* Faz o conteúdo esticar a página até o fim se houver espaço */
+  flex-grow: 1;
 }
- 
-.description-section {
-  width: 100%;
-}
- 
-.main-desc {
-  font-size: 17px;
-  line-height: 1.75;
-  opacity: 0.85;
-}
- 
+
 /* Highlights grid */
 .highlights-grid-lambo,
 .highlights-grid-pagani {
@@ -175,7 +217,7 @@ html, body {
   gap: 16px;
   margin-top: 35px;
 }
- 
+
 .highlights-grid-rolls,
 .highlights-grid-ultimate {
   display: flex;
@@ -183,7 +225,7 @@ html, body {
   gap: 12px;
   margin-top: 25px;
 }
- 
+
 .highlight-item-lambo,
 .highlight-item-pagani,
 .highlight-item-rolls,
@@ -191,7 +233,7 @@ html, body {
   padding: 22px 24px;
   border-radius: 2px;
 }
- 
+
 .highlight-item-lambo h3,
 .highlight-item-pagani h3,
 .highlight-item-rolls h3,
@@ -202,7 +244,7 @@ html, body {
   margin: 0 0 8px 0;
   font-weight: 800;
 }
- 
+
 .highlight-item-lambo p,
 .highlight-item-pagani p,
 .highlight-item-rolls p,
@@ -212,7 +254,7 @@ html, body {
   line-height: 1.65;
   opacity: 0.7;
 }
- 
+
 /* Listas padrão */
 .details-list-porsche h3,
 .details-list-ferrari h3 {
@@ -223,7 +265,7 @@ html, body {
   text-transform: uppercase;
   opacity: 0.5;
 }
- 
+
 .details-list-porsche ul,
 .details-list-ferrari ul {
   padding-left: 0;
@@ -232,7 +274,7 @@ html, body {
   flex-direction: column;
   gap: 10px;
 }
- 
+
 .details-list-porsche ul li,
 .details-list-ferrari ul li {
   font-size: 15px;
@@ -241,7 +283,7 @@ html, body {
   position: relative;
   opacity: 0.8;
 }
- 
+
 .details-list-porsche ul li::before,
 .details-list-ferrari ul li::before {
   content: '—';
@@ -249,11 +291,11 @@ html, body {
   left: 0;
   opacity: 0.4;
 }
- 
+
 /* -------------------------------------------------------------------------
    6. BOOKING CARD
    ------------------------------------------------------------------------- */
- 
+
 .booking-card-porsche,
 .booking-card-lambo,
 .booking-card-ferrari,
@@ -263,8 +305,9 @@ html, body {
   position: sticky;
   top: 110px;
   width: 100%;
+   margin-left: -30%;
 }
- 
+
 .price-tag-porsche,
 .price-tag-lambo,
 .price-tag-ferrari,
@@ -273,7 +316,7 @@ html, body {
 .price-tag-ultimate {
   margin-bottom: 4px;
 }
- 
+
 .price-tag-porsche small,
 .price-tag-lambo small,
 .price-tag-ferrari small,
@@ -287,7 +330,7 @@ html, body {
   display: block;
   margin-bottom: 4px;
 }
- 
+
 .price-tag-porsche span,
 .price-tag-lambo span,
 .price-tag-ferrari span,
@@ -300,7 +343,7 @@ html, body {
   letter-spacing: -1px;
   line-height: 1;
 }
- 
+
 .buy-button-porsche,
 .buy-button-lambo,
 .buy-button-ferrari,
@@ -319,7 +362,7 @@ html, body {
   border: none;
   display: block;
 }
- 
+
 .buy-button-porsche:disabled,
 .buy-button-lambo:disabled,
 .buy-button-ferrari:disabled,
@@ -329,7 +372,7 @@ html, body {
   opacity: 0.4;
   cursor: not-allowed;
 }
- 
+
 .tax-notice-porsche,
 .tax-notice-lambo,
 .tax-notice-ferrari,
@@ -342,11 +385,11 @@ html, body {
   opacity: 0.4;
   letter-spacing: 0.3px;
 }
- 
+
 /* -------------------------------------------------------------------------
    7. MODAL E CHECKOUT
    ------------------------------------------------------------------------- */
- 
+
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -358,7 +401,7 @@ html, body {
   z-index: 1000;
   padding: 20px;
 }
- 
+
 .checkout-modal {
   width: 100%;
   max-width: 1080px;
@@ -368,24 +411,24 @@ html, body {
   background: #ffffff;
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
 }
- 
+
 .checkout-wix-style {
   color: #1a1a1a;
   background: #ffffff;
 }
- 
+
 .checkout-grid {
   display: grid;
   grid-template-columns: 1.2fr 1fr;
   min-height: 620px;
 }
- 
+
 .checkout-form-section {
   padding: 44px 40px;
   display: flex;
   flex-direction: column;
 }
- 
+
 .checkout-title {
   font-size: 1.6rem;
   font-weight: 800;
@@ -393,7 +436,7 @@ html, body {
   color: #111;
   letter-spacing: -0.5px;
 }
- 
+
 /* Tabs de pagamento */
 .payment-tabs-wix {
   display: flex;
@@ -401,7 +444,7 @@ html, body {
   margin-bottom: 28px;
   gap: 0;
 }
- 
+
 .tab-btn {
   flex: 1;
   padding: 13px;
@@ -417,23 +460,23 @@ html, body {
   letter-spacing: 0.5px;
   text-transform: uppercase;
 }
- 
+
 .tab-btn:hover { color: #111; background-color: #f9fafb; }
- 
+
 .tab-btn.active-porsche   { border-bottom-color: #000;    color: #000; }
 .tab-btn.active-lambo     { border-bottom-color: #c5ff00; color: #000; font-style: italic; }
 .tab-btn.active-ferrari   { border-bottom-color: #ff2828; color: #ff2828; }
 .tab-btn.active-pagani    { border-bottom-color: #9d8353; color: #9d8353; }
 .tab-btn.active-rolls     { border-bottom-color: #a393bf; color: #a393bf; }
 .tab-btn.active-ultimate  { border-bottom-color: #00e5ff; color: #00b3cc; }
- 
+
 /* Campos do formulário */
 .form-group-row {
   display: flex;
   gap: 14px;
   margin-bottom: 14px;
 }
- 
+
 .form-field {
   flex: 1;
   display: flex;
@@ -441,9 +484,9 @@ html, body {
   gap: 5px;
   margin-bottom: 14px;
 }
- 
+
 .form-field.full { width: 100%; }
- 
+
 .form-field label {
   font-size: 0.72rem;
   font-weight: 700;
@@ -451,7 +494,7 @@ html, body {
   text-transform: uppercase;
   letter-spacing: 0.8px;
 }
- 
+
 .checkout-form-section input[type="text"],
 .checkout-form-section input[type="email"],
 .checkout-form-section input[type="tel"] {
@@ -464,28 +507,28 @@ html, body {
   background: #fff;
   transition: border-color 0.2s;
 }
- 
+
 .checkout-form-section input:focus {
   outline: none;
   border-color: #9ca3af;
   box-shadow: 0 0 0 3px rgba(0,0,0,0.04);
 }
- 
+
 .checkout-form-section input.input-error {
   border-color: #ff2828 !important;
   background-color: #fff5f5 !important;
 }
- 
+
 /* Caixa de pagamento */
 .payment-content { margin: 4px 0 20px; }
- 
+
 .payment-box {
   background: #f9fafb;
   border: 1px solid #e5e7eb;
   border-radius: 6px;
   padding: 22px;
 }
- 
+
 .payment-box h4 {
   margin: 0 0 16px;
   font-size: 0.9rem;
@@ -494,10 +537,10 @@ html, body {
   text-transform: uppercase;
   letter-spacing: 1px;
 }
- 
+
 .payment-box input { margin-bottom: 12px; }
 .payment-box .form-group-row { margin-bottom: 0; }
- 
+
 /* PIX e Boleto */
 .qr-center {
   display: flex;
@@ -505,7 +548,7 @@ html, body {
   align-items: center;
   text-align: center;
 }
- 
+
 .pix-qrcode-wrapper,
 .boleto-wrapper {
   background: #fff;
@@ -516,7 +559,7 @@ html, body {
   display: inline-flex;
   justify-content: center;
 }
- 
+
 .pix-description,
 .boleto-info {
   font-size: 0.82rem;
@@ -525,7 +568,7 @@ html, body {
   line-height: 1.5;
   margin: 0 0 14px;
 }
- 
+
 .pix-code-box,
 .boleto-code-box {
   background: #f3f4f6;
@@ -541,7 +584,7 @@ html, body {
   max-height: 56px;
   overflow-y: auto;
 }
- 
+
 /* Botões de ação */
 [class^="confirm-button-"],
 [class^="copy-button-"] {
@@ -556,27 +599,27 @@ html, body {
   letter-spacing: 1.5px;
   transition: all 0.2s ease;
 }
- 
+
 [class^="confirm-button-"]:disabled { opacity: 0.5; cursor: not-allowed; }
- 
+
 .copy-button-porsche,   .confirm-button-porsche   { background: #000;    color: #fff; }
 .copy-button-porsche:hover, .confirm-button-porsche:hover { background: #222; }
- 
+
 .copy-button-lambo,     .confirm-button-lambo     { background: #c5ff00; color: #000; font-style: italic; }
 .copy-button-lambo:hover, .confirm-button-lambo:hover { opacity: 0.88; }
- 
+
 .copy-button-ferrari,   .confirm-button-ferrari   { background: #ff2828; color: #fff; }
 .copy-button-ferrari:hover, .confirm-button-ferrari:hover { background: #cc1b1b; }
- 
+
 .copy-button-pagani,    .confirm-button-pagani    { background: transparent; color: #9d8353; border: 2px solid #9d8353; }
 .copy-button-pagani:hover, .confirm-button-pagani:hover { background: #9d8353; color: #10121a; }
- 
+
 .copy-button-rolls,     .confirm-button-rolls     { background: #a393bf; color: #fff; }
 .copy-button-rolls:hover, .confirm-button-rolls:hover { background: #8e7cae; }
- 
+
 .copy-button-ultimate,  .confirm-button-ultimate  { background: #00e5ff; color: #06090e; }
 .copy-button-ultimate:hover, .confirm-button-ultimate:hover { background: #00b3cc; }
- 
+
 .close-link {
   background: none;
   border: none;
@@ -589,7 +632,7 @@ html, body {
   transition: color 0.2s;
 }
 .close-link:hover { color: #111; }
- 
+
 /* Mensagens */
 .error-message-wix {
   color: #ff2828;
@@ -598,28 +641,28 @@ html, body {
   margin-top: 4px;
   animation: fadeInError 0.2s ease;
 }
- 
+
 @keyframes fadeInError {
   from { opacity: 0; transform: translateY(-3px); }
   to   { opacity: 1; transform: translateY(0); }
 }
- 
+
 /* -------------------------------------------------------------------------
    8. RESUMO DO CHECKOUT (coluna direita)
    ------------------------------------------------------------------------- */
- 
+
 .checkout-summary {
   padding: 44px 36px;
   display: flex;
   flex-direction: column;
 }
- 
+
 .summary-card {
   height: 100%;
   display: flex;
   flex-direction: column;
 }
- 
+
 .summary-card h3 {
   font-size: 1.3rem;
   font-weight: 800;
@@ -627,37 +670,37 @@ html, body {
   line-height: 1.2;
   letter-spacing: -0.3px;
 }
- 
+
 .summary-date {
   font-size: 0.9rem;
   font-weight: 600;
   margin: 0 0 4px;
 }
- 
+
 .summary-location {
   font-size: 0.82rem;
   margin: 0;
   opacity: 0.7;
 }
- 
+
 .summary-divider {
   height: 1px;
   margin: 20px 0;
   opacity: 0.12;
   background: currentColor;
 }
- 
+
 .quantity-selector {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
- 
+
 .quantity-selector label {
   font-size: 0.9rem;
   font-weight: 600;
 }
- 
+
 .qty-controls {
   display: flex;
   align-items: center;
@@ -667,7 +710,7 @@ html, body {
   border-radius: 4px;
   border: 1px solid rgba(255,255,255,0.15);
 }
- 
+
 .qty-btn {
   background: none;
   border: none;
@@ -683,17 +726,17 @@ html, body {
   border-radius: 3px;
   transition: background 0.15s;
 }
- 
+
 .qty-btn:hover { background: rgba(255,255,255,0.12); }
 .qty-btn:disabled { opacity: 0.4; cursor: not-allowed; }
- 
+
 .qty-value {
   font-size: 1rem;
   font-weight: 800;
   min-width: 20px;
   text-align: center;
 }
- 
+
 .summary-line {
   display: flex;
   justify-content: space-between;
@@ -701,7 +744,7 @@ html, body {
   margin-bottom: 10px;
   opacity: 0.8;
 }
- 
+
 .summary-total {
   display: flex;
   justify-content: space-between;
@@ -711,7 +754,7 @@ html, body {
   padding-top: 8px;
   letter-spacing: -0.5px;
 }
- 
+
 /* Temas do resumo */
 .checkout-summary.porsche-theme  { background: #111; color: #fff; }
 .checkout-summary.lambo-theme    { background: #141414; color: #fff; border-left: 2px solid #c5ff00; }
@@ -724,14 +767,13 @@ html, body {
 .checkout-summary.rolls-theme    .summary-card h3 { color: #a393bf; }
 .checkout-summary.ultimate-theme { background: #0f172a; color: #fff; }
 .checkout-summary.ultimate-theme .summary-total { color: #00e5ff; }
- 
+
 /* -------------------------------------------------------------------------
    9. IDENTIDADES DE TEMA — PÁGINA
    ------------------------------------------------------------------------- */
- 
+
 /* PORSCHE */
 .porsche-theme { background: #0a0a0a; color: #fff; }
-.porsche-theme .header-overlay { background: linear-gradient(to top, rgba(0,0,0,0.95), transparent 60%); }
 .porsche-title  { color: #fff; font-size: clamp(2.2rem,5vw,3.5rem); font-weight: 900; text-transform: uppercase; margin: 0; letter-spacing: -1px; }
 .info-bar-porsche { background: #0a0a0a; border-bottom: 1px solid #1f1f1f; }
 .info-bar-porsche .info-label { color: #555; }
@@ -740,10 +782,9 @@ html, body {
 .buy-button-porsche    { background: #fff; color: #000; }
 .buy-button-porsche:hover:not(:disabled) { background: #e0e0e0; }
 .price-tag-porsche span { color: #fff; }
- 
+
 /* LAMBORGHINI */
 .lambo-theme { background: #0a0a0a; color: #fff; }
-.lambo-theme .header-overlay { background: linear-gradient(to top, #0a0a0a 5%, transparent 70%); }
 .lambo-title  { font-size: clamp(2rem,5vw,4rem); font-weight: 900; font-style: italic; margin: 8px 0 4px; text-transform: uppercase; color: #fff; }
 .subtitle-lambo { color: #888; letter-spacing: 2px; font-size: 12px; margin: 0; }
 .info-bar-lambo { background: #0d0d0d; border-bottom: 2px solid #c5ff00; }
@@ -757,10 +798,9 @@ html, body {
 .price-tag-lambo span { color: #000; }
 .price-tag-lambo small { color: #000; }
 .tax-notice-lambo { color: #333; }
- 
+
 /* FERRARI */
 .ferrari-theme { background: #0d0d0d; color: #fff; }
-.ferrari-theme .header-overlay { background: linear-gradient(to top, #0d0d0d 2%, transparent 75%); }
 .ferrari-title { font-size: clamp(2rem,5vw,3.8rem); font-weight: 900; letter-spacing: -1px; margin: 8px 0 4px; color: #fff; }
 .subtitle-ferrari { color: #efdfbb; letter-spacing: 3px; font-size: 11px; font-weight: 600; margin: 0; }
 .info-bar-ferrari { background: #121212; border-bottom: 2px solid #ff2828; }
@@ -770,10 +810,9 @@ html, body {
 .buy-button-ferrari    { background: #ff2828; color: #fff; font-weight: 800; }
 .buy-button-ferrari:hover:not(:disabled) { background: #cc1b1b; }
 .price-tag-ferrari span { color: #fff; }
- 
+
 /* PAGANI */
 .pagani-theme { background: #0b0c10; color: #e5e5e5; }
-.pagani-theme .header-overlay { background: linear-gradient(to top, #0b0c10 2%, transparent 80%); }
 .pagani-title { font-size: clamp(2rem,5vw,3.5rem); font-weight: 800; letter-spacing: 1px; margin: 8px 0 4px; color: #fff; text-transform: uppercase; }
 .subtitle-pagani { color: #8892b0; letter-spacing: 4px; font-size: 11px; }
 .info-bar-pagani { background: #10121a; border-bottom: 2px solid #9d8353; }
@@ -785,10 +824,9 @@ html, body {
 .buy-button-pagani     { background: transparent; color: #9d8353; border: 1px solid #9d8353; font-weight: 700; margin: 22px 0 16px; }
 .buy-button-pagani:hover:not(:disabled) { background: #9d8353; color: #10121a; }
 .price-tag-pagani span { color: #9d8353; }
- 
+
 /* ROLLS-ROYCE */
 .rolls-theme { background: #050505; color: #fff; }
-.rolls-theme .header-overlay { background: linear-gradient(to top, #050505 5%, transparent 80%); }
 .rolls-title { font-size: clamp(2rem,5vw,3.5rem); font-weight: 800; letter-spacing: 2px; color: #fff; margin-top: 6px; }
 .subtitle-rolls { color: #7d788a; letter-spacing: 4px; font-size: 11px; margin-top: 6px; }
 .info-bar-rolls { background: #0f0e14; border-bottom: 1px solid #a393bf; }
@@ -800,10 +838,9 @@ html, body {
 .buy-button-rolls    { background: transparent; color: #a393bf; border: 1px solid #a393bf; font-weight: 700; letter-spacing: 1px; }
 .buy-button-rolls:hover:not(:disabled) { background: #a393bf; color: #050505; }
 .price-tag-rolls span { color: #a393bf; }
- 
+
 /* ULTIMATE */
 .ultimate-theme { background: #06090e; color: #e2e8f0; }
-.ultimate-theme .header-overlay { background: linear-gradient(to top, #06090e 5%, rgba(0,0,0,0.5) 100%); }
 .ultimate-title { font-size: clamp(2rem,5vw,3.5rem); font-weight: 900; letter-spacing: 1px; color: #fff; margin-top: 6px; }
 .subtitle-ultimate { color: #94a3b8; letter-spacing: 2px; font-size: 12px; margin-top: 6px; }
 .info-bar-ultimate { background: #0f172a; border-bottom: 2px solid #00e5ff; }
@@ -815,18 +852,18 @@ html, body {
 .buy-button-ultimate   { background: #00e5ff; color: #06090e; font-weight: 800; }
 .buy-button-ultimate:hover:not(:disabled) { background: #00b3cc; }
 .price-tag-ultimate span { color: #00e5ff; }
- 
+
 /* -------------------------------------------------------------------------
    10. RESPONSIVIDADE
    ------------------------------------------------------------------------- */
- 
+
 @media (max-width: 1024px) {
   .main-content {
     grid-template-columns: 1fr;
     gap: 40px;
     padding: 50px 6%;
   }
- 
+
   .booking-card-porsche,
   .booking-card-lambo,
   .booking-card-ferrari,
@@ -836,7 +873,7 @@ html, body {
     position: static;
     width: 100%;
   }
- 
+
   .info-bar-porsche,
   .info-bar-lambo,
   .info-bar-ferrari,
@@ -846,14 +883,14 @@ html, body {
     grid-template-columns: repeat(2, 1fr);
   }
 }
- 
+
 @media (max-width: 768px) {
   .checkout-grid { grid-template-columns: 1fr; }
   .checkout-summary { border-left: none !important; border-top: 1px solid rgba(255,255,255,0.1); padding: 28px; }
   .checkout-modal { max-height: 95vh; }
   .checkout-form-section { padding: 24px 20px; }
   .back-button-universeld { top: 80px; padding: 8px 14px; }
- 
+
   .info-bar-porsche,
   .info-bar-lambo,
   .info-bar-ferrari,
@@ -862,12 +899,17 @@ html, body {
   .info-bar-ultimate {
     grid-template-columns: 1fr 1fr;
   }
+
+  .header-overlay {
+    bottom: 30px;
+    padding: 0 5%;
+  }
 }
- 
+
 @media (max-width: 480px) {
   .form-group-row { flex-direction: column; gap: 0; }
   .highlights-grid-lambo, .highlights-grid-pagani { grid-template-columns: 1fr; }
- 
+
   .info-bar-porsche,
   .info-bar-lambo,
   .info-bar-ferrari,
@@ -876,29 +918,6 @@ html, body {
   .info-bar-ultimate {
     grid-template-columns: 1fr;
   }
- 
+
   .info-item { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.06); padding: 18px 0; }
-}
-
-html,
-body,
-#root {
-  width: 100%;
-  min-height: 100vh;
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden;
-}
-
-.details-container,
-.porsche-layout,
-.lambo-layout,
-.ferrari-layout,
-.pagani-layout,
-.rolls-layout,
-.ultimate-layout {
-  width: 100vw;
-  max-width: 100vw;
-  min-height: 100vh;
-  overflow-x: hidden;
-}
+} 

@@ -92,9 +92,12 @@
   font-weight: 800;
 }
 
-/* Form Header */
 .form-header {
   margin-bottom: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 .form-header h1 {
@@ -103,6 +106,8 @@
   font-weight: 700;
   margin-bottom: 8px;
   letter-spacing: -0.5px;
+  text-align: center;
+  width: 100%;
 }
 
 .form-subtitle {
@@ -110,8 +115,9 @@
   font-size: 14px;
   font-weight: 400;
   line-height: 1.5;
+  text-align: center;
+  width: 100%;
 }
-
 /* Error Banner */
 .error-banner {
   display: flex;
@@ -480,8 +486,12 @@
   text-align: center;
   font-weight: 500;
   margin: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
 }
-
 .register-text span {
   color: #ff6600;
   font-weight: 700;
@@ -634,6 +644,59 @@
   flex-shrink: 0;
 }
 
+/* Banner de aviso para email já existente (estilo amigável, não erro) */
+.warning-banner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  border: 1px solid #f59e0b;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  color: #92400e;
+  font-size: 0.95rem;
+  font-weight: 500;
+  animation: slideDown 0.4s ease;
+}
+
+.warning-banner svg {
+  flex-shrink: 0;
+  color: #f59e0b;
+}
+
+.warning-link {
+  color: #b45309;
+  font-weight: 700;
+  text-decoration: none;
+  padding: 6px 14px;
+  background: rgba(245, 158, 11, 0.15);
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.warning-link:hover {
+  background: rgba(245, 158, 11, 0.25);
+  color: #78350f;
+}
+
+/* Destaque no campo de email quando há aviso */
+.input-group.input-warning input {
+  border-color: #f59e0b !important;
+  background: #fffbeb !important;
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15) !important;
+}
+
+.input-group.input-warning input:focus {
+  border-color: #f59e0b !important;
+  box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.2) !important;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 /* ============ RESPONSIVO ============ */
 @media (max-width: 1024px) {
   .register-left {

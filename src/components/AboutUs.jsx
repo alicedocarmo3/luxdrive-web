@@ -2,6 +2,7 @@ import React from 'react';
 import "../styles/AboutUs.css";
 import Navbar from "../components/Navbar";
 
+
 const HistorySection = ({ year, title, description, imageUrl, reverse }) => (
   <div className={`history-row ${reverse ? 'row-reverse' : ''}`}>
     <div className="history-image-box">
@@ -52,7 +53,7 @@ const AboutUs = () => {
     <div className="about-page">
       <Navbar />
       
-      {/* BANNER PRINCIPAL */}
+      {/* BANNER PRINCIPAL COM ALINHAMENTO IGUAL A MODELS */}
       <section className="about-hero">
         <div className="hero-video-overlay"></div>
         <img 
@@ -60,13 +61,13 @@ const AboutUs = () => {
           className="hero-background-img"
           alt="Legacy Hero"
         />
-        <div className="hero-content">
-            <h4 className="hero-label">HISTÓRIA</h4>
-            <h1 className="hero-title">A TRAJETÓRIA <br/><span>LEGACY DRIVE</span></h1>
+        <div className="hero-text">
+          <p>LEGACY DRIVE</p>
+          <h1>HISTÓRIA</h1>
         </div>
       </section>
 
-      {/* SEÇÃO INTRO (ESTILO DA IMAGEM UPLOADADA) */}
+      {/* SEÇÃO INTRO */}
       <section className="about-intro-section">
         <div className="intro-container">
           <p>

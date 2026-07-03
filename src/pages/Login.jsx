@@ -10,52 +10,76 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [focusedField, setFocusedField] = useState(null);
+  const [lembrarMe, setLembrarMe] = useState(false);
 
   useEffect(() => {
-    localStorage.removeItem("user");
-    setEmail("");
-    setSenha("");
+    // Verifica se há credenciais salvas no localStorage
+    const savedEmail = localStorage.getItem("rememberEmail");
+    const savedSenha = localStorage.getItem("rememberSenha");
+    const rememberActive = localStorage.getItem("rememberActive") === "true";
+
+    if (rememberActive && savedEmail) {
+      setEmail(savedEmail);
+      setSenha(savedSenha || "");
+      setLembrarMe(true);
+    } else {
+      localStorage.removeItem("user");
+      setEmail("");
+      setSenha("");
+    }
   }, []);
 
   const handleLogin = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  setError("");
-  setIsLoading(true);
+    setError("");
+    setIsLoading(true);
 
-  try {
-    const response = await loginService(email, senha);
+    try {
+      const response = await loginService(email, senha);
 
-    const usuario = response.data.data;
+      const usuario = response.data.data;
 
-    localStorage.setItem(
-      "user",
-      JSON.stringify(usuario)
-    );
+      localStorage.setItem(
+        "user",
+        JSON.stringify(usuario)
+      );
 
-    showToast(
-      "Login realizado com sucesso!",
-      "success"
-    );
-
-    setTimeout(() => {
-      if (usuario.role === "admin") {
-        window.location.href = "/admin";
+      // Salva ou remove credenciais do "Lembrar-me"
+      if (lembrarMe) {
+        localStorage.setItem("rememberEmail", email);
+        localStorage.setItem("rememberSenha", senha);
+        localStorage.setItem("rememberActive", "true");
       } else {
-        window.location.href = "/";
+        localStorage.removeItem("rememberEmail");
+        localStorage.removeItem("rememberSenha");
+        localStorage.removeItem("rememberActive");
       }
-    }, 800);
 
-  } catch (error) {
-    console.error(error);
+      showToast(
+        "Login realizado com sucesso!",
+        "success"
+      );
 
-    setError(
-      "Email ou senha incorretos. Tente novamente."
-    );
+      setTimeout(() => {
+        if (usuario.role === "admin") {
+          window.location.href = "/admin";
+        } else {
+          window.location.href = "/";
+        }
+      }, 800);
 
-    setIsLoading(false);
-  }
-};
+    } catch (error) {
+      console.error(error);
+
+      setError(
+        "Email ou senha incorretos. Tente novamente."
+      );
+
+      setIsLoading(false);
+    }
+  };
+
   const showToast = (message, type) => {
     const toast = document.createElement("div");
     toast.className = `toast-notification ${type}`;
@@ -139,11 +163,17 @@ export default function Login() {
 
             <div className="form-options">
               <label className="remember-me">
-                <input type="checkbox" />
+                <input 
+                  type="checkbox" 
+                  checked={lembrarMe}
+                  onChange={(e) => setLembrarMe(e.target.checked)}
+                />
                 <span className="checkmark"></span>
                 Lembrar-me
               </label>
-              <a href="#" className="forgot-link">Esqueceu a senha?</a>
+              <span className="forgot-link" onClick={() => window.location.href = "/forgot-password"}>
+                Esqueceu a senha?
+              </span>
             </div>
 
             <button 
@@ -175,9 +205,9 @@ export default function Login() {
           </p>
 
           <div className="footer-links">
-            <a href="#">Termos de Serviço</a>
+            <a href="/termos">Termos de Serviço</a>
             <span className="separator">|</span>
-            <a href="#">Política de Privacidade</a>
+            <a href="/privacidade">Política de Privacidade</a>
           </div>
         </div>
       </div>

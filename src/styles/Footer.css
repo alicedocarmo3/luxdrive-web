@@ -64,15 +64,23 @@
 }
 
 .footer-column a {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   margin-bottom: 10px;
   color: rgba(255,255,255,0.75);
   text-decoration: none;
+  font-size: 0.9rem;
   transition: 0.3s;
 }
 
 .footer-column a:hover {
   color: #d4af37;
+}
+
+.footer-column a svg {
+  color: #d4af37;
+  flex-shrink: 0;
 }
 
 .footer-column p {
@@ -113,17 +121,21 @@
   border-top: 1px solid rgba(255,255,255,0.08);
   padding-top: 20px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
+  position: relative;
 }
 
 .footer-bottom p {
   color: rgba(255,255,255,0.55);
   font-size: 0.85rem;
+  text-align: center;
 }
 
 /* BOTÃO */
 .back-top {
+  position: absolute;
+  right: 0;
   width: 36px;
   height: 36px;
   border: none;
@@ -158,5 +170,11 @@
   .footer-bottom {
     flex-direction: column;
     gap: 15px;
+    padding-bottom: 50px;
+  }
+
+  .back-top {
+    position: relative;
+    right: auto;
   }
 }

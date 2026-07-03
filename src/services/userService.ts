@@ -1,5 +1,3 @@
-// services/userService.ts
-
 import api from "./api";
 import { IUsers } from "../interfaces/IUsers";
 
@@ -12,6 +10,24 @@ export const loginService = async (
   senha: string
 ) => {
   const response = await api.post("/users/login", { email, senha });
+  return response;
+};
+
+// ============================================
+// ESQUECEU A SENHA - Verificar se email existe
+// ============================================
+
+export const checkEmailService = async (email: string) => {
+  const response = await api.post("/users/check-email", { email });
+  return response;
+};
+
+// ============================================
+// ESQUECEU A SENHA - Redefinir senha
+// ============================================
+
+export const resetPasswordService = async (email: string, novaSenha: string) => {
+  const response = await api.post("/users/reset-password", { email, novaSenha });
   return response;
 };
 
